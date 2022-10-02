@@ -1,0 +1,67 @@
+{
+    "language": "EN",
+    "home-header": {
+        "specialty": "Medical specialty",
+        "searchDoctor": "Find a doctor by specialty",
+        "health-facility": "Health facilities",
+        "select-room": "Choose hospital clinic",
+        "doctor": "Doctor",
+        "select-doctor": "Choose a good doctor",
+        "fee": "Health checkup package",
+        "check-health": "General health check",
+        "support": "Support",
+        "welcome": "Welcome"
+    },
+    "banner": {
+        "title": "MEDICAL BACKGROUND",
+        "slogan": "COMPREHENSIVE HEALTH CARE",
+        "placeholder": "Find a hospital"
+    },
+    "options": {
+        "specialist_examination": "Khám chuyên khoa",
+        "Remote_medical_examination": "Khám từ xa",
+        "Physical_exam": "Khám tổng quát",
+        "Testing_Service": "Dịch vụ xét nghiệm",
+        "Mental_health": "Sức khoẻ tinh thần",
+        "Dental_examination": "Khám nha khoa",
+        "Surgery_pack": "Gói phẫu thuật",
+        "Home_check-up": "Khám tại nhà",
+        "Corporate_health": "Sức khoẻ doanh nghiệp"
+    },
+
+    "login": {
+        "login": "Login",
+        "username": "Username",
+        "password": "Password",
+        "userpass-wrong": "Invalid username or password!"
+    },
+    "menu": {
+        "admin": {
+            "manage-user": "Users",
+            "manage-doctor": "Manage doctor",
+            "manage-admin": "Manage admin",
+            "crud": "CRUD user",
+            "crud-redux": "CRUD Redux",
+            "manage-clinic": "Manage clinic",
+            "clinic": "Clinic",
+            "manage-specialty": "Manage specialty",
+            "specialty": "specialty",
+            "manage-handbook": "Manage handbook",
+            "handbook": "Handbook"
+        }
+    },
+    "manage-user": {
+        "add": "Add new user",
+        "email": "email",
+        "password": "Password",
+        "firstName": "FirstName",
+        "lastName": "LastName",
+        "address": "Address",
+        "phoneNumber": "PhoneNumber",
+        "image": "Avatar",
+        "gender": "Gender",
+        "position": "Position",
+        "role": "Role",
+        "save": "Save"
+    }
+}

@@ -1,0 +1,67 @@
+{
+    "language": "VN",
+    "home-header": {
+        "specialty": "Chuyên khoa",
+        "searchDoctor": "Tìm bác sĩ theo chuyên khoa",
+        "health-facility": "Cơ sở y tế",
+        "select-room": "Chọn bệnh viện phòng khám",
+        "doctor": "Bác sĩ",
+        "select-doctor": "Chọn bác sĩ giỏi",
+        "fee": "Gói khám",
+        "check-health": "Khám sức khoẻ tổng quát",
+        "support": "Hỗ trợ",
+        "welcome": "Xin chào"
+    },
+    "banner": {
+        "title": "NỀN TẢNG Y TẾ",
+        "slogan": "CHĂM SÓC SỨC KHỎE TOÀN DIỆN",
+        "placeholder": "Tìm bệnh viện"
+    },
+    "options": {
+        "specialist_examination": "Khám chuyên khoa",
+        "Remote_medical_examination": "Khám từ xa",
+        "Physical_exam": "Khám tổng quát",
+        "Testing_Service": "Dịch vụ xét nghiệm",
+        "Mental_health": "Sức khoẻ tinh thần",
+        "Dental_examination": "Khám nha khoa",
+        "Surgery_pack": "Gói phẫu thuật",
+        "Home_check-up": "Khám tại nhà",
+        "Corporate_health": "Sức khoẻ doanh nghiệp"
+    },
+
+    "login": {
+        "login": "Đăng nhập",
+        "username": "Tên đăng nhập",
+        "password": "Mật khẩu",
+        "userpass-wrong": "Sai tên đăng nhập hoặc mật khẩu!"
+    },
+    "menu": {
+        "admin": {
+            "manage-user": "Người dùng",
+            "manage-doctor": "Quản lý bác sĩ",
+            "manage-admin": "Quản lý admin",
+            "crud": "CRUD user",
+            "crud-redux": "CRUD Redux",
+            "manage-clinic": "Quản lý phòng khám",
+            "clinic": "Phòng khám",
+            "manage-specialty": "Quản lý chuyên khoa",
+            "specialty": "chuyên khoa",
+            "manage-handbook": "Quản lý cẩm nang",
+            "handbook": "cẩm nang"
+        }
+    },
+    "manage-user": {
+        "add": "Thêm mới người dùng",
+        "email": "Email",
+        "password": "Mật khẩu",
+        "firstName": "Họ",
+        "lastName": "Tên",
+        "address": "Địa chỉ",
+        "phoneNumber": "Số điện thoại",
+        "image": "Ảnh",
+        "gender": "Giới tính",
+        "position": "Chức danh",
+        "role": "Vai trò",
+        "save": "Lưu"
+    }
+}

@@ -1,0 +1,107 @@
+.home-header-container {
+    font-family: 'Dancing Script', cursive;
+    font-family: 'Roboto', sans-serif;
+    height: 75px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    background-color: #fff;
+    box-shadow: 0px 0px 5px rgb(176, 176, 176);
+
+    .home-header-content {
+        display: flex;
+        width: 100%;
+        height: 100%;
+
+        .left-content {
+            width: 25%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .btn-side-bar {
+                width: 32px;
+                height: 32px;
+                font-size: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: rgba(85, 85, 85, 0.8);
+                cursor: pointer;
+            }
+            .header-logo {
+                background: url('../../../assets/images/logo.svg') center center no-repeat;
+                height: 40px;
+                width: 160px;
+                margin-left: 20px;
+                cursor: pointer;
+            }
+        }
+        .center-content {
+            width: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .child-content {
+                display: flex;
+                align-items: flex-start;
+                flex-direction: column;
+                cursor: pointer;
+                .title-child {
+                    font-weight: bold;
+                    color: #333;
+                    font-size: 13px;
+                    border-bottom: 1px solid transparent;
+                }
+                .title-sub {
+                    font-weight: lighter;
+                    font-size: 10px;
+                    display: block;
+                    color: #333333;
+                }
+            }
+        }
+        .right-content {
+            width: 25%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .language {
+                margin-right: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                opacity: 0.7;
+                &:hover {
+                    opacity: 1;
+                }
+                & span {
+                    font-weight: bold;
+                    color: var(--color-title-sub);
+                    margin-left: 3px;
+                }
+                & svg {
+                    font-size: 22px;
+                    color: var(--color-primary);
+                }
+            }
+            .support {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                & span {
+                    font-weight: bold;
+                    color: var(--color-title-sub);
+                    margin-left: 3px;
+                }
+                & svg {
+                    font-size: 16px;
+                    color: var(--color-primary);
+                }
+            }
+        }
+    }
+}

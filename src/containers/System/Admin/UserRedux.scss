@@ -1,0 +1,17 @@
+.use-redux-body {
+    .container {
+        max-width: 1000px;
+        .text {
+            margin: 40px 0px 25px 0px;
+            & span {
+                font-size: 22px;
+                padding: 5px 10px;
+                background-color: #0071ba;
+                color: #fff;
+                border-radius: 4px;
+            }
+        }
+        .row {
+        }
+    }
+}
