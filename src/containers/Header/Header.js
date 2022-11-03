@@ -3,14 +3,35 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 
 import * as actions from '../../store/actions';
-import { LANGUAGES } from '../../utils';
+import { LANGUAGES, TYPE_USER } from '../../utils';
 import Navigator from '../../components/Navigator';
-import { adminMenu } from './menuApp';
+import { adminMenu, doctorMenu } from './menuApp';
 import { userImage } from '../../assets';
+import { getCookies } from '../../cookies';
 
 import './Header.scss';
 
 class Header extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            menu: [],
+            roleId: '',
+        };
+    }
+
+    componentDidMount() {
+        let menuUser = [];
+        if (this.props.roleId === TYPE_USER.ADMIN) {
+            menuUser = adminMenu;
+        } else if (this.props.roleId === TYPE_USER.DOCTOR) {
+            menuUser = doctorMenu;
+        } else {
+            menuUser = [];
+        }
+        this.setState({ menu: menuUser });
+    }
+
     handleChangeLanguage = (languageInput) => {
         if (languageInput === 'VN') {
             this.props.changeLanguageRedux(LANGUAGES.EN);
@@ -24,13 +45,13 @@ class Header extends Component {
     };
     render() {
         const { processLogout, language, userInfo } = this.props;
-        let user = userInfo.user;
+        let user = getCookies.getToken();
 
         return (
             <div className="header-container">
                 {/* thanh navigator */}
                 <div className="header-tabs-container">
-                    <Navigator menus={adminMenu} />
+                    <Navigator menus={this.state.menu} />
                 </div>
                 {/* box user */}
                 <div className="box-user">
@@ -59,6 +80,7 @@ const mapStateToProps = (state) => {
         isLoggedIn: state.user.isLoggedIn,
         language: state.user.language,
         userInfo: state.user.userInfo,
+        roleId: state.user.roleId,
     };
 };
 

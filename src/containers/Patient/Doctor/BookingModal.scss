@@ -1,0 +1,111 @@
+.booking-modal-container {
+    position: relative;
+    width: 100%;
+    & .loading-container {
+        position: fixed;
+        width: 100%;
+        background-color: rgba(85, 85, 85, 0.5);
+        height: 100vh;
+        z-index: 99999999999999999;
+        & .icon-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+}
+
+.infor-doctor {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    position: relative;
+    &::before {
+        content: '';
+        position: absolute;
+        width: 80%;
+        height: 2px;
+        border-radius: 12px;
+        background-color: var(--color-primary);
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%);
+    }
+
+    & .infor {
+        & h2 {
+            font-size: 16px;
+        }
+        & h4 {
+            font-size: 14px;
+        }
+    }
+
+    & .price {
+        margin-right: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        & h4 {
+            font-size: 14px;
+            text-transform: uppercase;
+            color: #333;
+        }
+        & p {
+            color: #333;
+            font-size: 14px;
+        }
+    }
+}
+.scheduler {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    & label:nth-child(1) {
+        margin-right: 30px;
+    }
+}
+
+.form-user-container {
+    margin-top: 10px;
+    & .label-primary {
+        color: var(--color-primary);
+    }
+}
+
+.modal-header {
+    background-color: var(--color-primary) !important;
+}
+
+.content-payment {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #f6f6f6;
+    color: #333;
+    & div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 5px;
+    }
+}
+
+.border-bottom {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.text-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    font-size: 14px;
+    margin-top: 5px;
+}

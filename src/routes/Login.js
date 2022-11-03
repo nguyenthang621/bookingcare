@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { push } from "connected-react-router";
+import { push } from 'connected-react-router';
 
-import * as actions from "../store/actions";
-import { KeyCodeUtils, LanguageUtils } from "../utils";
+import * as actions from '../store/actions';
+import { KeyCodeUtils, LanguageUtils } from '../utils';
 
 import userIcon from '../../src/assets/images/user.svg';
 import passIcon from '../../src/assets/images/pass.svg';
@@ -21,32 +21,32 @@ class Login extends Component {
     initialState = {
         username: '',
         password: '',
-        loginError: ''
-    }
+        loginError: '',
+    };
 
     state = {
-        ...this.initialState
+        ...this.initialState,
     };
 
     refresh = () => {
         this.setState({
-            ...this.initialState
-        })
-    }
+            ...this.initialState,
+        });
+    };
 
     onUsernameChange = (e) => {
-        this.setState({ username: e.target.value })
-    }
+        this.setState({ username: e.target.value });
+    };
 
     onPasswordChange = (e) => {
-        this.setState({ password: e.target.value })
-    }
+        this.setState({ password: e.target.value });
+    };
 
     redirectToSystemPage = () => {
         const { navigate } = this.props;
         const redirectPath = '/system/user-manage';
         navigate(`${redirectPath}`);
-    }
+    };
 
     processLogin = () => {
         const { username, password } = this.state;
@@ -54,26 +54,25 @@ class Login extends Component {
         const { adminLoginSuccess, adminLoginFail } = this.props;
         let loginBody = {
             username: 'admin',
-            password: '123456'
-        }
+            password: '123456',
+        };
         //sucess
         let adminInfo = {
-            "tlid": "0",
-            "tlfullname": "Administrator",
-            "custype": "A",
-            "accessToken": "eyJhbGciOiJIU"
-        }
+            tlid: '0',
+            tlfullname: 'Administrator',
+            custype: 'A',
+            accessToken: 'eyJhbGciOiJIU',
+        };
 
         adminLoginSuccess(adminInfo);
         this.refresh();
         this.redirectToSystemPage();
         try {
-            adminService.login(loginBody)
+            adminService.login(loginBody);
         } catch (e) {
-            console.log('error login : ', e)
+            console.log('error login : ', e);
         }
-
-    }
+    };
 
     handlerKeyDown = (event) => {
         const keyCode = event.which || event.keyCode;
@@ -110,7 +109,7 @@ class Login extends Component {
                         <div className="form-group icon-true">
                             <img className="icon" src={userIcon} alt="this" />
                             <input
-                                placeholder={LanguageUtils.getMessageByKey("login.username", lang)}
+                                placeholder={LanguageUtils.getMessageByKey('login.username', lang)}
                                 id="username"
                                 name="username"
                                 type="text"
@@ -123,7 +122,7 @@ class Login extends Component {
                         <div id="phone-input-container" className="form-group icon-true">
                             <img className="icon" src={passIcon} alt="this" />
                             <input
-                                placeholder={LanguageUtils.getMessageByKey("login.password", lang)}
+                                placeholder={LanguageUtils.getMessageByKey('login.password', lang)}
                                 id="password"
                                 name="password"
                                 type="password"
@@ -134,8 +133,8 @@ class Login extends Component {
                         </div>
 
                         {loginError !== '' && (
-                            <div className='login-error'>
-                                <span className='login-error-message'>{loginError}</span>
+                            <div className="login-error">
+                                <span className="login-error-message">{loginError}</span>
                             </div>
                         )}
 
@@ -145,24 +144,24 @@ class Login extends Component {
                                 id="btnLogin"
                                 type="submit"
                                 className="btn"
-                                value={LanguageUtils.getMessageByKey("login.login", lang)}
+                                value={LanguageUtils.getMessageByKey('login.login', lang)}
                                 onClick={this.processLogin}
                             />
                         </div>
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
-        lang: state.app.language
+        lang: state.app.language,
     };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
     return {
         navigate: (path) => dispatch(push(path)),
         adminLoginSuccess: (adminInfo) => dispatch(actions.adminLoginSuccess(adminInfo)),

@@ -3,10 +3,20 @@
     --color-title-sub: #969495;
     --color-btn: #ffc419;
     --color-background-section: #f5f5f5;
+    --color-background-text: #eee;
     --color-title-sub: #969495;
+    --toastify-color-light: #fff;
 }
 
 * {
     font-family: 'Dancing Script', cursive;
     font-family: 'Roboto', sans-serif;
+}
+
+.customToast {
+    background-color: var(--toastify-color-light);
+}
+.coverArea {
+    width: 80%;
+    margin: 0 auto;
 }

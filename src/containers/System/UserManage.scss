@@ -26,11 +26,6 @@
     color: white;
 }
 
-.btn {
-    width: 60px;
-    border: none;
-    outline: none;
-}
 .trans {
     background-color: transparent;
 }
@@ -56,16 +51,16 @@
 // modal user :
 
 .form-user-container {
-    display: flex;
-    gap: 15px;
-    flex-direction: column;
-    .row {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        align-items: center;
-        .half-row {
-            max-width: 50%;
-        }
+    // display: flex;
+    // gap: 15px;
+    // flex-direction: column;
+    // .form-user {
+    //     display: flex;
+    //     flex-direction: row;
+    //     flex-wrap: nowrap;
+    //     align-items: center;
+    .half-row {
+        // max-width: 40%;
     }
+    // }
 }

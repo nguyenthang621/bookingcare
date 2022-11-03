@@ -1,0 +1,105 @@
+.schedule-container {
+    margin-top: 20px;
+    & .schedule-date {
+        & .select-box {
+            border: none;
+            padding: 5px;
+            border-bottom: 1px solid #ccc;
+            border-right: 5px solid transparent;
+            border-left: 5px solid transparent;
+            font-weight: bold;
+            color: var(--color-primary);
+            font-size: 15px;
+            outline: none;
+
+            & option {
+                font-weight: 200;
+                padding: 2px 0px;
+            }
+        }
+    }
+    & .schedule-title {
+        display: flex;
+        align-items: center;
+        margin: 10px 10px 0px 10px;
+        & .icon-schedule {
+            font-size: 14px;
+            margin-right: 5px;
+        }
+        & p {
+            font-size: 14px;
+            margin: 0;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+    }
+
+    & .schedule {
+        width: 100%;
+        display: flex;
+        margin-bottom: 30px;
+
+        & .border-specialty {
+            border-right: 1px solid #ccc;
+        }
+        & .schedule-left {
+            flex: 10;
+
+            & .schedule-list {
+                display: flex;
+                flex-wrap: wrap;
+                cursor: pointer;
+
+                & .item-day {
+                    padding: 10px 0px;
+                    width: 155px;
+                    background-color: var(--color-btn);
+                    font-weight: bold;
+                    margin: 10px 15px 5px 0px;
+                    border-radius: 2px;
+                    border: 2px solid transparent;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    &:hover {
+                        border: 2px solid var(--color-primary);
+                    }
+                }
+                & p {
+                    display: block;
+                    margin-left: 20px;
+                }
+                & .text {
+                    font-size: 12px;
+                    margin-top: 10px;
+                }
+            }
+        }
+        & .schedule-info {
+            flex: 9;
+            width: 100%;
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+            margin-top: 20px;
+
+            & .btn-show-price {
+                margin-top: 5px;
+                color: var(--color-primary);
+                font-size: 14px;
+                font-weight: 500px;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.colum-specialty {
+    flex-direction: column;
+}
+.mr40 {
+    margin-right: 40px !important;
+}
+.pd50 {
+    padding-left: 50px;
+}

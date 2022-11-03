@@ -1,0 +1,25 @@
+.verify-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 200px;
+    & .verify {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        border: 1px solid #ccc;
+        padding: 20px;
+        border-radius: 12px;
+        & .title {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        & a {
+            display: block;
+            cursor: pointer;
+        }
+    }
+}

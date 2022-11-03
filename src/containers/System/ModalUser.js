@@ -61,8 +61,8 @@ class ModalUser extends Component {
                     <ModalHeader toggle={() => this.toggle()}>Create new user</ModalHeader>
                     <ModalBody>
                         <div className="form-user-container">
-                            <div className="row">
-                                <div className="half-row">
+                            <div className="form-row ">
+                                <div className="form-group col-6">
                                     <label>Email</label>
                                     <input
                                         type="email"
@@ -72,7 +72,7 @@ class ModalUser extends Component {
                                         value={this.state.email}
                                     />
                                 </div>
-                                <div className="half-row">
+                                <div className="form-group col-6">
                                     <label>Password</label>
                                     <input
                                         type="password"
@@ -83,8 +83,8 @@ class ModalUser extends Component {
                                     />
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className="half-row">
+                            <div className="form-row ">
+                                <div className="form-group col-6">
                                     <label>First Name</label>
                                     <input
                                         type="text"
@@ -94,7 +94,7 @@ class ModalUser extends Component {
                                         value={this.state.firstName}
                                     />
                                 </div>
-                                <div className="half-row">
+                                <div className="form-group col-6">
                                     <label>Last name</label>
                                     <input
                                         type="text"
@@ -105,8 +105,8 @@ class ModalUser extends Component {
                                     />
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className="col-12">
+                            <div className="form-group ">
+                                <div className="">
                                     <label>Address</label>
                                     <input
                                         type="text"
@@ -121,13 +121,13 @@ class ModalUser extends Component {
                     </ModalBody>
                     <ModalFooter>
                         <Button
-                            className="btn btn-save"
+                            className="button btn btn-save"
                             color="primary"
                             onClick={() => this.handleAddNewUser(this.state)}
                         >
                             Save
                         </Button>{' '}
-                        <Button className=" btn btn-cancel" color="secondary" onClick={() => this.toggle()}>
+                        <Button className="button btn btn-cancel" color="secondary" onClick={() => this.toggle()}>
                             Cancel
                         </Button>
                     </ModalFooter>

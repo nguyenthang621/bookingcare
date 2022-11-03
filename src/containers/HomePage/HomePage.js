@@ -5,11 +5,37 @@ import BoxBackground from './Sections/BoxBackground';
 import Section from './Sections/Section';
 import News from './Sections/News';
 import About from './Sections/About';
+import TopDoctor from './Sections/TopDoctor';
 import Footer from './Sections/Footer';
+import * as actions from '../../store/actions';
+
+import { getAllSpecialtyServices } from '../../services/patientServices';
 import { nhakhoa, clinic, doctor, handbook } from '../../assets';
 
 class HomePage extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            listSpecialty: [],
+        };
+    }
+    async componentDidMount() {
+        await this.props.getAllSpecialtyRedux();
+        // if (specialtyData && specialtyData.errorCode === 0) {
+        //     this.setState({
+        //         listSpecialty: specialtyData.data,
+        //     });
+        // }
+    }
+    componentDidUpdate(prevProps) {
+        if (prevProps.listDataSpecialtyRedux !== this.props.listDataSpecialtyRedux) {
+            this.setState({
+                listSpecialty: this.props.listDataSpecialtyRedux,
+            });
+        }
+    }
     render() {
+        let { listSpecialty } = this.state;
         return (
             <div className="home-container">
                 <HomeHeader />
@@ -17,6 +43,8 @@ class HomePage extends Component {
                 <News />
                 <Section
                     type="sec"
+                    listSpecialty={listSpecialty}
+                    typeSec={'specialtyType'}
                     background="background"
                     image={nhakhoa}
                     title="Chuyên khoa phổ biến"
@@ -32,11 +60,9 @@ class HomePage extends Component {
                     text="Phòng khám Vietlife MRI Trần Bình Trọng"
                     slideShow={4}
                 />
-                <Section
+                <TopDoctor
                     type="doctor"
                     image={doctor}
-                    title="Bác sĩ nổi bật tuần qua"
-                    button="tìm kiếm"
                     position="Bác sĩ Chuyên khoa II Trần Minh Khuyên"
                     text="Sức khỏe tâm thần - Tư vấn, trị liệu Tâm lý"
                     slideShow={4}
@@ -60,11 +86,14 @@ class HomePage extends Component {
 const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
+        listDataSpecialtyRedux: state.patient.listDataSpecialty,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return {};
+    return {
+        getAllSpecialtyRedux: () => dispatch(actions.getAllSpecialty()),
+    };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

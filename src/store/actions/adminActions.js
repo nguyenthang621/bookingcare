@@ -1,5 +1,13 @@
 import actionTypes from './actionTypes';
-import { getAllCodeServices } from '../../services/userServices';
+import {
+    getAllCodeServices,
+    createUserServices,
+    getUsersById,
+    deleteUserServices,
+    editUserServices,
+} from '../../services/userServices';
+
+import { toast } from 'react-toastify';
 
 export const fetchKeyForm = () => {
     return async (dispatch, getState) => {
@@ -13,6 +21,9 @@ export const fetchKeyForm = () => {
             keyForm.roles = RoleRes;
 
             if (checkRes(keyForm)) {
+                keyForm.genders = [...genderRes.data];
+                keyForm.positions = [...PositionRes.data];
+                keyForm.roles = [...RoleRes.data];
                 dispatch(fetchKeyFormSuccess(keyForm));
             } else {
                 dispatch(fetchKeyFormFail());
@@ -23,11 +34,13 @@ export const fetchKeyForm = () => {
         }
     };
 };
-export const fetchKeyFormSuccess = (keyForm) => ({
+
+//get all key word form data:
+const fetchKeyFormSuccess = (keyForm) => ({
     type: actionTypes.FETCH_KEY_FORM_SUCCESS,
     data: keyForm,
 });
-export const fetchKeyFormFail = () => ({
+const fetchKeyFormFail = () => ({
     type: actionTypes.FETCH_KEY_FORM_FAIL,
 });
 
@@ -41,4 +54,130 @@ const checkRes = (res) => {
         }
     }
     return result;
+};
+//----------------------------------------
+//create new user redux
+export const createNewUserRedux = (dataUser) => {
+    return async (dispatch) => {
+        try {
+            let res = await createUserServices(dataUser);
+            if (res && res.errorCode === 0) {
+                dispatch(createNewUserReduxSuccess());
+                toast.success('Create new user done', {
+                    position: 'top-right',
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                dispatch(fetchAllUser());
+            } else {
+                dispatch(createNewUserReduxFail());
+                toast.error(res.message, {
+                    position: 'top-right',
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
+        } catch (error) {
+            dispatch(createNewUserReduxFail());
+            console.log('create user redux Fail: ', error);
+        }
+    };
+};
+
+const createNewUserReduxSuccess = () => ({
+    type: actionTypes.CREATE_USER_REDUX_SUCCESS,
+});
+const createNewUserReduxFail = () => ({
+    type: actionTypes.CREATE_USER_REDUX_FAIL,
+});
+//----------------------------------------------------------------
+// fetch all users :
+
+export const fetchAllUser = () => {
+    return async (dispatch) => {
+        try {
+            let res = await getUsersById('ALL');
+            if (res && res.errorCode === 0) {
+                dispatch(getAllUserReduxSuccess(res.users));
+            } else if (res && res.errorCode === -1) {
+            } else {
+                console.log('errorCode -1');
+                dispatch(getAllUserReduxFail());
+            }
+        } catch (error) {
+            console.log('fail get all user redux :', error);
+            dispatch(getAllUserReduxFail());
+        }
+    };
+};
+
+const getAllUserReduxSuccess = (allUser) => ({
+    type: actionTypes.FETCH_ALL_USER_SUCCESS,
+    data: allUser,
+});
+const getAllUserReduxFail = () => ({
+    type: actionTypes.FETCH_ALL_USER_FAIL,
+});
+
+// delete user:
+export const deleteUserRedux = (userId) => {
+    return async (dispatch) => {
+        try {
+            let res = await deleteUserServices(userId);
+            if (res && res.errorCode === 0) {
+                dispatch({ type: actionTypes.DELETE_USER_SUCCESS });
+                toast.success('delete done', {
+                    position: 'top-right',
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                dispatch(fetchAllUser());
+            } else {
+                dispatch({ type: actionTypes.DELETE_USER_FAIL });
+            }
+        } catch (error) {
+            console.log('delete user fail: ', error);
+            dispatch({ type: actionTypes.DELETE_USER_FAIL });
+        }
+    };
+};
+
+// update user
+
+export const editUserRedux = (user) => {
+    return async (dispatch) => {
+        try {
+            let res = await editUserServices(user);
+            if (res && res.errorCode === 0) {
+                dispatch({ type: actionTypes.UPDATE_USER_SUCCESS });
+                toast.success('update user succeed', {
+                    position: 'top-right',
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                dispatch(fetchAllUser());
+            } else {
+                dispatch({ type: actionTypes.UPDATE_USER_FAIL });
+            }
+        } catch (error) {
+            dispatch({ type: actionTypes.UPDATE_USER_FAIL });
+            console.log('update user fail: ' + error);
+        }
+    };
 };

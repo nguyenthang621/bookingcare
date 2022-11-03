@@ -48,4 +48,21 @@ const getAllCodeServices = async (type) => {
     }
 };
 
-export { handleLoginApi, getUsersById, createUserServices, deleteUserServices, editUserServices, getAllCodeServices };
+// post specialty
+const postSpecialtyServices = async (data) => {
+    try {
+        return await axios.post('/api/post-specialty', data);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export {
+    handleLoginApi,
+    getUsersById,
+    createUserServices,
+    deleteUserServices,
+    editUserServices,
+    getAllCodeServices,
+    postSpecialtyServices,
+};

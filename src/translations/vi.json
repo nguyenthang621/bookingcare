@@ -43,11 +43,15 @@
             "crud": "CRUD user",
             "crud-redux": "CRUD Redux",
             "manage-clinic": "Quản lý phòng khám",
-            "clinic": "Phòng khám",
+            "clinic": "Quản lý phòng khám",
             "manage-specialty": "Quản lý chuyên khoa",
-            "specialty": "chuyên khoa",
+            "specialty": "Quản lý chuyên khoa",
             "manage-handbook": "Quản lý cẩm nang",
-            "handbook": "cẩm nang"
+            "handbook": "Quản lý cẩm nang"
+        },
+        "doctor": {
+            "manage-schedule": "Quản lý kế hoạch khám bệnh",
+            "schedule": "Kế hoạch khám bệnh"
         }
     },
     "manage-user": {
@@ -62,6 +66,54 @@
         "gender": "Giới tính",
         "position": "Chức danh",
         "role": "Vai trò",
-        "save": "Lưu"
+        "uploadImage": "Tải ảnh",
+        "save": "Lưu",
+        "edit": "Sửa",
+        "cancel": "Quay lại"
+    },
+    "homepage": {
+        "out-standing-doctor": "Bác sĩ nổi bật tuần qua",
+        "more": "Xem thêm"
+    },
+    "schedule": {
+        "title": "Quản lý kế hoạch khám bệnh của bác sĩ",
+        "chooseDoctor": "Chọn bác sĩ",
+        "chooseDate": "Chọn ngày",
+        "save": "Lưu thông tin"
+    },
+
+    "patient": {
+        "schedule": {
+            "schedule-title": "Lịch khám",
+            "text-no-schedule": "Không có lịch hẹn trong thời gian này, vui lòng chọn thời gian khác! ",
+            "text1": "Chọn",
+            "text2": "và đặt (Phí đặt lịch 0đ)",
+            "addressClinic": "Địa chỉ khám",
+            "price": "Giá khám",
+            "priceText": "Được ưu tiên khám trước khi đật khám qua BookingCare",
+            "typePaymentText": "Người bệnh có thể thanh toán chi phí bằng hình thức"
+        },
+        "verify": {
+            "title-verify-success": "Xác nhận lịch hẹn thành công",
+            "title-verify-fail": "Lịch hẹn không tồn tại hoặc đã được xác minh",
+            "home": "Về trang chủ"
+        }
+    },
+    "admin": {
+        "manage-doctor": {
+            "title": "Tạo thông tin bác sĩ",
+            "select-doctor": "Chọn bác sĩ ",
+            "intro": "Thông tin giới thiệu bác sĩ",
+            "save": "Lưu thông tin",
+            "change": "Thay đổi thông tin",
+            "select-province": "Chọn tỉnh thành",
+            "name-clinic": "Chọn phòng khám ",
+            "address-clinic": "Địa chỉ phòng khám",
+            "select-price": "Chọn giá khám",
+            "select-payment": "Chọn phương thức thanh toán",
+            "select-specialty": "Chọn chuyên khoa",
+            "note": "Ghi chú",
+            "detail-doctor": "Chi tiết về bác sĩ"
+        }
     }
 }

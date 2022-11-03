@@ -1,9 +1,16 @@
 import axios from 'axios';
+import Cookies from 'universal-cookie';
 // import _ from 'lodash';
-
+const cookies = new Cookies();
 const instance = axios.create({
     baseURL: process.env.REACT_APP_BACKEND_URL,
-    // withCredentials: true
+    withCredentials: true,
+    headers: {
+        token: {
+            // can be common or any other method
+            headers: { token: cookies.get('token') },
+        },
+    },
 });
 
 // const createError = (httpStatusCode, statusCode, errorMessage, problems, errorCode = '') => {
@@ -21,6 +28,12 @@ const instance = axios.create({
 //     const statusType = typeof s;
 //     return (statusType === 'number' && s === 0) || (statusType === 'string' && s.toUpperCase() === 'OK');
 // };
+
+// axios.defaults.headers.common['headers'] = { token: cookies.get('token') };
+// instance.interceptors.request.use((config) => {
+//     config.headers.common['headers'] = { token: cookies.get('token') };
+//     return config;
+// });
 
 instance.interceptors.response.use((response) => {
     // Thrown error for request with OK status code

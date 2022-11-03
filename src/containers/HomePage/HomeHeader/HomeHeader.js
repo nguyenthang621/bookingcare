@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { changeLanguageApp } from '../../../store/actions';
 import { LANGUAGES } from '../../../utils';
+import { Link } from 'react-router-dom';
 
 import './HomeHeader.scss';
 import { IoMenu } from 'react-icons/io5';
@@ -20,6 +21,7 @@ class HomeHeader extends Component {
         }
         return;
     };
+    executeScroll = () => this.myRef.current.scrollIntoView();
 
     render() {
         return (
@@ -29,7 +31,9 @@ class HomeHeader extends Component {
                         <div className="btn-side-bar">
                             <IoMenu />
                         </div>
-                        <div className="header-logo"></div>
+                        <Link to="/home">
+                            <div className="header-logo"></div>
+                        </Link>
                     </div>
                     <div className="center-content">
                         <div className="child-content">

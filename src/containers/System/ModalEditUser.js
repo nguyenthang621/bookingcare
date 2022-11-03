@@ -75,21 +75,31 @@ class ModalEditUser extends Component {
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-user-container">
-                            <div className="row">
-                                <div className={this.props.isEdit ? '' : 'half-row'}>
+                            <div className="form-row ">
+                                <div className="form-group col-6">
                                     <label>Email</label>
                                     <input
                                         type="email"
                                         className="form-control"
                                         placeholder="@gmail.com"
+                                        disabled={this.props.isEdit}
                                         onChange={(e) => this.handleChangeInput(e, 'email')}
                                         value={this.state.email}
-                                        disabled={this.props.isEdit}
+                                    />
+                                </div>
+                                <div className="form-group col-6">
+                                    <label>Password</label>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        placeholder="123456"
+                                        onChange={(e) => this.handleChangeInput(e, 'password')}
+                                        value={this.state.password}
                                     />
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className="half-row">
+                            <div className="form-row ">
+                                <div className="form-group col-6">
                                     <label>First Name</label>
                                     <input
                                         type="text"
@@ -99,7 +109,7 @@ class ModalEditUser extends Component {
                                         value={this.state.firstName}
                                     />
                                 </div>
-                                <div className="half-row">
+                                <div className="form-group col-6">
                                     <label>Last name</label>
                                     <input
                                         type="text"
@@ -110,8 +120,8 @@ class ModalEditUser extends Component {
                                     />
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className="col-12">
+                            <div className="form-group ">
+                                <div className="">
                                     <label>Address</label>
                                     <input
                                         type="text"
@@ -126,13 +136,13 @@ class ModalEditUser extends Component {
                     </ModalBody>
                     <ModalFooter>
                         <Button
-                            className="btn btn-save"
+                            className=" button btn-save"
                             color="primary"
                             onClick={() => this.handleEditUser(this.state)}
                         >
                             Change
                         </Button>{' '}
-                        <Button className=" btn btn-cancel" color="secondary" onClick={() => this.toggle()}>
+                        <Button className="button btn btn-cancel" color="secondary" onClick={() => this.toggle()}>
                             Cancel
                         </Button>
                     </ModalFooter>

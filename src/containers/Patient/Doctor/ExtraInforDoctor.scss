@@ -1,0 +1,74 @@
+.container-infor {
+    width: 100%;
+
+    margin: 0;
+    & .address-clinic {
+        border-bottom: 1px solid #ccc;
+        & h2 {
+            text-transform: uppercase;
+            font-size: 14px;
+            color: #666;
+            font-weight: bold;
+        }
+        & h4 {
+            margin-top: 5px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+        & p {
+            margin-top: 5px;
+            font-size: 13px;
+            color: #666;
+        }
+    }
+    & .price-container {
+        & .price {
+            font-size: 15px;
+            font-weight: 100;
+        }
+        & h2 {
+            text-transform: uppercase;
+            font-size: 13px;
+            color: #666;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+        & .table-price {
+            border-radius: 3px;
+            box-shadow: 1px 1px 2px #ccc;
+            width: 100%;
+            & .row-price {
+                background-color: #f8f8f8;
+                position: relative;
+                & tbody {
+                    border-top: 1px solid #ccc;
+                }
+                & td {
+                    padding: 8px 3px 3px 3px;
+                    border: 1px solid #ddd;
+                    & h2 {
+                        margin: 0;
+                        font-weight: 400;
+                        padding-bottom: 2px;
+                    }
+                    & p {
+                        font-size: 13px;
+                        color: #333;
+                    }
+                }
+                & .price-label {
+                    position: absolute;
+                    top: 2px;
+                    right: 4px;
+                }
+            }
+        }
+        & .row2 {
+            background-color: rgb(216, 216, 216) !important;
+        }
+    }
+}
+
+p {
+    margin: 0;
+}

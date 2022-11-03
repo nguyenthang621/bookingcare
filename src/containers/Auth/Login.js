@@ -7,6 +7,8 @@ import './Login.scss';
 // import { FormattedMessage } from 'react-intl';
 import { FaGoogle, FaFacebookF } from 'react-icons/fa';
 import { handleLoginApi } from '../../services/userServices';
+import Cookies from 'universal-cookie';
+import { getCookies } from '../../cookies';
 
 class Login extends Component {
     constructor(props) {
@@ -17,6 +19,7 @@ class Login extends Component {
             message: '',
         };
     }
+    componentDidMount() {}
 
     handleChangeUsername = (e) => {
         this.setState({ userName: e.target.value });
@@ -28,12 +31,14 @@ class Login extends Component {
         this.setState({ message: '' });
         try {
             let dataResponse = await handleLoginApi(this.state.userName, this.state.password);
-            if (dataResponse && dataResponse.errorCode !== 0) {
+            if (dataResponse && dataResponse.errorCode === 1 && dataResponse.message) {
                 this.setState({ message: dataResponse.message });
             }
             if (dataResponse && dataResponse.errorCode === 0) {
                 //login success
-                this.props.userLoginSuccess(dataResponse.data);
+                const cookies = new Cookies();
+                cookies.set('token', dataResponse.token, { path: '/' });
+                this.props.userLoginSuccess(dataResponse.data, getCookies.getToken().roleId);
             }
         } catch (error) {
             if (error.response && error.response.data) {
@@ -104,8 +109,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         navigate: (path) => dispatch(push(path)),
-        // userLoginFail: () => dispatch(actions.adminLoginFail()),
-        userLoginSuccess: (userInfo) => dispatch(actions.userLoginSuccess(userInfo)),
+        userLoginSuccess: (userInfo, roleId) => dispatch(actions.userLoginSuccess(userInfo, roleId)),
     };
 };
 

@@ -91,12 +91,7 @@ class UserManage extends Component {
     render() {
         return (
             <div className="users-container">
-                <ModalUser
-                    isOpenModel={this.state.isOpenModel}
-                    toggleModel={this.handleToggleModel}
-                    createNewUser={this.createNewUser}
-                />
-                {this.state.isEdit && (
+                {this.state.isEdit ? (
                     <ModalEditUser
                         isOpenModel={this.state.isOpenModel}
                         toggleModel={this.handleToggleModel}
@@ -104,6 +99,12 @@ class UserManage extends Component {
                         currentUser={this.state.dataUserEdit}
                         re_renderModalEdit={this.re_renderModalEdit}
                         updateUser={this.updateUser}
+                    />
+                ) : (
+                    <ModalUser
+                        isOpenModel={this.state.isOpenModel}
+                        toggleModel={this.handleToggleModel}
+                        createNewUser={this.createNewUser}
                     />
                 )}
                 <div className="title text-center">Manage users</div>
