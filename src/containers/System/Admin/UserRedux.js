@@ -3,8 +3,12 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { LANGUAGES } from '../../../utils/constant';
 import * as actions from '../../../store/actions';
+import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css';
 
 import './UserRedux.scss';
+import { FaFileUpload } from 'react-icons/fa';
+
 class UserRedux extends Component {
     constructor(props) {
         super(props);
@@ -12,6 +16,9 @@ class UserRedux extends Component {
             genders: [],
             positions: [],
             roles: [],
+            previewImageUrl: '',
+            isShowBoxImage: false,
+            isRoomImage: false,
         };
     }
 
@@ -29,13 +36,21 @@ class UserRedux extends Component {
             });
         }
     }
+    handleOnchangeImage = (e) => {
+        let data = e.target.files;
+        let file = data[0];
+        if (file) {
+            let objectUrl = URL.createObjectURL(file);
+            this.setState({ previewImageUrl: objectUrl, isShowBoxImage: true });
+        }
+    };
 
     render() {
         let { languageRedux } = this.props;
         let { genders, positions, roles } = this.state;
 
         return (
-            <div className="user-redux-container">
+            <div className="user-redux-container ">
                 <div className="title">User react-redux</div>
                 <div className="use-redux-body">
                     <div className="container mt-4">
@@ -44,7 +59,7 @@ class UserRedux extends Component {
                                 <FormattedMessage id="manage-user.add" />
                             </span>
                         </div>
-                        <div className="row">
+                        <div className="form-container">
                             <form>
                                 <div className="form-row">
                                     <div className="form-group col-md-6">
@@ -89,12 +104,6 @@ class UserRedux extends Component {
                                     </div>
                                 </div>
                                 <div className="form-row">
-                                    <div className="form-group col-md-3">
-                                        <label htmlFor="inputCity">
-                                            <FormattedMessage id="manage-user.image" />
-                                        </label>
-                                        <input type="text" className="form-control" />
-                                    </div>
                                     <div className="form-group col-md-3">
                                         <label htmlFor="inputState">
                                             <FormattedMessage id="manage-user.gender" />
@@ -144,6 +153,38 @@ class UserRedux extends Component {
                                                     );
                                                 })}
                                         </select>
+                                    </div>
+
+                                    <div className="form-group col-md-3 upload-file-container">
+                                        <label htmlFor="inputCity">
+                                            <FormattedMessage id="manage-user.image" />
+                                        </label>
+                                        <div className="btn-container">
+                                            <input
+                                                id="uploadFile"
+                                                type="file"
+                                                onChange={(e) => this.handleOnchangeImage(e)}
+                                                className="form-control"
+                                                hidden
+                                            />
+                                            <label className="text-upload" htmlFor="uploadFile">
+                                                Tải ảnh
+                                                <FaFileUpload className="icon-upload" />
+                                            </label>
+                                            {this.state.isShowBoxImage && (
+                                                <div
+                                                    className="preview"
+                                                    style={{ backgroundImage: `url(${this.state.previewImageUrl})` }}
+                                                    onClick={() => this.setState({ isRoomImage: true })}
+                                                ></div>
+                                            )}
+                                        </div>
+                                        {this.state.isRoomImage && (
+                                            <Lightbox
+                                                mainSrc={this.state.previewImageUrl}
+                                                onCloseRequest={() => this.setState({ isRoomImage: false })}
+                                            />
+                                        )}
                                     </div>
                                 </div>
                                 <button type="submit" className="btn btn-primary">

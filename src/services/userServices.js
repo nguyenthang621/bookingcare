@@ -42,7 +42,6 @@ const editUserServices = async (user) => {
 
 const getAllCodeServices = async (type) => {
     try {
-        console.log('services get all code');
         return await axios.get(`/api/allcode?type=${type}`);
     } catch (error) {
         console.log('fail', error);
