@@ -4,7 +4,6 @@ import { LANGUAGES } from '../../../utils';
 import * as actions from '../../../store/actions';
 import { FormattedMessage } from 'react-intl';
 import './ExtraInforDoctor.scss';
-import { getDetailDoctorService } from '../../../services/doctorServices';
 
 class ExtraInforDoctor extends Component {
     constructor(props) {
@@ -16,17 +15,20 @@ class ExtraInforDoctor extends Component {
             typePayment: '',
             note: '',
             province: '',
+            nameClinic: '',
         };
     }
     async componentDidMount() {
         let { languageRedux, doctorId, dataCurrentDoctor } = this.props;
         let doctorInfor = dataCurrentDoctor.Doctor_Infor;
+
         this.setState({
             price: doctorInfor.priceData,
             addressClinic: doctorInfor.addressClinic,
             typePayment: doctorInfor.paymentData,
             province: doctorInfor.provinceData,
             note: doctorInfor.note,
+            nameClinic: doctorInfor.clinicData.nameClinic,
         });
     }
     componentDidUpdate(prevProps) {
@@ -39,7 +41,7 @@ class ExtraInforDoctor extends Component {
 
     render() {
         let { languageRedux, isShowPrice } = this.props;
-        let { price, addressClinic, typePayment, note, province } = this.state;
+        let { price, addressClinic, typePayment, note, province, nameClinic } = this.state;
 
         if (languageRedux === LANGUAGES.VI) {
             price = price.valueVi;
@@ -64,8 +66,8 @@ class ExtraInforDoctor extends Component {
                     <h2>
                         <FormattedMessage id="patient.schedule.addressClinic" />
                     </h2>
-                    <h4>{addressClinic}</h4>
-                    <p>{province}</p>
+                    <h4>{nameClinic}</h4>
+                    <p>{`${addressClinic} _ (${province})`}</p>
                 </div>
                 <div className="price-container">
                     <h2>

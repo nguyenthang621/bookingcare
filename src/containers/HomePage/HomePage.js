@@ -9,23 +9,27 @@ import TopDoctor from './Sections/TopDoctor';
 import Footer from './Sections/Footer';
 import * as actions from '../../store/actions';
 
-import { getAllSpecialtyServices } from '../../services/patientServices';
+import { getAllClinicServices } from '../../services/patientServices';
 import { nhakhoa, clinic, doctor, handbook } from '../../assets';
+import _ from 'lodash';
 
 class HomePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
             listSpecialty: [],
+            listClinic: [],
         };
     }
     async componentDidMount() {
         await this.props.getAllSpecialtyRedux();
-        // if (specialtyData && specialtyData.errorCode === 0) {
-        //     this.setState({
-        //         listSpecialty: specialtyData.data,
-        //     });
-        // }
+        let clinics = await getAllClinicServices('true');
+
+        if (clinics && clinics.errorCode === 0) {
+            this.setState({
+                listClinic: clinics.data,
+            });
+        }
     }
     componentDidUpdate(prevProps) {
         if (prevProps.listDataSpecialtyRedux !== this.props.listDataSpecialtyRedux) {
@@ -35,7 +39,8 @@ class HomePage extends Component {
         }
     }
     render() {
-        let { listSpecialty } = this.state;
+        let { listSpecialty, listClinic } = this.state;
+
         return (
             <div className="home-container">
                 <HomeHeader />
@@ -46,34 +51,25 @@ class HomePage extends Component {
                     listSpecialty={listSpecialty}
                     typeSec={'specialtyType'}
                     background="background"
-                    image={nhakhoa}
                     title="Chuyên khoa phổ biến"
                     button="xem thêm"
-                    text="Tạo hình hàm mặt"
                     slideShow={4}
                 />
                 <Section
                     type="sec"
-                    image={clinic}
+                    typeSec="clinics"
+                    listClinic={listClinic}
                     title="Cơ sở y tế nổi bật"
                     button="tìm kiếm"
-                    text="Phòng khám Vietlife MRI Trần Bình Trọng"
                     slideShow={4}
                 />
-                <TopDoctor
-                    type="doctor"
-                    image={doctor}
-                    position="Bác sĩ Chuyên khoa II Trần Minh Khuyên"
-                    text="Sức khỏe tâm thần - Tư vấn, trị liệu Tâm lý"
-                    slideShow={4}
-                />
+                <TopDoctor type="doctor" slideShow={4} />
                 <Section
                     background="background"
                     type="handbook"
                     image={handbook}
                     title="Cẩm nang"
                     button="tất cả bài viết"
-                    text="Niềng răng trong suốt Invisalign ở đâu tốt Hà Nội - Review chi tiết"
                     slideShow={2}
                 />
                 <About title="Truyền thông nói về BookingCares" />

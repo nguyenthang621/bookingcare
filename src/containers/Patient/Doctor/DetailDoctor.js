@@ -9,7 +9,6 @@ import BookingModal from './BookingModal';
 import IntroDoctor from './IntroDoctor';
 import { Link } from 'react-router-dom';
 
-import { getAllCodeServices } from '../../../services/userServices';
 import { getDetailDoctorService } from '../../../services/doctorServices';
 
 class DetailDoctor extends Component {
@@ -19,18 +18,17 @@ class DetailDoctor extends Component {
             dataCurrentDoctor: '',
             isShowModalBooking: false,
             currentRangeTime: '',
-            listGender: [],
+
             doctorId: '',
         };
     }
     async componentDidMount() {
         let doctorId = this.props.doctorId ? this.props.doctorId : this.props.match.params.id;
-        let genderRes = await getAllCodeServices('gender');
+
         let detailDoctor = await getDetailDoctorService(doctorId);
 
         this.setState({
             dataCurrentDoctor: detailDoctor.data,
-            listGender: genderRes.data,
             doctorId: doctorId,
         });
     }
@@ -72,8 +70,8 @@ class DetailDoctor extends Component {
                         isShowModalBooking={isShowModalBooking}
                         rangeTimeData={currentRangeTime}
                         doctorId={doctorId}
-                        listGender={listGender}
                         nameDoctor={nameDoctor}
+                        dataCurrentDoctor={dataCurrentDoctor}
                     />
                 )}
                 <HomeHeader />

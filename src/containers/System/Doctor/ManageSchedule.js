@@ -21,6 +21,7 @@ class ManageSchedule extends Component {
             initDate: new Date().setHours(0, 0, 0, 0),
             // dateSelected: moment(new Date()).format(dateFormat.SEND_TO_SERVER),
             listSchedule: [],
+            scheduleDoctorCurrent: '',
         };
     }
 
@@ -41,6 +42,21 @@ class ManageSchedule extends Component {
                 allDoctor: listDoctor,
             });
         }
+        if (prevProps.scheduleDoctorCurrentRedux !== this.props.scheduleDoctorCurrentRedux) {
+            let { listSchedule } = this.state;
+            let { scheduleDoctorCurrentRedux } = this.props;
+            let arrScheduleSelected = scheduleDoctorCurrentRedux.map((item) => item.timeType);
+            listSchedule.map((item) => {
+                if (arrScheduleSelected.includes(item.keyMap)) {
+                    item.isSelected = true;
+                } else {
+                    item.isSelected = false;
+                }
+            });
+            this.setState({
+                listSchedule: listSchedule,
+            });
+        }
         if (prevProps.scheduleRedux !== this.props.scheduleRedux) {
             let data = this.props.scheduleRedux;
             if (data && data.length > 0) {
@@ -56,8 +72,10 @@ class ManageSchedule extends Component {
     }
 
     handleChange = async (selectedDoctor) => {
+        await this.props.getScheduleDoctorByDateRedux(selectedDoctor.value, this.state.initDate);
         this.setState({
             selectedDoctor: selectedDoctor,
+            scheduleDoctorCurrent: this.props.scheduleDoctorCurrentRedux,
         });
     };
 
@@ -76,7 +94,11 @@ class ManageSchedule extends Component {
         return result;
     };
 
-    handleSetDate = (date) => {
+    handleSetDate = async (date) => {
+        let { selectedDoctor } = this.state;
+        if (!_.isEmpty(selectedDoctor)) {
+            await this.props.getScheduleDoctorByDateRedux(selectedDoctor.value, date.setHours(0, 0, 0, 0));
+        }
         this.setState({
             initDate: date.setHours(0, 0, 0, 0),
         });
@@ -126,6 +148,7 @@ class ManageSchedule extends Component {
     render() {
         let { allDoctor, initDate, listSchedule } = this.state;
         let { languageRedux } = this.props;
+
         return (
             <div className="manage-schedule-container">
                 {this.props.isLoggedIn && <Header />}
@@ -186,6 +209,7 @@ const mapStateToProps = (state) => {
         allDoctorRedux: state.doctor.allDoctor,
         languageRedux: state.app.language,
         scheduleRedux: state.doctor.schedule,
+        scheduleDoctorCurrentRedux: state.doctor.scheduleDoctorCurrent,
     };
 };
 
@@ -194,6 +218,7 @@ const mapDispatchToProps = (dispatch) => {
         fetchAllDoctorRedux: () => dispatch(actions.fetchAllDoctor()),
         fetchAllcodeScheduleRedux: () => dispatch(actions.fetchAllcodeSchedule()),
         saveScheduleDoctorRedux: (data) => dispatch(actions.saveScheduleDoctor(data)),
+        getScheduleDoctorByDateRedux: (doctorId, date) => dispatch(actions.getScheduleDoctorByDate(doctorId, date)),
     };
 };
 

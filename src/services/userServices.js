@@ -56,6 +56,14 @@ const postSpecialtyServices = async (data) => {
         console.log(error);
     }
 };
+// post detail clinic
+const postDetailClinicServices = async (data) => {
+    try {
+        return await axios.post('/api/post-detail-clinic', data);
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 export {
     handleLoginApi,
@@ -65,4 +73,5 @@ export {
     editUserServices,
     getAllCodeServices,
     postSpecialtyServices,
+    postDetailClinicServices,
 };

@@ -31,7 +31,6 @@ class TopDoctor extends Component {
     }
 
     handleClickDetailDoctor = (doctor) => {
-        console.log(doctor);
         this.props.history.push(`/detail-doctor/${doctor.id}`);
     };
 

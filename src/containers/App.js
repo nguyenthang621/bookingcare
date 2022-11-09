@@ -12,6 +12,7 @@ import Home from '../routes/Home';
 import Login from './Auth/Login';
 import DetailDoctor from './Patient/Doctor/DetailDoctor';
 import DetailSpecialty from './Patient/Specialty/DetailSpecialty';
+import DetailClinic from './Patient/Clinic/DetailClinic';
 import HomePage from './HomePage/HomePage';
 import System from '../routes/System';
 import 'react-toastify/dist/ReactToastify.css';
@@ -55,6 +56,7 @@ class App extends Component {
                                     <Route path={path.HOMEPAGE} component={HomePage} />
                                     <Route path={path.DETAIL_DOCTOR} component={DetailDoctor} />
                                     <Route path={path.DETAIL_SPECIALTY} component={DetailSpecialty} />
+                                    <Route path={path.DETAIL_CLINIC} component={DetailClinic} />
                                     {/* ----------- */}
                                     <Route path={path.DOCTOR} component={userIsAuthenticated(ManageSchedule)} />
                                     <Route path={path.VERIFY_BOOING} component={VerifyBooking} />

@@ -7,7 +7,7 @@ import {
     getScheduleDoctorByDateService,
 } from '../../services/doctorServices';
 import { getAllCodeServices } from '../../services/userServices';
-import { getAllSpecialtyServices } from '../../services/patientServices';
+import { getAllSpecialtyServices, getAllClinicServices } from '../../services/patientServices';
 import actionTypes from './actionTypes';
 import { toast } from 'react-toastify';
 
@@ -179,6 +179,7 @@ export const fetchRelateToDoctorInfor = () => {
             let resListPrice = await getAllCodeServices('PRICE');
             let resListPayment = await getAllCodeServices('PAYMENT');
             let resListProvince = await getAllCodeServices('PROVINCE');
+            let resListClinics = await getAllClinicServices();
             let resListSpecialty = await getAllSpecialtyServices();
 
             if (
@@ -189,12 +190,15 @@ export const fetchRelateToDoctorInfor = () => {
                 resListProvince &&
                 resListProvince.errorCode === 0 &&
                 resListSpecialty &&
-                resListSpecialty.errorCode === 0
+                resListSpecialty.errorCode === 0 &&
+                resListClinics &&
+                resListClinics.errorCode === 0
             ) {
                 result.listPrice = resListPrice.data;
                 result.listPayment = resListPayment.data;
                 result.listProvince = resListProvince.data;
                 result.listSpecialty = resListSpecialty.data;
+                result.listClinics = resListClinics.data;
                 dispatch({ type: actionTypes.FETCH_RELATE_TO_DOCTOR_INFOR_SUCCESS, data: result });
             } else {
                 dispatch({ type: actionTypes.FETCH_RELATE_TO_DOCTOR_INFOR_FAIL });

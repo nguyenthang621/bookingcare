@@ -8,6 +8,7 @@ import localization from 'moment/locale/vi';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import './BookingModal.scss';
 import Loading from '../../../components/Loading';
+import { getAllCodeServices } from '../../../services/userServices';
 
 class BookingModal extends Component {
     constructor(props) {
@@ -27,11 +28,16 @@ class BookingModal extends Component {
             doctorId: '',
             email: '',
             isLoading: false,
+
+            listGender: [],
+            nameDoctor: '',
+            provinceDoctor: '',
         };
     }
     async componentDidMount() {
-        let { languageRedux } = this.props;
+        let { languageRedux, dataCurrentDoctor } = this.props;
         let rangeTime = this.props.rangeTimeData;
+        let genderRes = await getAllCodeServices('gender');
         let timeSchedule =
             languageRedux === LANGUAGES.VI ? rangeTime.timeTypeData?.valueVi : rangeTime.timeTypeData?.valueEn;
         let date = '';
@@ -42,11 +48,13 @@ class BookingModal extends Component {
                 .format('dddd - DD/MM/YYYY');
             date = this.capitalizeFirstLetter(date);
         }
+        this.buildNameAndProvinceByLanguage(dataCurrentDoctor, languageRedux);
         let exactTime = `${timeSchedule} - ${date}`;
         this.setState({
             rangeTime: this.props.rangeTimeData,
             doctorId: this.props.doctorId,
             exactTime: exactTime,
+            listGender: genderRes.data,
         });
     }
     componentDidUpdate(prevProps) {
@@ -119,10 +127,30 @@ class BookingModal extends Component {
     capitalizeFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
-    render() {
-        let { isShowModalBooking, languageRedux, listGender } = this.props;
-        let { bookFor, exactTime, isLoading } = this.state;
+    buildNameAndProvinceByLanguage = (dataCurrentDoctor, languageRedux) => {
+        let nameDoctor = '';
+        let provinceDoctor = '';
+        if (dataCurrentDoctor && dataCurrentDoctor.positionData) {
+            nameDoctor =
+                languageRedux === LANGUAGES.VI
+                    ? `${dataCurrentDoctor.positionData.valueVi}, ${dataCurrentDoctor.firstName} ${dataCurrentDoctor.lastName}`
+                    : `${dataCurrentDoctor.positionData.valueEn}, ${dataCurrentDoctor.lastName} ${dataCurrentDoctor.firstName}`;
+        }
+        if (dataCurrentDoctor && dataCurrentDoctor.Doctor_Infor && dataCurrentDoctor.Doctor_Infor.provinceData) {
+            provinceDoctor =
+                languageRedux === LANGUAGES.VI
+                    ? dataCurrentDoctor.Doctor_Infor.provinceData.valueVi
+                    : dataCurrentDoctor.Doctor_Infor.provinceData.valueEn;
+        }
+        this.setState({
+            nameDoctor: nameDoctor,
+            provinceDoctor: provinceDoctor,
+        });
+    };
 
+    render() {
+        let { isShowModalBooking, languageRedux, dataCurrentDoctor } = this.props;
+        let { bookFor, exactTime, isLoading, listGender, nameDoctor, provinceDoctor } = this.state;
         return (
             <div className="booking-modal-container">
                 {isLoading && (
@@ -143,7 +171,7 @@ class BookingModal extends Component {
                     <ModalBody>
                         <div className="infor-doctor">
                             <div className="infor">
-                                <h2>BS Nguyễn Duy Hưng</h2>
+                                {nameDoctor && <h2>{nameDoctor}</h2>}
                                 <h4>
                                     Thời gian khám: <b>{exactTime}</b>
                                 </h4>

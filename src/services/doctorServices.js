@@ -31,6 +31,13 @@ const getDetailDoctorService = async (id) => {
         console.log(error);
     }
 };
+const getDoctorService = async (id) => {
+    try {
+        return await axios.get(`/api/get-doctor-by-id?id=${id}`);
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 const saveScheduleDoctorServices = async (data) => {
     try {
@@ -55,4 +62,5 @@ export {
     getDetailDoctorService,
     saveScheduleDoctorServices,
     getScheduleDoctorByDateService,
+    getDoctorService,
 };

@@ -29,10 +29,26 @@ const getSpecialtyByIdServices = async (id, location) => {
         console.log(error);
     }
 };
+const getAllClinicServices = async (isGetImageClinic) => {
+    try {
+        return await axios.get(`/api/get-all-clinic?isGetImageClinic=${isGetImageClinic}`);
+    } catch (error) {
+        console.log(error);
+    }
+};
+const getDetailClinicByIdServices = async (id) => {
+    try {
+        return await axios.get(`/api/get-detail-clinic-by-id?id=${id}`);
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 export {
     postBookingAppointmentServices,
     verifyBookingAppointmentServices,
     getAllSpecialtyServices,
     getSpecialtyByIdServices,
+    getAllClinicServices,
+    getDetailClinicByIdServices,
 };

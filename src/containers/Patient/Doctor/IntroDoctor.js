@@ -11,28 +11,54 @@ class IntroDoctor extends Component {
         super(props);
         this.state = {
             detailDoctor: {},
+            nameDoctor: '',
+            provinceDoctor: '',
         };
     }
-    async componentDidMount() {}
+    async componentDidMount() {
+        let { dataCurrentDoctor, languageRedux } = this.props;
+
+        this.buildNameAndProvinceByLanguage(dataCurrentDoctor, languageRedux);
+    }
     componentDidUpdate(prevProps) {
+        let { dataCurrentDoctor, languageRedux } = this.props;
         if (prevProps.languageRedux !== this.props.languageRedux) {
+            this.buildNameAndProvinceByLanguage(dataCurrentDoctor, languageRedux);
         }
     }
-
-    render() {
-        let { dataCurrentDoctor, languageRedux, typeStyle } = this.props;
-        let {} = this.state;
+    buildNameAndProvinceByLanguage = (dataCurrentDoctor, languageRedux) => {
         let nameDoctor = '';
+        let provinceDoctor = '';
         if (dataCurrentDoctor && dataCurrentDoctor.positionData) {
             nameDoctor =
                 languageRedux === LANGUAGES.VI
                     ? `${dataCurrentDoctor.positionData.valueVi}, ${dataCurrentDoctor.firstName} ${dataCurrentDoctor.lastName}`
                     : `${dataCurrentDoctor.positionData.valueEn}, ${dataCurrentDoctor.lastName} ${dataCurrentDoctor.firstName}`;
         }
+        if (dataCurrentDoctor && dataCurrentDoctor.Doctor_Infor && dataCurrentDoctor.Doctor_Infor.provinceData) {
+            provinceDoctor =
+                languageRedux === LANGUAGES.VI
+                    ? dataCurrentDoctor.Doctor_Infor.provinceData.valueVi
+                    : dataCurrentDoctor.Doctor_Infor.provinceData.valueEn;
+        }
+        this.setState({
+            nameDoctor: nameDoctor,
+            provinceDoctor: provinceDoctor,
+        });
+    };
+
+    render() {
+        let { dataCurrentDoctor, typeStyle } = this.props;
+        let { nameDoctor, provinceDoctor } = this.state;
+
         return (
             <div className="intro-doctor">
                 <div className="image-doctor">
-                    <img className={typeStyle === 'specialty' ? 'size-specialty' : ''} src={dataCurrentDoctor.image} />
+                    <img
+                        className={typeStyle === 'specialty' ? 'size-specialty' : ''}
+                        src={dataCurrentDoctor.image}
+                        alt="img"
+                    />
                     {typeStyle === 'specialty' && <span className="more-detail-doctor">Xem thêm</span>}
                 </div>
                 <div className="about-doctor">
@@ -51,7 +77,7 @@ class IntroDoctor extends Component {
                     {typeStyle === 'specialty' && (
                         <span className="address-doctor">
                             <MdAddLocation />
-                            <p>Hà Nội</p>
+                            {provinceDoctor && <p>{provinceDoctor}</p>}
                         </span>
                     )}
                 </div>
