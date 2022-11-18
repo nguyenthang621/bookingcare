@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import ManageSchedule from '../containers/System/Doctor/ManageSchedule';
 import { TYPE_USER } from '../utils';
-import { getCookies } from '../cookies';
+import { classCookies } from '../cookies';
 
 import Header from '../containers/Header/Header';
 
@@ -13,9 +13,7 @@ class Doctor extends Component {
         this.state = {};
     }
 
-    componentDidMount() {
-        console.log('doctor ', getCookies.getToken().roleId);
-    }
+    componentDidMount() {}
     render() {
         let { roleId } = this.props;
         return (

@@ -8,6 +8,7 @@ import { getDetailClinicByIdServices } from '../../../services/patientServices';
 import { MdAddLocation } from 'react-icons/md';
 import DetailDoctor from '../../Patient/Doctor/DetailDoctor';
 import { BsLightbulbFill } from 'react-icons/bs';
+import Footer from '../../HomePage/Sections/Footer';
 
 import './DetailClinic.scss';
 
@@ -90,6 +91,7 @@ class DetailSpecialty extends Component {
                                                     className="item"
                                                     doctorId={item.doctorId}
                                                     typeStyle="specialty"
+                                                    isComponentChild
                                                 />
                                             </div>
                                         </div>
@@ -103,6 +105,7 @@ class DetailSpecialty extends Component {
                         </div>
                     </div>
                 </div>
+                <Footer />
             </div>
         );
     }

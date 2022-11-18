@@ -1,8 +1,9 @@
 import axios from '../axios';
+import axiosJWT from '../axiosJWT';
 
 const handleLoginApi = async (userName, password) => {
     try {
-        return await axios.post('/api/login', { email: userName, password: password });
+        return await axiosJWT.post('/api/login', { email: userName, password: password });
     } catch (error) {
         console.log(error);
     }
@@ -10,7 +11,7 @@ const handleLoginApi = async (userName, password) => {
 
 const getUsersById = async (inputId) => {
     try {
-        return await axios.get(`/api/get-users?id=${inputId}`);
+        return await axiosJWT.get(`/api/get-users?id=${inputId}`);
     } catch (error) {
         console.log(error);
     }
@@ -18,7 +19,7 @@ const getUsersById = async (inputId) => {
 
 const createUserServices = async (dataUser) => {
     try {
-        return await axios.post('/api/create-user', dataUser);
+        return await axiosJWT.post('/api/create-user', dataUser);
     } catch (error) {
         console.log(error);
     }
@@ -26,7 +27,7 @@ const createUserServices = async (dataUser) => {
 
 const deleteUserServices = async (id) => {
     try {
-        return await axios.delete('/api/delete-user', { data: { id: id } });
+        return await axiosJWT.delete('/api/delete-user', { data: { id: id } });
     } catch (error) {
         console.log(error);
     }
@@ -34,7 +35,7 @@ const deleteUserServices = async (id) => {
 
 const editUserServices = async (user) => {
     try {
-        return await axios.put('/api/update-user', user);
+        return await axiosJWT.put('/api/update-user', user);
     } catch (error) {
         console.log(error);
     }
@@ -51,7 +52,7 @@ const getAllCodeServices = async (type) => {
 // post specialty
 const postSpecialtyServices = async (data) => {
     try {
-        return await axios.post('/api/post-specialty', data);
+        return await axiosJWT.post('/api/post-specialty', data);
     } catch (error) {
         console.log(error);
     }
@@ -59,7 +60,25 @@ const postSpecialtyServices = async (data) => {
 // post detail clinic
 const postDetailClinicServices = async (data) => {
     try {
-        return await axios.post('/api/post-detail-clinic', data);
+        return await axiosJWT.post('/api/post-detail-clinic', data);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+// post detail clinic
+const refreshToken = async () => {
+    try {
+        return await axiosJWT.post('/api/refresh-token');
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+// logout
+const processLogoutServices = async (refreshToken) => {
+    try {
+        return await axiosJWT.post('/api/logout', { refreshToken: refreshToken });
     } catch (error) {
         console.log(error);
     }
@@ -74,4 +93,6 @@ export {
     getAllCodeServices,
     postSpecialtyServices,
     postDetailClinicServices,
+    refreshToken,
+    processLogoutServices,
 };

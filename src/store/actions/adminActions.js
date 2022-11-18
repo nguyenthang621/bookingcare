@@ -107,7 +107,6 @@ export const fetchAllUser = () => {
             let res = await getUsersById('ALL');
             if (res && res.errorCode === 0) {
                 dispatch(getAllUserReduxSuccess(res.users));
-            } else if (res && res.errorCode === -1) {
             } else {
                 console.log('errorCode -1');
                 dispatch(getAllUserReduxFail());

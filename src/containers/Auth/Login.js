@@ -8,7 +8,8 @@ import './Login.scss';
 import { FaGoogle, FaFacebookF } from 'react-icons/fa';
 import { handleLoginApi } from '../../services/userServices';
 import Cookies from 'universal-cookie';
-import { getCookies } from '../../cookies';
+import { classCookies } from '../../cookies';
+import { withRouter } from 'react-router';
 
 class Login extends Component {
     constructor(props) {
@@ -37,8 +38,10 @@ class Login extends Component {
             if (dataResponse && dataResponse.errorCode === 0) {
                 //login success
                 const cookies = new Cookies();
-                cookies.set('token', dataResponse.token, { path: '/' });
-                this.props.userLoginSuccess(dataResponse.data, getCookies.getToken().roleId);
+                cookies.set('accessToken', dataResponse.accessToken, { path: '/' });
+                let userInfor = classCookies.getDataAccessToken();
+                await this.props.userLoginSuccess(userInfor, userInfor.roleId);
+                this.props.history.push(`/system/user-redux`);
             }
         } catch (error) {
             if (error.response && error.response.data) {
@@ -113,4 +116,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

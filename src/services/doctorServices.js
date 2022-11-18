@@ -1,4 +1,5 @@
 import axios from '../axios';
+import axiosJWT from '../axiosJWT';
 
 const getTopDoctorServices = async (limit) => {
     try {
@@ -18,7 +19,7 @@ const getAllDoctorService = async () => {
 
 const saveDetailDoctorServices = async (data) => {
     try {
-        return await axios.post(`/api/save-detail-doctor`, data);
+        return await axiosJWT.post(`/api/save-detail-doctor`, data);
     } catch (error) {
         console.log(error);
     }
@@ -41,7 +42,7 @@ const getDoctorService = async (id) => {
 
 const saveScheduleDoctorServices = async (data) => {
     try {
-        return await axios.post(`/api/save-schedule-doctor`, data);
+        return await axiosJWT.post(`/api/save-schedule-doctor`, data);
     } catch (error) {
         console.log(error);
     }

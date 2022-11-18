@@ -8,6 +8,7 @@ import { getSpecialtyByIdServices } from '../../../services/patientServices';
 import DetailDoctor from '../Doctor/DetailDoctor';
 import Select from 'react-select';
 import { getAllCodeServices } from '../../../services/userServices';
+import Footer from '../../HomePage/Sections/Footer';
 
 import './DetailSpecialty.scss';
 
@@ -114,6 +115,7 @@ class DetailSpecialty extends Component {
                                                     className="item"
                                                     doctorId={item.doctorId}
                                                     typeStyle="specialty"
+                                                    isComponentChild
                                                 />
                                             </div>
                                         </div>
@@ -127,6 +129,7 @@ class DetailSpecialty extends Component {
                         </div>
                     </div>
                 </div>
+                <Footer />
             </div>
         );
     }

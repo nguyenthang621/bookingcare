@@ -18,6 +18,8 @@ import System from '../routes/System';
 import 'react-toastify/dist/ReactToastify.css';
 import ManageSchedule from './System/Doctor/ManageSchedule';
 
+import * as actions from '../store/actions';
+
 // import { CustomToastCloseButton } from '../components/CustomToast';
 import CustomScrollbars from '../components/CustomScrollbars';
 import VerifyBooking from './Patient/VerifyBooking';
@@ -37,11 +39,11 @@ class App extends Component {
         }
     };
 
-    componentDidMount() {
+    async componentDidMount() {
         this.handlePersistorState();
     }
+    async componentDidUpdate(prevProps) {}
 
-    componentDidUpdate(prevProps) {}
     render() {
         return (
             <Fragment>
@@ -50,7 +52,7 @@ class App extends Component {
                         <div className="content-container">
                             <CustomScrollbars style={{ width: '100%', height: '100vh' }}>
                                 <Switch>
-                                    <Route path={path.HOME} exact component={Home} />
+                                    <Route path={path.HOME} exact component={userIsAuthenticated(Home)} />
                                     <Route path={path.LOGIN} component={userIsNotAuthenticated(Login)} />
                                     <Route path={path.SYSTEM} component={userIsAuthenticated(System)} />
                                     <Route path={path.HOMEPAGE} component={HomePage} />
@@ -88,7 +90,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return {};
+    return {
+        processLogout: () => dispatch(actions.processLogout()),
+    };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

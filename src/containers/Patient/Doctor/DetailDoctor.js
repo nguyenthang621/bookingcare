@@ -8,6 +8,7 @@ import DoctorSchedule from './DoctorSchedule';
 import BookingModal from './BookingModal';
 import IntroDoctor from './IntroDoctor';
 import { Link } from 'react-router-dom';
+import Footer from '../../HomePage/Sections/Footer';
 
 import { getDetailDoctorService } from '../../../services/doctorServices';
 
@@ -52,7 +53,7 @@ class DetailDoctor extends Component {
     };
 
     render() {
-        let { languageRedux, typeStyle } = this.props;
+        let { languageRedux, typeStyle, isComponentChild } = this.props;
         let { dataCurrentDoctor, isShowModalBooking, currentRangeTime, listGender, doctorId } = this.state;
 
         let nameDoctor = '';
@@ -126,6 +127,7 @@ class DetailDoctor extends Component {
                     )}
                     <div className="comment-doctor"> </div>
                 </div>
+                {!isComponentChild && <Footer />}
             </div>
         );
     }

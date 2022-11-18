@@ -7,7 +7,7 @@ import { LANGUAGES, TYPE_USER } from '../../utils';
 import Navigator from '../../components/Navigator';
 import { adminMenu, doctorMenu } from './menuApp';
 import { userImage } from '../../assets';
-import { getCookies } from '../../cookies';
+import { classCookies } from '../../cookies';
 
 import './Header.scss';
 
@@ -17,11 +17,13 @@ class Header extends Component {
         this.state = {
             menu: [],
             roleId: '',
+            user: {},
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         let menuUser = [];
+        let user = classCookies.getDataAccessToken();
         if (this.props.roleId === TYPE_USER.ADMIN) {
             menuUser = adminMenu;
         } else if (this.props.roleId === TYPE_USER.DOCTOR) {
@@ -29,8 +31,9 @@ class Header extends Component {
         } else {
             menuUser = [];
         }
-        this.setState({ menu: menuUser });
+        this.setState({ menu: menuUser, user: user });
     }
+    async componentDidUpdate(prevProps) {}
 
     handleChangeLanguage = (languageInput) => {
         if (languageInput === 'VN') {
@@ -45,7 +48,7 @@ class Header extends Component {
     };
     render() {
         const { processLogout, language, userInfo } = this.props;
-        let user = getCookies.getToken();
+        const { user } = this.state;
 
         return (
             <div className="header-container">

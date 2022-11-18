@@ -1,16 +1,17 @@
 import actionTypes from '../actions/actionTypes';
-import { getCookies } from '../../cookies';
+import { classCookies } from '../../cookies';
 
 const initialState = {
     isLoggedIn: false,
     userInfo: null,
     language: 'vi',
-    roleId: getCookies.getToken().roleId,
+    roleId: classCookies.getDataAccessToken()?.roleId,
 };
 
 const userReducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.USER_LOGIN_SUCCESS:
+            delete action.userInfo.roleId;
             return {
                 ...state,
                 isLoggedIn: true,
@@ -23,11 +24,15 @@ const userReducer = (state = initialState, action) => {
                 isLoggedIn: false,
                 userInfo: null,
             };
-        case actionTypes.PROCESS_LOGOUT:
+        case actionTypes.PROCESS_LOGOUT_SUCCESS:
             return {
                 ...state,
                 isLoggedIn: false,
                 userInfo: null,
+            };
+        case actionTypes.PROCESS_LOGOUT_FAIL:
+            return {
+                ...state,
             };
 
         default:
