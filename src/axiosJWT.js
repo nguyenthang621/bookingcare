@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import { classCookies } from './cookies.js';
+import { classStorage } from './storage';
 import jwt_decode from 'jwt-decode';
 import { refreshToken } from './services/userServices';
 
@@ -28,6 +29,8 @@ axiosjwt.interceptors.request.use(async (config) => {
     if (parseInt(decodedToken?.exp) < parseInt(now)) {
         classCookies.removeToken('accessToken');
         const data = await refreshToken();
+        classStorage.setItemStorage('refreshToken', classCookies.getRefreshToken('refreshToken'));
+
         if (data && data.accessToken) {
             classCookies.setToken('accessToken', data.accessToken);
         }

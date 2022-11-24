@@ -1,4 +1,5 @@
 import actionTypes from './actionTypes';
+import { classStorage } from '../../storage';
 import { classCookies } from '../../cookies';
 import { processLogoutServices } from '../../services/userServices';
 
@@ -11,17 +12,19 @@ export const userLoginSuccess = (userInfo, roleId) => ({
     userInfo: userInfo,
     roleId: roleId,
 });
+
 export const userLoginFail = () => ({
     type: actionTypes.USER_LOGIN_FAIL,
 });
-// export const processLogout = () => ({ type: actionTypes.PROCESS_LOGOUT_SUCCESS });
 export const processLogout = () => {
     return async (dispatch) => {
         try {
-            let refreshToken = classCookies.getRefreshToken();
+            let refreshToken = classStorage.getItemStorage('refreshToken');
             let res = await processLogoutServices(refreshToken);
             if (res && res.errorCode === 0) {
                 dispatch({ type: actionTypes.PROCESS_LOGOUT_SUCCESS });
+                classCookies.removeToken('refreshToken');
+                classCookies.removeToken('accessToken');
             } else {
                 console.log('You are not user');
                 dispatch({ type: actionTypes.PROCESS_LOGOUT_FAIL });

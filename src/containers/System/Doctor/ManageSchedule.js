@@ -151,7 +151,6 @@ class ManageSchedule extends Component {
 
         return (
             <div className="manage-schedule-container">
-                {this.props.isLoggedIn && <Header />}
                 <div className="title">
                     <h2>
                         <FormattedMessage id="schedule.title" />

@@ -1,19 +1,21 @@
+.loading-container {
+    margin-top: -75px;
+    position: fixed;
+    width: 100%;
+    background-color: rgba(85, 85, 85, 0.5);
+    height: 105vh;
+    z-index: 99999999999999999;
+    & .icon-loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
 .booking-modal-container {
     position: relative;
     width: 100%;
-    & .loading-container {
-        position: fixed;
-        width: 100%;
-        background-color: rgba(85, 85, 85, 0.5);
-        height: 100vh;
-        z-index: 99999999999999999;
-        & .icon-loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-    }
 }
 
 .infor-doctor {

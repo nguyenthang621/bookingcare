@@ -37,6 +37,7 @@ export const classCookies = {
             const decodedToken = jwt_decode(token);
             dataToken = decodedToken;
         }
+
         return dataToken;
     },
 };

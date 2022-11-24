@@ -3,7 +3,14 @@ import axiosJWT from '../axiosJWT';
 
 const handleLoginApi = async (userName, password) => {
     try {
-        return await axiosJWT.post('/api/login', { email: userName, password: password });
+        return await axios.post('/api/login', { email: userName, password: password });
+    } catch (error) {
+        console.log(error);
+    }
+};
+const registerServices = async (data) => {
+    try {
+        return await axios.post('/api/register', data);
     } catch (error) {
         console.log(error);
     }
@@ -95,4 +102,5 @@ export {
     postDetailClinicServices,
     refreshToken,
     processLogoutServices,
+    registerServices,
 };

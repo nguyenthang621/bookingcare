@@ -55,6 +55,20 @@ const getScheduleDoctorByDateService = async (doctorId, date) => {
         console.log(e);
     }
 };
+const getAppointmentDoctorService = async (doctorId, date, statusId) => {
+    try {
+        return await axiosJWT.get(`/api/get-appointment-doctor?doctorId=${doctorId}&date=${date}&statusId=${statusId}`);
+    } catch (e) {
+        console.log(e);
+    }
+};
+const confirmRemedyService = async (data) => {
+    try {
+        return await axiosJWT.post(`/api/confirm-remedy`, data);
+    } catch (e) {
+        console.log(e);
+    }
+};
 
 export {
     getTopDoctorServices,
@@ -64,4 +78,6 @@ export {
     saveScheduleDoctorServices,
     getScheduleDoctorByDateService,
     getDoctorService,
+    getAppointmentDoctorService,
+    confirmRemedyService,
 };

@@ -29,11 +29,11 @@ class Footer extends Component {
         return (
             <div className="footer-container">
                 <div className="footer-up coverArea">
-                    <div class="d-flex flex-column h-100">
-                        <footer class="w-100 py-4 flex-shrink-0">
-                            <div class="container-footer py-4">
-                                <div class="row gy-4 gx-5">
-                                    <div class="infor-footer col-lg-5 col-md-6">
+                    <div className="d-flex flex-column h-100">
+                        <footer className="w-100 py-4 flex-shrink-0">
+                            <div className="container-footer py-4">
+                                <div className="row gy-4 gx-5">
+                                    <div className="infor-footer col-lg-5 col-md-6">
                                         <div
                                             className="image-footer"
                                             style={{
@@ -50,7 +50,7 @@ class Footer extends Component {
                                         <div className="iso"></div>
                                     </div>
 
-                                    <div class="contact-footer col-lg-4 col-md-6">
+                                    <div className="contact-footer col-lg-4 col-md-6">
                                         <a>
                                             <li>Liên hệ hợp tác</li>
                                         </a>
@@ -71,7 +71,7 @@ class Footer extends Component {
                                         </a>
                                     </div>
 
-                                    <div class="branch-footer col-lg-3 col-md-6">
+                                    <div className="branch-footer col-lg-3 col-md-6">
                                         <div className="branch">
                                             <h4>Trụ sở tại Hà Nội</h4>
                                             <p>28 Thành Thái, Dịch Vọng, Cầu Giấy, Hà Nội</p>

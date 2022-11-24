@@ -7,6 +7,8 @@ const initialState = {
     schedule: [],
     scheduleDoctorCurrent: [],
     DoctorRelatedInfor: [],
+    listAppointment: [],
+    statusId: 'S2',
 };
 
 const doctorReducer = (state = initialState, action) => {
@@ -70,6 +72,28 @@ const doctorReducer = (state = initialState, action) => {
             return {
                 ...state,
                 DoctorRelatedInfor: [],
+            };
+        case actionTypes.GET_APPOINTMENT_DOCTOR_SUCCESS:
+            return {
+                ...state,
+                listAppointment: action.data,
+                // statusId: action.data.statusId,
+            };
+        case actionTypes.GET_APPOINTMENT_DOCTOR_FAIL:
+            return {
+                ...state,
+                listAppointment: [],
+                // statusId: 'S3',
+            };
+        case actionTypes.CHANGE_STATUS_SUCCESS:
+            return {
+                ...state,
+                statusId: action.data,
+            };
+        case actionTypes.CHANGE_STATUS_FAIL:
+            return {
+                ...state,
+                statusId: 'S3',
             };
 
         default:

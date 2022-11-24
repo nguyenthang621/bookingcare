@@ -11,11 +11,10 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.USER_LOGIN_SUCCESS:
-            delete action.userInfo.roleId;
             return {
                 ...state,
                 isLoggedIn: true,
-                userInfo: action.userInfo,
+                userInfo: action.userInfor,
                 roleId: action.roleId,
             };
         case actionTypes.USER_LOGIN_FAIL:

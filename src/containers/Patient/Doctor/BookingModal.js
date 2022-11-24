@@ -4,7 +4,6 @@ import { LANGUAGES } from '../../../utils';
 import * as actions from '../../../store/actions';
 import { FormattedMessage } from 'react-intl';
 import moment from 'moment';
-import localization from 'moment/locale/vi';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import './BookingModal.scss';
 import Loading from '../../../components/Loading';

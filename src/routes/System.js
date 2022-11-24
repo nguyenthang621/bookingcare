@@ -7,6 +7,9 @@ import ManageDoctor from '../containers/System/Admin/ManageDoctor';
 import Specialty from '../containers/System/Specialty/Specialty';
 import ManageClinic from '../containers/System/Clinic/ManageClinic';
 import Header from '../containers/Header/Header';
+import { withRouter } from 'react-router';
+import * as actions from '../store/actions';
+
 import { TYPE_USER } from '../utils';
 
 class System extends Component {
@@ -15,9 +18,16 @@ class System extends Component {
         this.state = {};
     }
 
-    componentDidMount() {}
+    async componentDidMount() {
+        let { roleId } = this.props;
+        if (roleId === 'R3' || !roleId) {
+            await this.props.processLogout();
+            this.props.history.push(`/login`);
+        }
+    }
     render() {
         const { systemMenuPath, roleId } = this.props;
+
         return (
             <React.Fragment>
                 {this.props.isLoggedIn && <Header />}
@@ -53,7 +63,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return {};
+    return {
+        processLogout: () => dispatch(actions.processLogout()),
+    };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(System);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(System));

@@ -15,8 +15,8 @@ class Loading extends Component {
         let {} = this.props;
         let {} = this.state;
         return (
-            <div class="loadingio-spinner-ellipsis-755um2gy6t">
-                <div class="ldio-78i6pelqj4x">
+            <div className="loadingio-spinner-ellipsis-755um2gy6t">
+                <div className="ldio-78i6pelqj4x">
                     <div></div>
                     <div></div>
                     <div></div>

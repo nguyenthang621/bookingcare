@@ -9,6 +9,7 @@ import { FaGoogle, FaFacebookF } from 'react-icons/fa';
 import { handleLoginApi } from '../../services/userServices';
 import Cookies from 'universal-cookie';
 import { classCookies } from '../../cookies';
+import { classStorage } from '../../storage';
 import { withRouter } from 'react-router';
 
 class Login extends Component {
@@ -17,16 +18,15 @@ class Login extends Component {
         this.state = {
             userName: '',
             password: '',
+            confirmPassword: '',
             message: '',
+            isRegister: false,
         };
     }
     componentDidMount() {}
 
-    handleChangeUsername = (e) => {
-        this.setState({ userName: e.target.value });
-    };
-    handleChangePassword = (e) => {
-        this.setState({ password: e.target.value });
+    handleChange = (e, name) => {
+        this.setState({ [name]: e.target.value });
     };
     handleLogin = async () => {
         this.setState({ message: '' });
@@ -41,6 +41,8 @@ class Login extends Component {
                 cookies.set('accessToken', dataResponse.accessToken, { path: '/' });
                 let userInfor = classCookies.getDataAccessToken();
                 await this.props.userLoginSuccess(userInfor, userInfor.roleId);
+                classStorage.setItemStorage('refreshToken', classCookies.getRefreshToken('refreshToken'));
+
                 this.props.history.push(`/system/user-redux`);
             }
         } catch (error) {
@@ -49,6 +51,7 @@ class Login extends Component {
             }
         }
     };
+    handleClickSignUp = () => {};
 
     render() {
         return (
@@ -63,7 +66,7 @@ class Login extends Component {
                                 className="form-control"
                                 placeholder="Enter your username"
                                 value={this.state.userName}
-                                onChange={(e) => this.handleChangeUsername(e)}
+                                onChange={(e) => this.handleChange(e, 'userName')}
                             />
                         </div>
                         <div className="col-12 from-group">
@@ -73,7 +76,17 @@ class Login extends Component {
                                 className="form-control"
                                 placeholder="Enter your password"
                                 value={this.state.password}
-                                onChange={(e) => this.handleChangePassword(e)}
+                                onChange={(e) => this.handleChange(e, 'password')}
+                            />
+                        </div>
+                        <div className="col-12 from-group">
+                            <label>Confirm password</label>
+                            <input
+                                type="password"
+                                className="form-control"
+                                placeholder="Enter your password"
+                                value={this.state.confirmPassword}
+                                onChange={(e) => this.handleChange(e, 'confirmPassword')}
                             />
                         </div>
                         <div className="col-12 text-response">{this.state.message}</div>
@@ -96,6 +109,14 @@ class Login extends Component {
                                 </a>
                             </div>
                         </div>
+                        <div className="col-12 register">
+                            <span>
+                                Not a member?{' '}
+                                <span className="btn-signup" onClick={() => this.handleClickSignUp()}>
+                                    Signup
+                                </span>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -106,6 +127,7 @@ class Login extends Component {
 const mapStateToProps = (state) => {
     return {
         language: state.app.language,
+        roleId: state.user.roleId,
     };
 };
 

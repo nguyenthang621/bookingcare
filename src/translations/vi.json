@@ -10,6 +10,7 @@
         "fee": "Gói khám",
         "check-health": "Khám sức khoẻ tổng quát",
         "support": "Hỗ trợ",
+        "login": "Đăng nhập",
         "welcome": "Xin chào"
     },
     "banner": {
@@ -51,7 +52,7 @@
         },
         "doctor": {
             "manage-schedule": "Quản lý kế hoạch khám bệnh",
-            "schedule": "Kế hoạch khám bệnh"
+            "manage-appointment": "Quản lý lịch hẹn với bệnh nhân"
         }
     },
     "manage-user": {
@@ -80,6 +81,27 @@
         "chooseDoctor": "Chọn bác sĩ",
         "chooseDate": "Chọn ngày",
         "save": "Lưu thông tin"
+    },
+    "appointment": {
+        "title": "Quản lý lịch hẹn khám bệnh của bác sĩ",
+        "chooseDate": "Chọn ngày",
+        "doctor": "Bác sĩ",
+        "appointment-title": "Lịch hẹn ngày",
+        "stt": "STT",
+        "time": "Thời gian",
+        "fullname": "Họ và tên",
+        "birth": "Năm sinh",
+        "gender": "Giới tính",
+        "address": "Dịa chỉ",
+        "reason": "Lý do khám",
+        "confirm": "Xác nhận",
+        "noAppointment": "Chưa có lịch hẹn khám",
+        "newSchedule": "Lịch hẹn mới",
+        "confirmed": "Đã khám xong",
+        "remind": "Gửi mail nhắc nhở",
+        "cancel": "Đã huỷ",
+        "send-mail": "Gửi",
+        "cancel": "Huỷ"
     },
 
     "patient": {

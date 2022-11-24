@@ -5,6 +5,7 @@ import {
     getDetailDoctorService,
     saveScheduleDoctorServices,
     getScheduleDoctorByDateService,
+    getAppointmentDoctorService,
 } from '../../services/doctorServices';
 import { getAllCodeServices } from '../../services/userServices';
 import { getAllSpecialtyServices, getAllClinicServices } from '../../services/patientServices';
@@ -168,6 +169,32 @@ export const getScheduleDoctorByDate = (doctorId, date) => {
         } catch (e) {
             console.log(e);
             dispatch({ type: actionTypes.GET_SCHEDULE_DOCTOR_FAIL });
+        }
+    };
+};
+export const getAppointmentDoctor = (doctorId, initDate, statusId) => {
+    return async (dispatch) => {
+        try {
+            let res = await getAppointmentDoctorService(doctorId, initDate, statusId);
+            if (res && res.errorCode === 0) {
+                res.data.statusId = statusId;
+                dispatch({ type: actionTypes.GET_APPOINTMENT_DOCTOR_SUCCESS, data: res.data });
+            } else {
+                dispatch({ type: actionTypes.GET_APPOINTMENT_DOCTOR_FAIL });
+            }
+        } catch (e) {
+            console.log(e);
+            dispatch({ type: actionTypes.GET_APPOINTMENT_DOCTOR_FAIL });
+        }
+    };
+};
+export const changeStatusId = (statusId) => {
+    return async (dispatch) => {
+        try {
+            dispatch({ type: actionTypes.CHANGE_STATUS_SUCCESS, data: statusId });
+        } catch (e) {
+            console.log(e);
+            dispatch({ type: actionTypes.CHANGE_STATUS_FAIL });
         }
     };
 };

@@ -1,0 +1,53 @@
+.manage-schedule-container {
+    & .wrapper {
+        & .form-row {
+            & .doctor-info-container {
+                & .doctor-info {
+                    display: flex;
+                    align-items: center;
+
+                    & .iconDoctor {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 7px;
+                        border-radius: 50%;
+                        color: #fff;
+                        background-color: var(--color-btn);
+                        margin-right: 5px;
+                        position: relative;
+                    }
+                    & p {
+                        font-size: 22px;
+                        text-transform: uppercase;
+                        border: 1px solid var(--color-btn);
+                        border-left: 8px solid transparent;
+                        border-right: 8px solid transparent;
+                    }
+                }
+            }
+        }
+        & .table-appointment-container {
+            padding: 10px 30px;
+
+            & .title-table {
+                padding: 10px 0;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            & .table {
+                & td {
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    max-width: 200px;
+                }
+                & .title-no-appointment {
+                    margin: 0 auto;
+                    text-transform: uppercase;
+                }
+            }
+        }
+    }
+}

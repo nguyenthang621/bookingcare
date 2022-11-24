@@ -10,6 +10,7 @@
         "fee": "Health checkup package",
         "check-health": "General health check",
         "support": "Support",
+        "login": "Login",
         "welcome": "Welcome"
     },
     "banner": {
@@ -51,7 +52,7 @@
         },
         "doctor": {
             "manage-schedule": "Manage Doctor`s schedule",
-            "schedule": "Manage Doctor`s schedule"
+            "manage-appointment": "Manage Doctor`s appointment"
         }
     },
     "manage-user": {
@@ -80,6 +81,27 @@
         "chooseDoctor": "Choose Doctor",
         "chooseDate": "Choose Date",
         "save": "Save"
+    },
+    "appointment": {
+        "title": "Manage doctor's appointments",
+        "chooseDate": "Choose Date",
+        "doctor": "Doctor",
+        "appointment-title": "Appointment schedule",
+        "stt": "Order",
+        "time": "Time",
+        "fullname": "Fullname",
+        "birth": "Year of birth",
+        "gender": "Gender",
+        "address": "Address",
+        "reason": "Reason",
+        "confirm": "Confirm",
+        "noAppointment": "No appointment scheduled yet",
+        "newSchedule": "New schedule",
+        "confirmed": "Confirmed",
+        "remind": "Remind",
+        "cancel": "Canceled",
+        "send-mail": "Send mail",
+        "cancel": "Cancel"
     },
     "patient": {
         "schedule": {

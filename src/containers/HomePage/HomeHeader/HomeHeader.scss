@@ -102,6 +102,39 @@
                     color: var(--color-primary);
                 }
             }
+            .login {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                opacity: 0.8;
+
+                & span {
+                    font-weight: bold;
+                    color: var(--color-title-sub);
+                    margin-left: 3px;
+                }
+                & svg {
+                    font-size: 18px;
+                    color: var(--color-primary);
+                }
+                &:hover {
+                    opacity: 1;
+                }
+            }
+            .btn_user {
+                font-size: 20px;
+                padding: 5px;
+                border-radius: 50%;
+                background-color: var(--color-primary);
+                color: var(--color-background-text);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                & .icon_user {
+                }
+            }
         }
     }
 }
