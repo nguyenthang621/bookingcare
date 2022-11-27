@@ -6,6 +6,7 @@
 
     .section-content {
         margin: 0px 150px;
+        padding-bottom: 20px;
     }
 }
 .slick-disabled {
@@ -42,6 +43,8 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .background {
@@ -90,6 +93,8 @@
 .img-handbook {
     height: 150px;
     flex: 2;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .text-handbook {

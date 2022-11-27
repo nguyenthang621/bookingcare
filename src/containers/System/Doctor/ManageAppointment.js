@@ -84,7 +84,6 @@ class ManageAppointment extends Component {
     // change input radio
     handleChangeInput = async (e, key) => {
         let { doctorId, initDate } = this.state;
-        console.log(e.target.value);
         await this.props.changeStatusIdRedux(e.target.value);
         await this.props.getAppointmentDoctorRedux(doctorId, initDate, this.props.statusIdRedux);
     };

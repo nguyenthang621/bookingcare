@@ -5,6 +5,7 @@
     --color-background-section: #f5f5f5;
     --color-background-text: #eee;
     --color-title-sub: #969495;
+    --color-background-handbook: #fcfaf6;
     --toastify-color-light: #fff;
 
     --color-intro-bookingCare-text: #3c763d;
@@ -23,4 +24,24 @@
 .coverArea {
     width: 80%;
     margin: 0 auto;
+}
+
+.intro-bookingCare {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 5px 20px 0px;
+    border-radius: 8px;
+    margin-top: 30px;
+    background-color: var(--color-intro-bookingCare-background);
+    border: 1px solid var(--color-intro-bookingCare-border);
+    & .icon {
+        font-size: 20px;
+        color: var(--color-btn);
+        padding: 0px 10px;
+    }
+    & h4 {
+        font-size: 14px;
+        letter-spacing: 1.4;
+        color: var(--color-intro-bookingCare-text);
+    }
 }

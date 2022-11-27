@@ -43,6 +43,15 @@ const getDetailClinicByIdServices = async (id) => {
         console.log(error);
     }
 };
+const getHandbookServices = async (id, type, statusId) => {
+    try {
+        if (!id) id = '';
+        if (!type) type = '';
+        return await axios.get(`/api/get-handbook?id=${id}&type=${type}&statusId=${statusId}`);
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 export {
     postBookingAppointmentServices,
@@ -51,4 +60,5 @@ export {
     getSpecialtyByIdServices,
     getAllClinicServices,
     getDetailClinicByIdServices,
+    getHandbookServices,
 };

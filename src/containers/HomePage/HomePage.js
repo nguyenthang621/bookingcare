@@ -9,7 +9,7 @@ import TopDoctor from './Sections/TopDoctor';
 import Footer from './Sections/Footer';
 import * as actions from '../../store/actions';
 
-import { getAllClinicServices } from '../../services/patientServices';
+import { getAllClinicServices, getHandbookServices } from '../../services/patientServices';
 import { nhakhoa, clinic, doctor, handbook } from '../../assets';
 import _ from 'lodash';
 
@@ -19,15 +19,18 @@ class HomePage extends Component {
         this.state = {
             listSpecialty: [],
             listClinic: [],
+            listHandbook: [],
         };
     }
     async componentDidMount() {
         await this.props.getAllSpecialtyRedux();
         let clinics = await getAllClinicServices('true');
+        let handbooks = await getHandbookServices();
 
-        if (clinics && clinics.errorCode === 0) {
+        if (clinics && handbooks) {
             this.setState({
                 listClinic: clinics.data,
+                listHandbook: handbooks.data,
             });
         }
     }
@@ -39,7 +42,7 @@ class HomePage extends Component {
         }
     }
     render() {
-        let { listSpecialty, listClinic } = this.state;
+        let { listSpecialty, listClinic, listHandbook } = this.state;
 
         return (
             <div className="home-container">
@@ -67,7 +70,8 @@ class HomePage extends Component {
                 <Section
                     background="background"
                     type="handbook"
-                    image={handbook}
+                    typeSec="handbook"
+                    listHandbook={listHandbook}
                     title="Cẩm nang"
                     button="tất cả bài viết"
                     slideShow={2}

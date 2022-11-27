@@ -91,6 +91,30 @@ const processLogoutServices = async (refreshToken) => {
     }
 };
 
+// post handbook:
+const postHandbookServices = async (data) => {
+    try {
+        return await axiosJWT.post('/api/post-handbook', data);
+    } catch (error) {
+        console.log(error);
+    }
+};
+const confirmHandbookServices = async (id) => {
+    try {
+        return await axiosJWT.post(`/api/confirm-handbook?id=${id}`);
+    } catch (error) {
+        console.log(error);
+    }
+};
+const deleteHandbookServices = async (id) => {
+    try {
+        if (!id) id = '';
+        return await axiosJWT.post(`/api/delete-handbook?id=${id}`);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export {
     handleLoginApi,
     getUsersById,
@@ -103,4 +127,7 @@ export {
     refreshToken,
     processLogoutServices,
     registerServices,
+    postHandbookServices,
+    confirmHandbookServices,
+    deleteHandbookServices,
 };

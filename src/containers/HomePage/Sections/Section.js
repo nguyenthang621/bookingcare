@@ -14,9 +14,7 @@ class Section extends Component {
         this.state = {};
     }
 
-    handleClickSpecialty = (item) => {
-        console.log('item: ', item);
-    };
+    handleClickSpecialty = (item) => {};
 
     render() {
         let settings = {
@@ -28,7 +26,7 @@ class Section extends Component {
             nextArrow: <NextArrow />,
             prevArrow: <PrevArrow />,
         };
-        let { listSpecialty, listClinic, typeSec, type, background, title, button } = this.props;
+        let { listSpecialty, listClinic, listHandbook, typeSec, type, background, title, button } = this.props;
         return (
             <div className={`section-container ${background}`}>
                 <div className="section-content">
@@ -68,6 +66,26 @@ class Section extends Component {
                                                 </div>
 
                                                 <p className={`text-${type}`}>{item.nameClinic}</p>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                );
+                            })}
+                    </Slider>
+                    <Slider {...settings}>
+                        {typeSec === 'handbook' &&
+                            listHandbook &&
+                            listHandbook.length > 0 &&
+                            listHandbook.map((item) => {
+                                return (
+                                    <Link to={`/detail-handbook/${item.id}`} key={item.id}>
+                                        <div className="item-slide hover" key={item.id}>
+                                            <div className={`item-${type}`}>
+                                                <div className={`img-${type}`}>
+                                                    <img className="img" src={item.image} alt="img" />
+                                                </div>
+
+                                                <p className={`text-${type}`}>{item.title}</p>
                                             </div>
                                         </div>
                                     </Link>

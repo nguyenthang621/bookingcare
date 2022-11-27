@@ -24,7 +24,7 @@ class SelectStatusId extends Component {
 
     render() {
         let {} = this.state;
-        let {} = this.props;
+        let { handbook } = this.props;
         return (
             <React.Fragment>
                 <div className="form-check form-check-inline">
@@ -33,11 +33,11 @@ class SelectStatusId extends Component {
                         type="radio"
                         name="inlineRadioOptions"
                         id="inlineRadio1"
-                        value="S2"
+                        value={handbook ? 'S1' : 'S2'}
                         onChange={(e) => this.props.handleChangeInput(e)}
                     />
                     <label className="form-check-label" htmlFor="inlineRadio1">
-                        <FormattedMessage id="appointment.newSchedule" />
+                        {handbook ? 'New handbook' : <FormattedMessage id="appointment.newSchedule" />}
                     </label>
                 </div>
                 <div className="form-check form-check-inline">
@@ -46,11 +46,11 @@ class SelectStatusId extends Component {
                         type="radio"
                         name="inlineRadioOptions"
                         id="inlineRadio2"
-                        value="S3"
+                        value={handbook ? 'S2' : 'S3'}
                         onChange={(e) => this.props.handleChangeInput(e)}
                     />
                     <label className="form-check-label" htmlFor="inlineRadio2">
-                        <FormattedMessage id="appointment.confirmed" />
+                        {handbook ? 'Confirmed' : <FormattedMessage id="appointment.confirmed" />}
                     </label>
                 </div>
                 <div className="form-check form-check-inline">
@@ -59,11 +59,11 @@ class SelectStatusId extends Component {
                         type="radio"
                         name="inlineRadioOptions"
                         id="inlineRadio3"
-                        value="S4"
+                        value={handbook ? 'S3' : 'S4'}
                         onChange={(e) => this.props.handleChangeInput(e)}
                     />
                     <label className="form-check-label" htmlFor="inlineRadio3">
-                        <FormattedMessage id="appointment.cancel" />
+                        {handbook ? 'Canceled' : <FormattedMessage id="appointment.cancel" />}
                     </label>
                 </div>
             </React.Fragment>

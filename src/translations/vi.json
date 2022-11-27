@@ -48,7 +48,10 @@
             "manage-specialty": "Quản lý chuyên khoa",
             "specialty": "Quản lý chuyên khoa",
             "manage-handbook": "Quản lý cẩm nang",
-            "handbook": "Quản lý cẩm nang"
+            "handbook": "Quản lý cẩm nang",
+            "listHandbook": "Danh sách cẩm nang",
+            "news": "Tin tức",
+            "listNews": "Danh sách tin tức"
         },
         "doctor": {
             "manage-schedule": "Quản lý kế hoạch khám bệnh",

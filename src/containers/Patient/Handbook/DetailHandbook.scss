@@ -1,0 +1,13 @@
+.handbook-container {
+    padding-top: 75px;
+    & .handbook-wrapper {
+        margin-top: 20px;
+
+        & .detail-clinic {
+            background-color: var(--color-background-handbook);
+            padding: 20px 50px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+    }
+}
