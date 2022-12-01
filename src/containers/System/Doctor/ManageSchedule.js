@@ -121,10 +121,6 @@ class ManageSchedule extends Component {
     handleClickSaveSchedule = () => {
         let { listSchedule, selectedDoctor, initDate } = this.state;
         let arrResult = [];
-        if (!selectedDoctor && _.isEmpty(selectedDoctor)) {
-            toast.warning('Missing information doctor');
-            return;
-        }
         listSchedule.forEach((item) => {
             let object = {};
             if (item.isSelected === true) {
@@ -134,20 +130,35 @@ class ManageSchedule extends Component {
                 return arrResult.push(object);
             }
         });
-        if (arrResult && arrResult.length > 0) {
-            this.props.saveScheduleDoctorRedux({
-                arrSchedule: arrResult,
-                doctorId: selectedDoctor.value,
-                date: initDate,
-            });
+        if (this.props.roleId === 'R2') {
+            if (arrResult && arrResult.length > 0) {
+                this.props.saveScheduleDoctorRedux({
+                    arrSchedule: arrResult,
+                    date: initDate,
+                });
+            } else {
+                toast.warning('Missing information range date');
+            }
         } else {
-            toast.warning('Missing information range date');
+            if (!selectedDoctor && _.isEmpty(selectedDoctor)) {
+                toast.warning('Select doctor');
+                return;
+            }
+            if (arrResult && arrResult.length > 0) {
+                this.props.saveScheduleDoctorRedux({
+                    arrSchedule: arrResult,
+                    doctorId: selectedDoctor.value,
+                    date: initDate,
+                });
+            } else {
+                toast.warning('Missing information range date');
+            }
         }
     };
 
     render() {
         let { allDoctor, initDate, listSchedule } = this.state;
-        let { languageRedux } = this.props;
+        let { languageRedux, roleId } = this.props;
 
         return (
             <div className="manage-schedule-container">
@@ -158,12 +169,14 @@ class ManageSchedule extends Component {
                 </div>
                 <div className="wrapper">
                     <div className="form-row">
-                        <div className="form-group col-md-4">
-                            <label>
-                                <FormattedMessage id="schedule.chooseDoctor" />
-                            </label>
-                            <Select onChange={(e) => this.handleChange(e)} options={allDoctor} />
-                        </div>
+                        {roleId === 'R1' && (
+                            <div className="form-group col-md-4">
+                                <label>
+                                    <FormattedMessage id="schedule.chooseDoctor" />
+                                </label>
+                                <Select onChange={(e) => this.handleChange(e)} options={allDoctor} />
+                            </div>
+                        )}
                         <div className="form-group col-md-2">
                             <label>
                                 <FormattedMessage id="schedule.chooseDate" />
@@ -204,6 +217,8 @@ class ManageSchedule extends Component {
 
 const mapStateToProps = (state) => {
     return {
+        roleId: state.user.roleId,
+
         isLoggedIn: state.user.isLoggedIn,
         allDoctorRedux: state.doctor.allDoctor,
         languageRedux: state.app.language,

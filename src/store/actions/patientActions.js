@@ -1,4 +1,8 @@
-import { postBookingAppointmentServices, getAllSpecialtyServices } from '../../services/patientServices';
+import {
+    postBookingAppointmentServices,
+    getAllSpecialtyServices,
+    getAllClinicServices,
+} from '../../services/patientServices';
 import actionTypes from './actionTypes';
 import { toast } from 'react-toastify';
 
@@ -44,6 +48,19 @@ export const getAllSpecialty = () => {
         } catch (error) {
             console.log(error);
             dispatch({ type: actionTypes.GET_ALL_SPECIALTY_FAIL });
+        }
+    };
+};
+export const getAllClinicRedux = (isGetImage) => {
+    return async (dispatch) => {
+        try {
+            let clinicData = await getAllClinicServices(isGetImage);
+            if (clinicData && clinicData.errorCode === 0) {
+                dispatch({ type: actionTypes.GET_ALL_CLINIC_SUCCESS, data: clinicData.data });
+            }
+        } catch (error) {
+            console.log(error);
+            dispatch({ type: actionTypes.GET_ALL_CLINIC_FAIL });
         }
     };
 };

@@ -1,0 +1,51 @@
+.list-specialty-container {
+    & .list-specialty-content {
+    }
+}
+
+.item {
+    & .item-specialty {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 20px;
+        color: rgb(0, 0, 0);
+        & .image-doctor {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            & img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        & .image-specialty {
+            width: 250px;
+            height: 150px;
+            border-radius: 8px;
+            overflow: hidden;
+            & img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+        & .name-specialty {
+            margin-left: 10px;
+        }
+        & .name-doctor {
+            margin-left: 10px;
+            & h2 {
+                font-size: 16px;
+            }
+            & p {
+                color: #555;
+                font-size: 12px;
+            }
+        }
+    }
+}

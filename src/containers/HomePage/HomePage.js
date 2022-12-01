@@ -8,8 +8,11 @@ import About from './Sections/About';
 import TopDoctor from './Sections/TopDoctor';
 import Footer from './Sections/Footer';
 import * as actions from '../../store/actions';
+import ListSpecialty from '../Patient/Specialty/ListSpecialty';
+import ListClinic from '../Patient/Clinic/ListClinic';
+import ListDoctor from '../Patient/Doctor/ListDoctor';
 
-import { getAllClinicServices, getHandbookServices } from '../../services/patientServices';
+import { getAllClinicServices, getHandbookServices, getNewsServices } from '../../services/patientServices';
 import { nhakhoa, clinic, doctor, handbook } from '../../assets';
 import _ from 'lodash';
 
@@ -20,17 +23,21 @@ class HomePage extends Component {
             listSpecialty: [],
             listClinic: [],
             listHandbook: [],
+            listNews: [],
+            modalSpecialty: false,
+            modalClinic: false,
+            modalDoctor: false,
+            modalHealth: false,
         };
     }
     async componentDidMount() {
         await this.props.getAllSpecialtyRedux();
-        let clinics = await getAllClinicServices('true');
+        await this.props.getAllClinicRedux('true');
         let handbooks = await getHandbookServices();
 
-        if (clinics && handbooks) {
+        if (handbooks) {
             this.setState({
-                listClinic: clinics.data,
-                listHandbook: handbooks.data,
+                listHandbook: handbooks?.data,
             });
         }
     }
@@ -41,17 +48,27 @@ class HomePage extends Component {
             });
         }
     }
+    toggleModel = (modal) => {
+        this.setState({
+            [modal]: !this.state[modal],
+        });
+    };
     render() {
-        let { listSpecialty, listClinic, listHandbook } = this.state;
+        let { listHandbook, modalSpecialty, modalClinic, modalDoctor, modalHealth } = this.state;
+        let { listDataClinicRedux, listDataSpecialtyRedux, topDoctorsRedux } = this.props;
+        // console.log(this.props.listDataClinicRedux, this.props.listDataSpecialtyRedux, this.props.topDoctorsRedux);
 
         return (
             <div className="home-container">
-                <HomeHeader />
+                <HomeHeader modalSpecialty={modalSpecialty} toggleModel={this.toggleModel} />
+                {modalSpecialty ? <ListSpecialty modalSpecialty={modalSpecialty} toggleModel={this.toggleModel} /> : ''}
+                {modalClinic ? <ListClinic modalClinic={modalClinic} toggleModel={this.toggleModel} /> : ''}
+                {modalDoctor ? <ListDoctor modalDoctor={modalDoctor} toggleModel={this.toggleModel} /> : ''}
                 <BoxBackground />
                 <News />
                 <Section
                     type="sec"
-                    listSpecialty={listSpecialty}
+                    listSpecialty={listDataSpecialtyRedux}
                     typeSec={'specialtyType'}
                     background="background"
                     title="Chuyên khoa phổ biến"
@@ -61,7 +78,7 @@ class HomePage extends Component {
                 <Section
                     type="sec"
                     typeSec="clinics"
-                    listClinic={listClinic}
+                    listClinic={listDataClinicRedux}
                     title="Cơ sở y tế nổi bật"
                     button="tìm kiếm"
                     slideShow={4}
@@ -87,12 +104,15 @@ const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
         listDataSpecialtyRedux: state.patient.listDataSpecialty,
+        listDataClinicRedux: state.patient.listDataClinic,
+        topDoctorsRedux: state.doctor.topDoctors,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         getAllSpecialtyRedux: () => dispatch(actions.getAllSpecialty()),
+        getAllClinicRedux: (isGetImage) => dispatch(actions.getAllClinicRedux(isGetImage)),
     };
 };
 

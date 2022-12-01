@@ -8,6 +8,7 @@ import Navigator from '../../components/Navigator';
 import { adminMenu, doctorMenu } from './menuApp';
 import { userImage } from '../../assets';
 import { classCookies } from '../../cookies';
+import { checkQueueNewsServices } from '../../services/userServices';
 
 import './Header.scss';
 
@@ -18,12 +19,17 @@ class Header extends Component {
             menu: [],
             roleId: '',
             user: {},
+            queueNews: '',
+            queueHandbook: '',
         };
     }
 
     async componentDidMount() {
         let menuUser = [];
         let user = classCookies.getDataAccessToken();
+        await this.props.checkQueueNewsRedux();
+        await this.props.checkQueueHandbookRedux();
+
         if (this.props.roleId === TYPE_USER.ADMIN) {
             menuUser = adminMenu;
         } else if (this.props.roleId === TYPE_USER.DOCTOR) {
@@ -84,6 +90,8 @@ const mapStateToProps = (state) => {
         language: state.app.language,
         userInfo: state.user.userInfo,
         roleId: state.user.roleId,
+        queueNews: state.user.queueNews,
+        queueHandbook: state.user.queueHandbook,
     };
 };
 
@@ -91,6 +99,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         processLogout: () => dispatch(actions.processLogout()),
         changeLanguageRedux: (language) => dispatch(actions.changeLanguageApp(language)),
+        checkQueueNewsRedux: () => dispatch(actions.checkQueueNewsRedux()),
+        checkQueueHandbookRedux: () => dispatch(actions.checkQueueHandbookRedux()),
     };
 };
 

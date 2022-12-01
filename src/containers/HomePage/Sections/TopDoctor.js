@@ -10,6 +10,7 @@ import { withRouter } from 'react-router';
 
 // import './TopDoctor.scss';
 import { PrevArrow, NextArrow } from '../../../components/CustomArrow';
+import ListDoctor from '../../Patient/Doctor/ListDoctor';
 
 class TopDoctor extends Component {
     constructor(props) {
@@ -22,6 +23,7 @@ class TopDoctor extends Component {
     componentDidMount() {
         this.props.fetchTopDoctorRedux('');
     }
+
     componentDidUpdate(prevProps) {
         if (prevProps.topDoctorsRedux !== this.props.topDoctorsRedux) {
             this.setState({
@@ -45,6 +47,7 @@ class TopDoctor extends Component {
             prevArrow: <PrevArrow />,
         };
         let { topDoctors } = this.state;
+        let { listDataClinicRedux, listDataSpecialtyRedux } = this.props;
         return (
             <div className={`section-container ${this.props.background}`}>
                 <div className="section-content">
@@ -60,12 +63,14 @@ class TopDoctor extends Component {
                         {topDoctors &&
                             topDoctors.length > 0 &&
                             topDoctors.map((doctor) => {
-                                let imagebase64 = '';
-                                if (doctor.image) {
-                                    imagebase64 = new Buffer(doctor.image, 'base64').toString('binary');
-                                }
+                                let nameSpecialty = '';
                                 let nameVi = `${doctor.positionData.valueVi}, ${doctor.firstName} ${doctor.lastName} `;
                                 let nameEn = `${doctor.positionData.valueEn}, ${doctor.lastName} ${doctor.firstName} `;
+                                let idSpecialty = doctor.Doctor_Infor.specialtyId;
+                                if (idSpecialty) {
+                                    nameSpecialty = listDataSpecialtyRedux.filter((item) => item.id === idSpecialty);
+                                    nameSpecialty = nameSpecialty[0].name;
+                                }
                                 return (
                                     <div
                                         className="item-slide hover"
@@ -74,18 +79,16 @@ class TopDoctor extends Component {
                                     >
                                         <div className={`item-${this.props.type}`}>
                                             <div className={`img-${this.props.type}`}>
-                                                <img
-                                                    className="img"
-                                                    src={!imagebase64 ? this.props.image : imagebase64}
-                                                    alt="img"
-                                                />
+                                                <img className="img" src={doctor?.image} alt="img" />
                                             </div>
 
                                             <h4 className="position">
                                                 {this.props.languageRedux === LANGUAGES.VI ? nameVi : nameEn}
                                             </h4>
 
-                                            <p className={`text-${this.props.type}`}>{doctor.email}</p>
+                                            {nameSpecialty && (
+                                                <p className={`text-${this.props.type}`}>{nameSpecialty}</p>
+                                            )}
                                         </div>
                                     </div>
                                 );
@@ -103,6 +106,8 @@ const mapStateToProps = (state) => {
         languageRedux: state.app.language,
         keyForm: state.admin.keyForm,
         topDoctorsRedux: state.doctor.topDoctors,
+        listDataClinicRedux: state.patient.listDataClinic,
+        listDataSpecialtyRedux: state.patient.listDataSpecialty,
     };
 };
 

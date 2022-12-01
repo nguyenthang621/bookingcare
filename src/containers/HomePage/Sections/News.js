@@ -3,11 +3,31 @@ import { connect } from 'react-redux';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { getNewsServices } from '../../../services/patientServices';
+import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router';
 
 import './News.scss';
 import { FaAngleRight, FaAngleLeft } from 'react-icons/fa';
 
 class News extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            listNews: [],
+        };
+    }
+    async componentDidMount() {
+        let listNews = await getNewsServices();
+        if (listNews && listNews.errorCode === 0) {
+            this.setState({
+                listNews: listNews.data,
+            });
+        }
+    }
+    handleClickNews = (id) => {
+        this.props.history.push(`/detail-news/${id}`);
+    };
     render() {
         let settings = {
             dots: false,
@@ -22,129 +42,43 @@ class News extends Component {
             autoplaySpeed: 2000,
             pauseOnHover: true,
         };
+        let { listNews } = this.state;
         return (
             <div className="news-container">
                 <div className="news-content">
                     <Slider {...settings}>
-                        <div className="item-slide">
-                            <div className="item">
-                                <div className="topic">Random{Math.round(Math.random() * 11)}</div>
-                                <div className="img-news"></div>
-                                <div className="news-brief">
-                                    <h3 className="news-title">Kit Test COVID bằng nước bọt</h3>
-                                    <ul className="highlight-content">
-                                        <li>Kit Test nhanh bằng nước bọt</li>
-                                        <li>Đơn giản, tiện lợi, chính xác</li>
-                                        <li>Bộ Y tế Việt Nam cấp chứng nhận</li>
-                                    </ul>
-                                    <div className="detail">
-                                        <span>Xem chi tiết</span> <FaAngleRight className="iconDetail" />
+                        {listNews &&
+                            listNews.length > 0 &&
+                            listNews.map((item) => {
+                                return (
+                                    <div
+                                        className="item-slide"
+                                        key={item.id}
+                                        onClick={() => this.handleClickNews(item.id)}
+                                    >
+                                        {/* <Link to={`/detail-news/${item.id}`}> */}
+                                        <div className="item">
+                                            <div className="topic">{item?.type}</div>
+                                            <div
+                                                className="img-news"
+                                                style={{ backgroundImage: `url(${item?.image})` }}
+                                            ></div>
+                                            <div className="news-brief">
+                                                <h3 className="news-title">{item?.title}</h3>
+                                                <div
+                                                    className="highlight-content"
+                                                    dangerouslySetInnerHTML={{ __html: item?.focus }}
+                                                ></div>
+
+                                                <div className="detail">
+                                                    <span>Xem chi tiết</span> <FaAngleRight className="iconDetail" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/* </Link> */}
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="item-slide">
-                            <div className="item">
-                                <div className="topic">Random{Math.round(Math.random() * 11)}</div>
-                                <div className="img-news"></div>
-                                <div className="news-brief">
-                                    <h3 className="news-title">Kit Test COVID bằng nước bọt</h3>
-                                    <ul className="highlight-content">
-                                        <li>Kit Test nhanh bằng nước bọt</li>
-                                        <li>Đơn giản, tiện lợi, chính xác</li>
-                                        <li>Bộ Y tế Việt Nam cấp chứng nhận</li>
-                                    </ul>
-                                    <div className="detail">
-                                        <span>Xem chi tiết</span> <FaAngleRight className="iconDetail" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="item-slide">
-                            <div className="item">
-                                <div className="topic">Random{Math.round(Math.random() * 11)}</div>
-                                <div className="img-news"></div>
-                                <div className="news-brief">
-                                    <h3 className="news-title">Kit Test COVID bằng nước bọt</h3>
-                                    <ul className="highlight-content">
-                                        <li>Kit Test nhanh bằng nước bọt</li>
-                                        <li>Đơn giản, tiện lợi, chính xác</li>
-                                        <li>Bộ Y tế Việt Nam cấp chứng nhận</li>
-                                    </ul>
-                                    <div className="detail">
-                                        <span>Xem chi tiết</span> <FaAngleRight className="iconDetail" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="item-slide">
-                            <div className="item">
-                                <div className="topic">Random{Math.round(Math.random() * 11)}</div>
-                                <div className="img-news"></div>
-                                <div className="news-brief">
-                                    <h3 className="news-title">Kit Test COVID bằng nước bọt</h3>
-                                    <ul className="highlight-content">
-                                        <li>Kit Test nhanh bằng nước bọt</li>
-                                        <li>Đơn giản, tiện lợi, chính xác</li>
-                                        <li>Bộ Y tế Việt Nam cấp chứng nhận</li>
-                                    </ul>
-                                    <div className="detail">
-                                        <span>Xem chi tiết</span> <FaAngleRight className="iconDetail" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="item-slide">
-                            <div className="item">
-                                <div className="topic">Random{Math.round(Math.random() * 11)}</div>
-                                <div className="img-news"></div>
-                                <div className="news-brief">
-                                    <h3 className="news-title">Kit Test COVID bằng nước bọt</h3>
-                                    <ul className="highlight-content">
-                                        <li>Kit Test nhanh bằng nước bọt</li>
-                                        <li>Đơn giản, tiện lợi, chính xác</li>
-                                        <li>Bộ Y tế Việt Nam cấp chứng nhận</li>
-                                    </ul>
-                                    <div className="detail">
-                                        <span>Xem chi tiết</span> <FaAngleRight className="iconDetail" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="item-slide">
-                            <div className="item">
-                                <div className="topic">Random{Math.round(Math.random() * 11)}</div>
-                                <div className="img-news"></div>
-                                <div className="news-brief">
-                                    <h3 className="news-title">Kit Test COVID bằng nước bọt</h3>
-                                    <ul className="highlight-content">
-                                        <li>Kit Test nhanh bằng nước bọt</li>
-                                        <li>Đơn giản, tiện lợi, chính xác</li>
-                                        <li>Bộ Y tế Việt Nam cấp chứng nhận</li>
-                                    </ul>
-                                    <div className="detail">
-                                        <span>Xem chi tiết</span> <FaAngleRight className="iconDetail" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="item-slide">
-                            <div className="item">
-                                <div className="topic">Random{Math.round(Math.random() * 11)}</div>
-                                <div className="img-news"></div>
-                                <div className="news-brief">
-                                    <h3 className="news-title">Kit Test COVID bằng nước bọt</h3>
-                                    <ul className="highlight-content">
-                                        <li>Kit Test nhanh bằng nước bọt</li>
-                                        <li>Đơn giản, tiện lợi, chính xác</li>
-                                        <li>Bộ Y tế Việt Nam cấp chứng nhận</li>
-                                    </ul>
-                                    <div className="detail">
-                                        <span>Xem chi tiết</span> <FaAngleRight className="iconDetail" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                );
+                            })}
                     </Slider>
                 </div>
             </div>
@@ -162,4 +96,4 @@ const mapDispatchToProps = (dispatch) => {
     return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(News);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(News));

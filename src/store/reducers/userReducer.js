@@ -5,6 +5,9 @@ const initialState = {
     isLoggedIn: false,
     userInfo: null,
     language: 'vi',
+    queueNews: '',
+    queueHandbook: '',
+    detailUser: {},
     roleId: classCookies.getDataAccessToken()?.roleId,
 };
 
@@ -30,6 +33,33 @@ const userReducer = (state = initialState, action) => {
                 userInfo: null,
             };
         case actionTypes.PROCESS_LOGOUT_FAIL:
+            return {
+                ...state,
+            };
+        case actionTypes.GET_QUEUE_NEW_SUCCESS:
+            return {
+                ...state,
+                queueNews: action.data,
+            };
+        case actionTypes.GET_QUEUE_NEW_FAIL:
+            return {
+                ...state,
+            };
+        case actionTypes.GET_DETAIL_USER_SUCCESS:
+            return {
+                ...state,
+                detailUser: action.data,
+            };
+        case actionTypes.GET_DETAIL_USER_FAIL:
+            return {
+                ...state,
+            };
+        case actionTypes.GET_QUEUE_HANDBOOK_SUCCESS:
+            return {
+                ...state,
+                queueHandbook: action.data,
+            };
+        case actionTypes.GET_QUEUE_HANDBOOK_FAIL:
             return {
                 ...state,
             };

@@ -53,7 +53,9 @@ class Menu extends Component {
         if (item.action) {
             let actions = item.action;
             await this.props[actions]();
-            this.props.history.push(`/login`);
+            this.props.history.push(item.to);
+        } else if (item.to) {
+            this.props.history.push(item.to);
         }
     };
     handleClickBack = () => {
@@ -67,7 +69,6 @@ class Menu extends Component {
         let { language, children, hideOnClick = false, items = [] } = this.props;
         let { history } = this.state;
         let current = history[history.length - 1];
-        console.log(language);
         return (
             <>
                 <HeadlessTippy

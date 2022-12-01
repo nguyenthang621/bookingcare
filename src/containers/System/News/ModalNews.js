@@ -8,13 +8,13 @@ import { BsLightbulbFill } from 'react-icons/bs';
 
 import { toast } from 'react-toastify';
 import DetailHandbook from '../../Patient/Handbook/DetailHandbook';
-import { getHandbookServices } from '../../../services/patientServices';
-import { confirmHandbookServices } from '../../../services/userServices';
+import { getNewsServices } from '../../../services/patientServices';
+import { confirmNewsServices } from '../../../services/userServices';
 import moment from 'moment';
-import './ModalHandbook.scss';
+import './ModalNews.scss';
 import _ from 'lodash';
 
-class ModalHandbook extends Component {
+class ModalNews extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,7 +23,7 @@ class ModalHandbook extends Component {
     }
     async componentDidMount() {
         let handbookId = this.props.id;
-        let response = await getHandbookServices(handbookId, 'detail');
+        let response = await getNewsServices(handbookId, 'detail');
         if (response && response.errorCode === 0) {
             this.setState({
                 handbookData: response.data,
@@ -33,11 +33,11 @@ class ModalHandbook extends Component {
     componentDidUpdate(prevProps) {}
 
     handleConfirm = async (id) => {
-        let response = await confirmHandbookServices(id);
+        let response = await confirmNewsServices(id);
         if (response && response.errorCode === 0) {
             this.props.toggleModelConfirm();
-            await this.props.handleGetHandbook(this.props.statusId);
-            await this.props.checkQueueHandbookRedux();
+            await this.props.handleGetNews(this.props.statusId);
+            await this.props.checkQueueNewsRedux();
 
             toast.success(response.message, {
                 position: 'top-right',
@@ -62,14 +62,14 @@ class ModalHandbook extends Component {
     };
 
     render() {
-        let { isShowModalHandbook, id } = this.props;
+        let { isShowModalNews, id } = this.props;
 
         let { handbookData } = this.state;
         return (
             <>
                 <Modal
                     className="modal-booking-container"
-                    isOpen={isShowModalHandbook}
+                    isOpen={isShowModalNews}
                     toggle={() => this.props.toggleModelConfirm()}
                     size="lg"
                     centered={true}
@@ -133,6 +133,7 @@ const mapStateToProps = (state) => {
         languageRedux: state.app.language,
         listAppointmentRedux: state.doctor.listAppointment,
         statusIdRedux: state.doctor.statusId,
+        queueNews: state.user.queueNews,
     };
 };
 
@@ -141,9 +142,8 @@ const mapDispatchToProps = (dispatch) => {
         postBookingAppointmentRedux: (data) => dispatch(actions.postBookingAppointment(data)),
         getAppointmentDoctorRedux: (doctorId, initDate, statusId) =>
             dispatch(actions.getAppointmentDoctor(doctorId, initDate, statusId)),
-
-        checkQueueHandbookRedux: () => dispatch(actions.checkQueueHandbookRedux()),
+        checkQueueNewsRedux: () => dispatch(actions.checkQueueNewsRedux()),
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModalHandbook);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalNews);

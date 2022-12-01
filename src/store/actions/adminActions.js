@@ -5,6 +5,8 @@ import {
     getUsersById,
     deleteUserServices,
     editUserServices,
+    checkQueueNewsServices,
+    checkQueueHandbookServices,
 } from '../../services/userServices';
 
 import { toast } from 'react-toastify';
@@ -177,6 +179,36 @@ export const editUserRedux = (user) => {
         } catch (error) {
             dispatch({ type: actionTypes.UPDATE_USER_FAIL });
             console.log('update user fail: ' + error);
+        }
+    };
+};
+export const checkQueueNewsRedux = () => {
+    return async (dispatch) => {
+        try {
+            let res = await checkQueueNewsServices();
+            if (res && res.errorCode === 0) {
+                dispatch({ type: actionTypes.GET_QUEUE_NEW_SUCCESS, data: res.queueNews });
+            } else {
+                dispatch({ type: actionTypes.GET_QUEUE_NEW_FAIL });
+            }
+        } catch (error) {
+            dispatch({ type: actionTypes.GET_QUEUE_NEW_FAIL });
+            console.log(error);
+        }
+    };
+};
+export const checkQueueHandbookRedux = () => {
+    return async (dispatch) => {
+        try {
+            let res = await checkQueueHandbookServices();
+            if (res && res.errorCode === 0) {
+                dispatch({ type: actionTypes.GET_QUEUE_HANDBOOK_SUCCESS, data: res.queueHandbooks });
+            } else {
+                dispatch({ type: actionTypes.GET_QUEUE_HANDBOOK_FAIL });
+            }
+        } catch (error) {
+            dispatch({ type: actionTypes.GET_QUEUE_HANDBOOK_FAIL });
+            console.log(error);
         }
     };
 };

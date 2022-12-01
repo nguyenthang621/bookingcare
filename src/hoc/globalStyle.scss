@@ -7,6 +7,7 @@
     --color-title-sub: #969495;
     --color-background-handbook: #fcfaf6;
     --toastify-color-light: #fff;
+    --color-notify: rgb(170, 9, 9);
 
     --color-intro-bookingCare-text: #3c763d;
     --color-intro-bookingCare-background: #dff0d8;
@@ -44,4 +45,15 @@
         letter-spacing: 1.4;
         color: var(--color-intro-bookingCare-text);
     }
+}
+
+.dot-notify {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #b50808;
 }

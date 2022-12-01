@@ -3,18 +3,25 @@
     height: 330px;
     position: relative;
     margin-top: 30px;
+    text-decoration: none;
     .news-brief {
         display: flex;
         justify-content: flex-start;
         flex-direction: column;
         .news-title {
+            width: 80%;
             font-size: 14px;
             font-weight: bold;
             padding-top: 10px;
+            color: #111;
         }
         .highlight-content {
-            color: #444;
+            color: rgba(68, 68, 68, 0.9);
             padding-top: 10px;
+            width: 90%;
+            & ul {
+                padding: 12px;
+            }
         }
         .detail {
             color: var(--color-primary);
@@ -30,45 +37,11 @@
     }
 }
 
-// .slick-arrow {
-//     position: absolute;
-//     font-weight: 400;
-//     background: rgba(255, 255, 255, 0.7);
-//     border: 2px solid #d7d7d7;
-//     padding: 10px;
-//     text-align: center;
-//     color: #959595 !important;
-//     width: 44px;
-//     height: 48px;
-
-//     &:hover {
-//         color: rgb(0, 0, 0);
-//         background-color: rgb(255, 255, 255);
-//         outline: none;
-//     }
-//     &:focus {
-//         color: rgb(0, 0, 0);
-//         display: block;
-//         background-color: rgb(255, 255, 255);
-//         outline: none;
-//     }
-// }
-
-// .slick-next {
-//     right: 0;
-//     transform: translate(50%, -50%);
-// }
-
-// .slick-prev {
-
-//     left: 0;
-//     transform: translate(-50%, -50%);
-//     z-index: 1;
-// }
-
 .item-slide {
     margin-bottom: 20px;
-
+    &:hover .text {
+        color: rgb(207, 46, 46) !important;
+    }
     .item {
         display: flex;
         flex-direction: column;
@@ -78,7 +51,6 @@
 
         .img-news {
             height: 140px;
-            background-image: url('../../../assets/images/test-covid.jpg');
             width: 250px;
             background-position: center center;
             background-repeat: no-repeat;
@@ -86,6 +58,7 @@
             background-color: #eee;
             border-radius: 4px;
             object-fit: cover;
+            overflow: hidden;
         }
         .text {
             color: #111;
@@ -109,4 +82,12 @@
     border-radius: 5px;
     font-weight: bold;
     color: #333333;
+}
+
+.news-topic {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 24px;
+    margin-top: 10px;
+    color: #333;
 }

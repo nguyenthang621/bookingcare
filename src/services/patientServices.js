@@ -1,4 +1,5 @@
 import axios from '../axios';
+import axiosJWT from '../axiosJWT';
 
 const postBookingAppointmentServices = async (data) => {
     try {
@@ -53,6 +54,22 @@ const getHandbookServices = async (id, type, statusId) => {
     }
 };
 
+const getNewsServices = async (id, type, statusId) => {
+    try {
+        if (!id) id = '';
+        if (!type) type = '';
+        return await axios.get(`/api/get-news?id=${id}&type=${type}&statusId=${statusId}`);
+    } catch (error) {
+        console.log(error);
+    }
+};
+const getDetailUserServices = async () => {
+    try {
+        return await axiosJWT.get(`/api/get-detail-users`);
+    } catch (error) {
+        console.log(error);
+    }
+};
 export {
     postBookingAppointmentServices,
     verifyBookingAppointmentServices,
@@ -61,4 +78,6 @@ export {
     getAllClinicServices,
     getDetailClinicByIdServices,
     getHandbookServices,
+    getNewsServices,
+    getDetailUserServices,
 };

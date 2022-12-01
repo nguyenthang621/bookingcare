@@ -10,6 +10,8 @@
         list-style-type: none;
     }
     .menu-group {
+        position: relative;
+
         &:hover {
             cursor: pointer;
             background-color: darken($colormain, 5);
@@ -36,6 +38,8 @@
                 height: 35px;
                 line-height: 35px;
                 text-transform: none;
+                position: relative;
+
                 &.active {
                     & a {
                         color: $colormain;

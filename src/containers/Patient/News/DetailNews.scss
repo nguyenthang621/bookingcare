@@ -8,11 +8,14 @@
             padding: 20px 50px;
             border-radius: 4px;
             margin-top: 20px;
-            overflow: hidden;
-            & img {
-                width: 100%;
-                object-fit: cover;
-            }
+        }
+
+        & .image-handbook {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            padding-top: 20px;
         }
     }
 }

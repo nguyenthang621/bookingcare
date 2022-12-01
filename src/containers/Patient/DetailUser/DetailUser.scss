@@ -1,0 +1,75 @@
+.detail-user-container {
+    margin-top: 75px;
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 60%;
+        background-color: var(--color-primary);
+        z-index: -2;
+    }
+    & .wrapper-detail-user {
+        position: relative;
+        margin-top: 200px;
+        & .content-detail-user {
+            position: relative;
+            background-color: #fff;
+            box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12),
+                0 8px 10px -5px rgba(0, 0, 0, 0.2);
+            & .avatar {
+                width: 200px;
+                height: 200px;
+                border-radius: 50%;
+                background-color: #cccccc;
+                position: absolute;
+                top: 0;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+                border: 1px solid var(--color-primary);
+                & .icon {
+                    width: 100%;
+                    height: 100%;
+                    color: #fff;
+                }
+                & .image-avatar {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+            & .main-content {
+                flex-direction: column;
+                padding: 120px 0px;
+                margin-bottom: 50px;
+                & .name-user {
+                    text-transform: uppercase;
+                    font-size: 30px;
+                    font-weight: bold;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                & .role-user {
+                    padding-top: 10px;
+                    font-size: 12px;
+                    text-transform: uppercase;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                & .more-infor {
+                    margin-top: 50px;
+                    & p {
+                        margin: 15px 0px;
+                        letter-spacing: 1.4;
+                    }
+                }
+            }
+        }
+    }
+}

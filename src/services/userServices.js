@@ -114,6 +114,44 @@ const deleteHandbookServices = async (id) => {
         console.log(error);
     }
 };
+const checkQueueHandbookServices = async () => {
+    try {
+        return await axiosJWT.get(`/api/check-queue-handbook`);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+// News
+const postNewsServices = async (data) => {
+    try {
+        return await axiosJWT.post('/api/post-news', data);
+    } catch (error) {
+        console.log(error);
+    }
+};
+const confirmNewsServices = async (id) => {
+    try {
+        return await axiosJWT.post(`/api/confirm-news?id=${id}`);
+    } catch (error) {
+        console.log(error);
+    }
+};
+const deleteNewsServices = async (id) => {
+    try {
+        if (!id) id = '';
+        return await axiosJWT.post(`/api/delete-news?id=${id}`);
+    } catch (error) {
+        console.log(error);
+    }
+};
+const checkQueueNewsServices = async () => {
+    try {
+        return await axiosJWT.get(`/api/check-queue-news`);
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 export {
     handleLoginApi,
@@ -130,4 +168,9 @@ export {
     postHandbookServices,
     confirmHandbookServices,
     deleteHandbookServices,
+    postNewsServices,
+    confirmNewsServices,
+    deleteNewsServices,
+    checkQueueNewsServices,
+    checkQueueHandbookServices,
 };

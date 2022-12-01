@@ -12,7 +12,9 @@ import { IoLogIn } from 'react-icons/io5';
 import { BiUserCircle } from 'react-icons/bi';
 import Menu from '../Sections/Menu/Menu';
 import Tippy from '@tippyjs/react';
-import { dataMenuUser } from '../../../dataLocal/dataMenu';
+import { withRouter } from 'react-router';
+
+import { dataMenuUser, dataHomeHeader } from '../../../dataLocal/dataMenu';
 
 import 'tippy.js/dist/tippy.css'; // optional
 
@@ -34,7 +36,9 @@ class HomeHeader extends Component {
     };
     componentDidMount() {}
     executeScroll = () => this.myRef.current.scrollIntoView();
-
+    handleClick = (modal) => {
+        this.props.toggleModel(modal);
+    };
     render() {
         let { isLoggedIn } = this.props;
 
@@ -50,38 +54,19 @@ class HomeHeader extends Component {
                         </Link>
                     </div>
                     <div className="center-content">
-                        <div className="child-content">
-                            <div className="title-child">
-                                <FormattedMessage id="home-header.specialty" />
-                            </div>
-                            <div className="title-sub">
-                                <FormattedMessage id="home-header.searchDoctor" />
-                            </div>
-                        </div>
-                        <div className="child-content">
-                            <div className="title-child">
-                                <FormattedMessage id="home-header.health-facility" />
-                            </div>
-                            <div className="title-sub">
-                                <FormattedMessage id="home-header.select-room" />
-                            </div>
-                        </div>
-                        <div className="child-content">
-                            <div className="title-child">
-                                <FormattedMessage id="home-header.doctor" />
-                            </div>
-                            <div className="title-sub">
-                                <FormattedMessage id="home-header.select-doctor" />
-                            </div>
-                        </div>
-                        <div className="child-content">
-                            <div className="title-child">
-                                <FormattedMessage id="home-header.fee" />
-                            </div>
-                            <div className="title-sub">
-                                <FormattedMessage id="home-header.check-health" />
-                            </div>
-                        </div>
+                        {dataHomeHeader.length > 0 &&
+                            dataHomeHeader.map((item, index) => {
+                                return (
+                                    <div
+                                        className="child-content"
+                                        key={index}
+                                        onClick={() => this.handleClick(item.modal)}
+                                    >
+                                        <div className="title-child">{item.title}</div>
+                                        <div className="title-sub">{item.sub}</div>
+                                    </div>
+                                );
+                            })}
                     </div>
                     <div className="right-content">
                         {!isLoggedIn && (
@@ -130,6 +115,7 @@ const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
         language: state.app.language,
+        listDataSpecialtyRedux: state.patient.listDataSpecialty,
     };
 };
 
@@ -139,4 +125,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeHeader);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomeHeader));
