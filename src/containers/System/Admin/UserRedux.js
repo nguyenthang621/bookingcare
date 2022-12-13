@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import { LANGUAGES, CRUD_ACTIONS, CommonUtils } from '../../../utils';
 import * as actions from '../../../store/actions';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import TableManageUser from './TableManageUser';
+
+import { LANGUAGES, CRUD_ACTIONS, CommonUtils, PATH_FIREBASE } from '../../../utils';
+import { uploadFileToFirebase } from '../../../firebase/uploadFile';
 
 import './UserRedux.scss';
 import { FaFileUpload } from 'react-icons/fa';
@@ -20,6 +22,9 @@ class UserRedux extends Component {
             previewImageUrl: '',
             isShowBoxImage: false,
             isRoomImage: false,
+
+            file: {},
+            fileURL: '',
 
             email: '',
             password: '',
@@ -39,7 +44,6 @@ class UserRedux extends Component {
     }
 
     componentDidMount() {
-        // this.props.fetchAllUSerRedux();
         this.props.fetchKeyFromRedux();
     }
 
@@ -77,10 +81,11 @@ class UserRedux extends Component {
     handleOnchangeImage = async (e) => {
         let data = e.target.files;
         let file = data[0];
+
         if (file) {
             let base64 = await CommonUtils.getBase64(file);
             let objectUrl = URL.createObjectURL(file);
-            this.setState({ previewImageUrl: objectUrl, isShowBoxImage: true, avatar: base64 });
+            this.setState({ previewImageUrl: objectUrl, isShowBoxImage: true, avatar: base64, file: file });
         }
     };
     handleOnchangeInput = (e, key) => {
@@ -91,12 +96,20 @@ class UserRedux extends Component {
         });
     };
 
-    handleClickSubmit = () => {
+    handleClickSubmit = async () => {
+        let { file, fileURL } = this.state;
+        if (!file) return;
+
+        // await uploadFileToFirebase(PATH_FIREBASE.USER, file, this.handleSaveUser);
+        let imageURL = await uploadFileToFirebase(PATH_FIREBASE.USER, file);
+        this.handleSaveUser(imageURL);
+    };
+
+    handleSaveUser = async (imageURL) => {
         let checkValidate = this.checkValidate();
         if (!checkValidate) return;
         if (this.state.currentAction === CRUD_ACTIONS.CREATE) {
-            console.log(this.state);
-            this.props.createNewUser({
+            await this.props.createNewUser({
                 email: this.state.email,
                 password: this.state.password,
                 firstName: this.state.firstName,
@@ -106,11 +119,12 @@ class UserRedux extends Component {
                 gender: this.state.gender,
                 position: this.state.position,
                 roleId: this.state.roleId,
-                avatar: this.state.avatar,
+                // avatar: this.state.avatar,
+                fileURL: imageURL,
             });
         }
         if (this.state.currentAction === CRUD_ACTIONS.EDIT) {
-            this.props.editUserRedux({
+            await this.props.editUserRedux({
                 id: this.state.currentIdUserEdit,
                 email: this.state.email,
                 password: this.state.password,
@@ -121,7 +135,7 @@ class UserRedux extends Component {
                 gender: this.state.gender,
                 position: this.state.position,
                 roleId: this.state.roleId,
-                avatar: this.state.avatar,
+                fileURL: imageURL,
             });
             this.setState({
                 currentAction: CRUD_ACTIONS.CREATE,
@@ -169,21 +183,17 @@ class UserRedux extends Component {
     };
 
     handleClickEditUser = (dataUser) => {
-        let imagebase64 = '';
-        if (dataUser.image) {
-            imagebase64 = new Buffer(dataUser.image, 'base64').toString('binary');
-        }
         this.setState({
             email: dataUser.email,
-            firstName: dataUser.firstName,
-            lastName: dataUser.lastName,
-            address: dataUser.address,
+            firstName: dataUser.firstName || '',
+            lastName: dataUser.lastName || '',
+            address: dataUser.address || '',
             password: '123456',
-            phoneNumber: dataUser.phoneNumber,
+            phoneNumber: dataUser.phoneNumber || '',
             gender: dataUser.gender,
             position: dataUser.position,
             roleId: dataUser.roleId,
-            previewImageUrl: imagebase64,
+            previewImageUrl: dataUser.imageURL,
             isShowBoxImage: true,
 
             currentAction: CRUD_ACTIONS.EDIT,
@@ -226,7 +236,7 @@ class UserRedux extends Component {
             currentAction,
         } = this.state;
         return (
-            <div className="user-redux-container ">
+            <div className="user-redux-container" id="user-redux">
                 <div className="title">User react-redux</div>
                 <div className="use-redux-body">
                     <div className="container mt-4">

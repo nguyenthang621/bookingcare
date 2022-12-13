@@ -18,6 +18,12 @@
         "slogan": "CHĂM SÓC SỨC KHỎE TOÀN DIỆN",
         "placeholder": "Tìm bệnh viện"
     },
+    "confirm": {
+        "title": "Bạn chắc chắn muốn xoá",
+        "accept": "Đồng ý",
+        "close": "Huỷ"
+    },
+
     "options": {
         "specialist_examination": "Khám chuyên khoa",
         "Remote_medical_examination": "Khám từ xa",
@@ -42,7 +48,7 @@
             "manage-doctor": "Quản lý bác sĩ",
             "manage-admin": "Quản lý admin",
             "crud": "CRUD user",
-            "crud-redux": "CRUD Redux",
+            "crud-redux": "Quản lý người dùng",
             "manage-clinic": "Quản lý phòng khám",
             "clinic": "Quản lý phòng khám",
             "manage-specialty": "Quản lý chuyên khoa",
@@ -100,9 +106,10 @@
         "confirm": "Xác nhận",
         "noAppointment": "Chưa có lịch hẹn khám",
         "newSchedule": "Lịch hẹn mới",
+
         "confirmed": "Đã khám xong",
         "remind": "Gửi mail nhắc nhở",
-        "cancel": "Đã huỷ",
+        "canceled": "Đã huỷ",
         "send-mail": "Gửi",
         "cancel": "Huỷ"
     },
@@ -139,6 +146,11 @@
             "select-specialty": "Chọn chuyên khoa",
             "note": "Ghi chú",
             "detail-doctor": "Chi tiết về bác sĩ"
+        },
+        "status": {
+            "new": "Chờ xét duyệt",
+            "confirmed": "Đã xác nhận",
+            "canceled": "Đã huỷ"
         }
     }
 }

@@ -18,6 +18,11 @@
         "slogan": "COMPREHENSIVE HEALTH CARE",
         "placeholder": "Find a hospital"
     },
+    "confirm": {
+        "title": "Are you sure?????",
+        "accept": "Accept",
+        "close": "Cancel"
+    },
     "options": {
         "specialist_examination": "Specialist examination",
         "Remote_medical_examination": "Remote medical examination",
@@ -42,7 +47,7 @@
             "manage-doctor": "Manage doctor",
             "manage-admin": "Manage admin",
             "crud": "CRUD user",
-            "crud-redux": "CRUD Redux",
+            "crud-redux": "Manage user",
             "manage-clinic": "Manage clinic",
             "clinic": "Clinic",
             "manage-specialty": "Manage specialty",
@@ -138,6 +143,11 @@
             "select-specialty": "Select specialty",
             "note": "Note",
             "detail-doctor": "Detail about to doctor"
+        },
+        "status": {
+            "new": "Waiting",
+            "confirmed": "Confirmed",
+            "canceled": "Canceled"
         }
     }
 }

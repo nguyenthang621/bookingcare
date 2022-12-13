@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions';
-import { LANGUAGES, CommonUtils } from '../../../utils';
+import { LANGUAGES, CommonUtils, PATH_FIREBASE } from '../../../utils';
 import { FaFileUpload } from 'react-icons/fa';
 import { postDetailClinicServices } from '../../../services/userServices';
 import { toast } from 'react-toastify';
 import './ManageClinic.scss';
 import Ckeditor from '../Admin/Ckeditor';
+
+import { uploadMultiFileToFirebase } from '../../../firebase/uploadFile';
 
 class ManageClinic extends Component {
     constructor(props) {
@@ -23,19 +25,23 @@ class ManageClinic extends Component {
             previewImageClinicUrl: '',
             previewImageLogoUrl: '',
 
+            files: [],
+            fileURL: '',
+
             isShowBoxImageClinic: false,
             isShowBoxImageLogo: false,
         };
     }
     componentDidMount() {}
-    componentDidUpdate(prevProps) {}
+    componentDidUpdate(prevProps, prevState) {}
     handleOnchangeImage = async (e, image, previewImageUrl, isShowBoxImage) => {
         let data = e.target.files;
         let file = data[0];
         if (file) {
             let base64 = await CommonUtils.getBase64(file);
             let objectUrl = URL.createObjectURL(file);
-            this.setState({ [previewImageUrl]: objectUrl, [isShowBoxImage]: true, [image]: base64 });
+            // this.setState({ [previewImageUrl]: objectUrl, [isShowBoxImage]: true, [image]: base64, file: file });
+            this.setState({ [previewImageUrl]: objectUrl, [isShowBoxImage]: true, [image]: file });
         }
     };
 
@@ -86,22 +92,32 @@ class ManageClinic extends Component {
             descriptionMarkdown: text,
         });
     };
+    setStateFile = (item) => {
+        this.setState({
+            files: [...this.state.files, item],
+        });
+    };
 
     handleClickSave = async () => {
-        let { descriptionHtml, descriptionMarkdown, imageClinic, imageLogo, nameClinic, addressClinic } = this.state;
-        console.log('send: ', {
-            descriptionHtml,
-            descriptionMarkdown,
-            imageClinic,
-            imageLogo,
-            nameClinic,
-            addressClinic,
-        });
+        let { imageClinic, imageLogo } = this.state;
+
+        let arrFiles = [
+            { path: PATH_FIREBASE.CLINIC_IMAGE, file: imageClinic, name: 'imageClinic' },
+            { path: PATH_FIREBASE.CLINIC_LOGO, file: imageLogo, name: 'imageLogo' },
+        ];
+
+        let images = await uploadMultiFileToFirebase(arrFiles);
+        this.handleSave(images);
+    };
+
+    handleSave = async (images) => {
+        let { descriptionHtml, descriptionMarkdown, nameClinic, addressClinic } = this.state;
+
         let response = await postDetailClinicServices({
             descriptionHtml,
             descriptionMarkdown,
-            imageClinic,
-            imageLogo,
+            imageClinic: images.imageClinic,
+            imageLogo: images.imageLogo,
             nameClinic,
             addressClinic,
         });
@@ -125,6 +141,9 @@ class ManageClinic extends Component {
                 previewImageClinicUrl: '',
                 previewImageLogoUrl: '',
 
+                files: [],
+                fileURL: '',
+
                 isShowBoxImageClinic: false,
                 isShowBoxImageLogo: false,
             });
@@ -140,6 +159,7 @@ class ManageClinic extends Component {
             });
         }
     };
+
     onChangeInput = (key, value) => {
         this.setState({
             [key]: value,
@@ -153,6 +173,8 @@ class ManageClinic extends Component {
             descriptionMarkdown,
             imageClinic,
             imageLogo,
+            files,
+
             nameClinic,
             addressClinic,
             previewImageClinicUrl,
@@ -161,7 +183,6 @@ class ManageClinic extends Component {
             isShowBoxImageClinic,
             isShowBoxImageLogo,
         } = this.state;
-
         return (
             <div className="specialty-container">
                 <div className="specialty-title">

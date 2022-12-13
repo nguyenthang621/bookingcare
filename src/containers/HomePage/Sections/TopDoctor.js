@@ -55,7 +55,12 @@ class TopDoctor extends Component {
                         <span className="section-title">
                             <FormattedMessage id="homepage.out-standing-doctor" />
                         </span>
-                        <button className="more">
+                        <button
+                            className="more"
+                            onClick={() => {
+                                this.props.toggleModel(this.props.modal);
+                            }}
+                        >
                             <FormattedMessage id="homepage.more" />
                         </button>
                     </div>
@@ -69,7 +74,7 @@ class TopDoctor extends Component {
                                 let idSpecialty = doctor.Doctor_Infor.specialtyId;
                                 if (idSpecialty) {
                                     nameSpecialty = listDataSpecialtyRedux.filter((item) => item.id === idSpecialty);
-                                    nameSpecialty = nameSpecialty[0].name;
+                                    nameSpecialty = nameSpecialty[0]?.name;
                                 }
                                 return (
                                     <div
@@ -79,7 +84,7 @@ class TopDoctor extends Component {
                                     >
                                         <div className={`item-${this.props.type}`}>
                                             <div className={`img-${this.props.type}`}>
-                                                <img className="img" src={doctor?.image} alt="img" />
+                                                <img className="img" src={doctor?.imageURL} alt="img" />
                                             </div>
 
                                             <h4 className="position">

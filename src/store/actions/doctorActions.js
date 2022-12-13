@@ -147,24 +147,11 @@ export const saveScheduleDoctor = (data) => {
 export const getScheduleDoctorByDate = (doctorId, date) => {
     return async (dispatch) => {
         try {
-            if (!doctorId || !date) {
-                dispatch({ type: actionTypes.GET_SCHEDULE_DOCTOR_FAIL });
-                toast.error('Missing id doctor or date', {
-                    position: 'top-right',
-                    autoClose: 3000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+            let res = await getScheduleDoctorByDateService(doctorId, date);
+            if (res && res.errorCode === 0) {
+                dispatch({ type: actionTypes.GET_SCHEDULE_DOCTOR_SUCCESS, data: res.data });
             } else {
-                let res = await getScheduleDoctorByDateService(doctorId, date);
-                if (res && res.errorCode === 0) {
-                    dispatch({ type: actionTypes.GET_SCHEDULE_DOCTOR_SUCCESS, data: res.data });
-                } else {
-                    dispatch({ type: actionTypes.GET_SCHEDULE_DOCTOR_FAIL });
-                }
+                dispatch({ type: actionTypes.GET_SCHEDULE_DOCTOR_FAIL });
             }
         } catch (e) {
             console.log(e);

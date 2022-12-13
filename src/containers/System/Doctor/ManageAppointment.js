@@ -25,6 +25,7 @@ class ManageAppointment extends Component {
             listAppointment: [],
             doctorInfo: classCookies.getDataAccessToken(),
             isShowModalRemedy: false,
+
             currentPatient: '',
             isLoading: false,
             isRemind: false,
@@ -107,7 +108,12 @@ class ManageAppointment extends Component {
             isShowModalConfirm,
         } = this.state;
         let { languageRedux, statusIdRedux } = this.props;
-
+        let listSelect = {
+            new: <FormattedMessage id="appointment.newSchedule" />,
+            confirmed: <FormattedMessage id="appointment.confirmed" />,
+            canceled: <FormattedMessage id="appointment.canceled" />,
+            states: { new: 'S2', confirmed: 'S3', canceled: 'S4' },
+        };
         return (
             <div className="manage-schedule-container mt-2">
                 {isLoading && (
@@ -185,7 +191,12 @@ class ManageAppointment extends Component {
                                 {moment(initDate).locale(languageRedux).format('LL')}
                             </span>
                             <span>
-                                <SelectStatusId handleChangeInput={this.handleChangeInput} />
+                                <SelectStatusId
+                                    handleChangeInput={this.handleChangeInput}
+                                    listSelect={listSelect}
+                                    appointment
+                                    statusId={statusIdRedux}
+                                />
                             </span>
                         </div>
                         <table className="table table-hover">
@@ -275,9 +286,9 @@ class ManageAppointment extends Component {
                                         );
                                     })
                                 ) : (
-                                    <td className="title-no-appointment">
+                                    <tr className="title-no-appointment">
                                         <FormattedMessage id="appointment.noAppointment" />
-                                    </td>
+                                    </tr>
                                 )}
                             </tbody>
                         </table>

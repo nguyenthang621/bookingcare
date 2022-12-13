@@ -10,9 +10,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import './ListHandbook.scss';
 import { toast } from 'react-toastify';
 
-import ModalConfirm from '../ModalConfirm';
 import ModalHandbook from './ModalHandbook';
 import SelectStatusId from '../Doctor/SelectStatusId';
+import ConfirmModal from '../../../components/ConfirmModal';
 
 import _ from 'lodash';
 
@@ -24,6 +24,7 @@ class ListHandbook extends Component {
             isShowModalHandbook: false,
             id: '',
             statusId: 'S1',
+            isShowConfirmModal: false,
         };
     }
 
@@ -60,8 +61,19 @@ class ListHandbook extends Component {
             statusId: statusId,
         });
     };
+    toggleConfirmModal = () => {
+        this.setState({
+            isShowConfirmModal: !this.state.isShowConfirmModal,
+        });
+    };
     handleClickDelete = async (id) => {
-        let response = await deleteHandbookServices(id);
+        this.toggleConfirmModal();
+        this.setState({
+            id: id,
+        });
+    };
+    acceptDeleteHandbook = async () => {
+        let response = await deleteHandbookServices(this.state.id);
         if (response && response.errorCode === 0) {
             await this.handleGetHandbook(this.state.statusId);
             toast.success(response.message, {
@@ -78,13 +90,13 @@ class ListHandbook extends Component {
                 isRoomImage: false,
                 previewImageUrl: '',
                 image: '',
-
                 adviser: '',
                 authors: '',
                 title: '',
                 contentHtml: '',
                 contentMarkdown: '',
             });
+            this.toggleConfirmModal();
         } else if (response && response.errorCode === 1) {
             toast.error(response.message, {
                 position: 'top-right',
@@ -98,10 +110,23 @@ class ListHandbook extends Component {
         }
     };
     render() {
-        let { listHandbook, isShowModalHandbook, id, statusId } = this.state;
+        let { listHandbook, isShowModalHandbook, id, statusId, isShowConfirmModal } = this.state;
         let {} = this.props;
+        let listSelect = {
+            new: <FormattedMessage id="admin.status.new" />,
+            confirmed: <FormattedMessage id="admin.status.confirmed" />,
+            canceled: <FormattedMessage id="admin.status.canceled" />,
+            states: { new: 'S1', confirmed: 'S2', canceled: 'S3' },
+        };
         return (
             <div className="manage-handbook-container mt-2">
+                {isShowConfirmModal && (
+                    <ConfirmModal
+                        toggleConfirmModal={this.toggleConfirmModal}
+                        isShowConfirmModal={isShowConfirmModal}
+                        deleteFunc={this.acceptDeleteHandbook}
+                    />
+                )}
                 {isShowModalHandbook ? (
                     <ModalHandbook
                         isShowModalHandbook={isShowModalHandbook}
@@ -118,7 +143,11 @@ class ListHandbook extends Component {
                 </div>
                 <div className="manage-handbook-wrapper">
                     <div className="handbook-table coverArea">
-                        <SelectStatusId handleChangeInput={this.handleChangeInput} handbook={true} />
+                        <SelectStatusId
+                            handleChangeInput={this.handleChangeInput}
+                            listSelect={listSelect}
+                            statusId={statusId}
+                        />
                         <table className="table table-hover">
                             <thead>
                                 <tr>
@@ -127,7 +156,7 @@ class ListHandbook extends Component {
                                     <th scope="col">Title</th>
                                     <th scope="col">Sender</th>
                                     <th scope="col">State</th>
-                                    <th scope="col">Confirm</th>
+                                    {this.state.statusId !== 'S3' && <th scope="col">Confirm</th>}
                                 </tr>
                             </thead>
                             <tbody>
@@ -155,12 +184,14 @@ class ListHandbook extends Component {
 
                                                     {'  '}
 
-                                                    <button
-                                                        className="btn btn-warning"
-                                                        onClick={() => this.handleClickDelete(item.id)}
-                                                    >
-                                                        Delete
-                                                    </button>
+                                                    {this.state.statusId !== 'S3' && (
+                                                        <button
+                                                            className="btn btn-warning"
+                                                            onClick={() => this.handleClickDelete(item.id)}
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                    )}
                                                 </td>
                                             </tr>
                                         );

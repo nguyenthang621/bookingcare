@@ -43,7 +43,7 @@ class Login extends Component {
                 await this.props.userLoginSuccess(userInfor, userInfor.roleId);
                 classStorage.setItemStorage('refreshToken', classCookies.getRefreshToken('refreshToken'));
 
-                this.props.history.push(`/system/user-redux`);
+                this.props.history.push(`/system/welcome`);
             }
         } catch (error) {
             if (error.response && error.response.data) {

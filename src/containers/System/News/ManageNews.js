@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { LANGUAGES, CommonUtils } from '../../../utils';
+import { LANGUAGES, CommonUtils, PATH_FIREBASE } from '../../../utils';
 import * as actions from '../../../store/actions';
 import Select from 'react-select';
 import { FormattedMessage } from 'react-intl';
@@ -10,6 +10,7 @@ import Lightbox from 'react-image-lightbox';
 import './ManageNews.scss';
 import Ckeditor from '../Admin/Ckeditor';
 import { toast } from 'react-toastify';
+import { uploadFileToFirebase } from '../../../firebase/uploadFile';
 
 import _ from 'lodash';
 
@@ -21,6 +22,7 @@ class ManageNews extends Component {
             isRoomImage: false,
             previewImageUrl: '',
             image: '',
+            file: '',
 
             allDoctor: [],
             adviser: '',
@@ -83,11 +85,11 @@ class ManageNews extends Component {
         if (file) {
             let base64 = await CommonUtils.getBase64(file);
             let objectUrl = URL.createObjectURL(file);
-            this.setState({ previewImageUrl: objectUrl, isShowBoxImage: true, image: base64 });
+            this.setState({ previewImageUrl: objectUrl, isShowBoxImage: true, image: base64, file: file });
         }
     };
     handleClickSubmit = async () => {
-        let { adviser, authors, title, type, contentMarkdown, contentHtml, image, topic, focus } = this.state;
+        let { adviser, authors, title, type, contentMarkdown, contentHtml, image, topic, focus, file } = this.state;
         let htmlFocus = focus
             .split('\n')
             .map((item) => {
@@ -95,45 +97,47 @@ class ManageNews extends Component {
             })
             .join('');
         htmlFocus = `<ul>${htmlFocus}</ul>`;
-        let data = { adviser, authors, title, type, contentMarkdown, contentHtml, image, topic, htmlFocus };
-        let response = await postNewsServices(data);
-        if (response && response.errorCode === 0) {
-            toast.success(response.message, {
-                position: 'top-right',
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-            this.setState({
-                isShowBoxImage: false,
-                isRoomImage: false,
-                previewImageUrl: '',
-                image: '',
+        let imageURL = await uploadFileToFirebase(PATH_FIREBASE.NEWS_IMAGE, file);
+        console.log(imageURL);
+        // let data = { adviser, authors, title, type, contentMarkdown, contentHtml, image: imageURL, topic, htmlFocus };
+        // let response = await postNewsServices(data);
+        // if (response && response.errorCode === 0) {
+        //     toast.success(response.message, {
+        //         position: 'top-right',
+        //         autoClose: 3000,
+        //         hideProgressBar: true,
+        //         closeOnClick: true,
+        //         pauseOnHover: true,
+        //         draggable: true,
+        //         progress: undefined,
+        //     });
+        //     this.setState({
+        //         isShowBoxImage: false,
+        //         isRoomImage: false,
+        //         previewImageUrl: '',
+        //         image: '',
 
-                adviser: '',
-                authors: '',
-                title: '',
-                type: '',
-                topic: '',
-                focus: '',
+        //         adviser: '',
+        //         authors: '',
+        //         title: '',
+        //         type: '',
+        //         topic: '',
+        //         focus: '',
 
-                contentHtml: '',
-                contentMarkdown: '',
-            });
-        } else if (response && response.errorCode === 1) {
-            toast.error(response.message, {
-                position: 'top-right',
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        }
+        //         contentHtml: '',
+        //         contentMarkdown: '',
+        //     });
+        // } else if (response && response.errorCode === 1) {
+        //     toast.error(response.message, {
+        //         position: 'top-right',
+        //         autoClose: 3000,
+        //         hideProgressBar: true,
+        //         closeOnClick: true,
+        //         pauseOnHover: true,
+        //         draggable: true,
+        //         progress: undefined,
+        //     });
+        // }
     };
 
     render() {

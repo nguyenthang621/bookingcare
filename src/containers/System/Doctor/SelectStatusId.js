@@ -6,6 +6,7 @@ import * as actions from '../../../store/actions';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import _ from 'lodash';
+import { getAppointmentDoctor } from '../../../store/actions';
 
 class SelectStatusId extends Component {
     constructor(props) {
@@ -24,46 +25,66 @@ class SelectStatusId extends Component {
 
     render() {
         let {} = this.state;
-        let { handbook } = this.props;
+        let { listSelect, statusId } = this.props;
         return (
             <React.Fragment>
-                <div className="form-check form-check-inline">
+                <div
+                    className={
+                        statusId === listSelect.states.new
+                            ? `form-check form-check-inline select-active`
+                            : 'form-check form-check-inline'
+                    }
+                >
                     <input
                         className="form-check-input"
                         type="radio"
                         name="inlineRadioOptions"
                         id="inlineRadio1"
-                        value={handbook ? 'S1' : 'S2'}
+                        value={listSelect.states.new}
                         onChange={(e) => this.props.handleChangeInput(e)}
+
+                        // hidden
                     />
                     <label className="form-check-label" htmlFor="inlineRadio1">
-                        {handbook ? 'New handbook' : <FormattedMessage id="appointment.newSchedule" />}
+                        {listSelect.new}
                     </label>
                 </div>
-                <div className="form-check form-check-inline">
+                <div
+                    className={
+                        statusId === listSelect.states.confirmed
+                            ? `form-check form-check-inline select-active`
+                            : 'form-check form-check-inline'
+                    }
+                >
                     <input
                         className="form-check-input"
                         type="radio"
                         name="inlineRadioOptions"
                         id="inlineRadio2"
-                        value={handbook ? 'S2' : 'S3'}
+                        value={listSelect.states.confirmed}
                         onChange={(e) => this.props.handleChangeInput(e)}
                     />
                     <label className="form-check-label" htmlFor="inlineRadio2">
-                        {handbook ? 'Confirmed' : <FormattedMessage id="appointment.confirmed" />}
+                        {listSelect.confirmed}
                     </label>
                 </div>
-                <div className="form-check form-check-inline">
+                <div
+                    className={
+                        statusId === listSelect.states.canceled
+                            ? `form-check form-check-inline select-active`
+                            : 'form-check form-check-inline'
+                    }
+                >
                     <input
                         className="form-check-input"
                         type="radio"
                         name="inlineRadioOptions"
                         id="inlineRadio3"
-                        value={handbook ? 'S3' : 'S4'}
+                        value={listSelect.states.canceled}
                         onChange={(e) => this.props.handleChangeInput(e)}
                     />
                     <label className="form-check-label" htmlFor="inlineRadio3">
-                        {handbook ? 'Canceled' : <FormattedMessage id="appointment.cancel" />}
+                        {listSelect.canceled}
                     </label>
                 </div>
             </React.Fragment>

@@ -2,6 +2,7 @@ import {
     postBookingAppointmentServices,
     getAllSpecialtyServices,
     getAllClinicServices,
+    getHandbookServices,
 } from '../../services/patientServices';
 import actionTypes from './actionTypes';
 import { toast } from 'react-toastify';
@@ -61,6 +62,19 @@ export const getAllClinicRedux = (isGetImage) => {
         } catch (error) {
             console.log(error);
             dispatch({ type: actionTypes.GET_ALL_CLINIC_FAIL });
+        }
+    };
+};
+export const getHandbookRedux = () => {
+    return async (dispatch) => {
+        try {
+            let handbookData = await getHandbookServices();
+            if (handbookData && handbookData.errorCode === 0) {
+                dispatch({ type: actionTypes.GET_ALL_HANDBOOK_SUCCESS, data: handbookData.data });
+            }
+        } catch (error) {
+            console.log(error);
+            dispatch({ type: actionTypes.GET_ALL_HANDBOOK_FAIL });
         }
     };
 };

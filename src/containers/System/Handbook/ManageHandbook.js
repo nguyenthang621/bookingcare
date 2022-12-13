@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { LANGUAGES, CommonUtils } from '../../../utils';
+import { LANGUAGES, CommonUtils, PATH_FIREBASE } from '../../../utils';
 import * as actions from '../../../store/actions';
 import Select from 'react-select';
 import { FormattedMessage } from 'react-intl';
@@ -10,6 +10,7 @@ import Lightbox from 'react-image-lightbox';
 import './ManageHandbook.scss';
 import Ckeditor from '../Admin/Ckeditor';
 import { toast } from 'react-toastify';
+import { uploadFileToFirebase } from '../../../firebase/uploadFile';
 
 import _ from 'lodash';
 
@@ -21,6 +22,7 @@ class ManageHandbook extends Component {
             isRoomImage: false,
             previewImageUrl: '',
             image: '',
+            file: '',
 
             allDoctor: [],
             adviser: '',
@@ -80,12 +82,21 @@ class ManageHandbook extends Component {
         if (file) {
             let base64 = await CommonUtils.getBase64(file);
             let objectUrl = URL.createObjectURL(file);
-            this.setState({ previewImageUrl: objectUrl, isShowBoxImage: true, image: base64 });
+            this.setState({ previewImageUrl: objectUrl, isShowBoxImage: true, image: base64, file: file });
         }
     };
     handleClickSubmit = async () => {
-        let { adviser, authors, title, contentMarkdown, contentHtml, image } = this.state;
-        let response = await postHandbookServices({ adviser, authors, title, contentMarkdown, contentHtml, image });
+        let { adviser, authors, title, contentMarkdown, contentHtml, file } = this.state;
+        let imageURL = await uploadFileToFirebase(PATH_FIREBASE.HANDBOOK_IMAGE, file);
+
+        let response = await postHandbookServices({
+            adviser,
+            authors,
+            title,
+            contentMarkdown,
+            contentHtml,
+            image: imageURL,
+        });
         if (response && response.errorCode === 0) {
             toast.success(response.message, {
                 position: 'top-right',

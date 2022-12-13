@@ -6,8 +6,7 @@ import { LANGUAGES } from '../../../utils';
 import { Link } from 'react-router-dom';
 
 import './HomeHeader.scss';
-import { IoMenu } from 'react-icons/io5';
-import { FaQuestionCircle } from 'react-icons/fa';
+
 import { IoLogIn } from 'react-icons/io5';
 import { BiUserCircle } from 'react-icons/bi';
 import Menu from '../Sections/Menu/Menu';
@@ -46,9 +45,6 @@ class HomeHeader extends Component {
             <div className="home-header-container">
                 <div className="home-header-content">
                     <div className="left-content">
-                        <div className="btn-side-bar">
-                            <IoMenu />
-                        </div>
                         <Link to="/home">
                             <div className="header-logo"></div>
                         </Link>
@@ -82,12 +78,7 @@ class HomeHeader extends Component {
                                 </div>
                             </Tippy>
                         )}
-                        {/* <div className="support">
-                            <FaQuestionCircle />
-                            <span>
-                                <FormattedMessage id="home-header.support" />
-                            </span>
-                        </div> */}
+
                         {!isLoggedIn ? (
                             <Link to="/login">
                                 <div className="login" text="Login">

@@ -5,6 +5,7 @@ import * as actions from '../../../store/actions';
 import { FormattedMessage } from 'react-intl';
 import './IntroDoctor.scss';
 import { MdAddLocation } from 'react-icons/md';
+import LikeAndShare from '../SocialPlugin/LikeAndShare';
 
 class IntroDoctor extends Component {
     constructor(props) {
@@ -48,15 +49,14 @@ class IntroDoctor extends Component {
     };
 
     render() {
-        let { dataCurrentDoctor, typeStyle } = this.props;
+        let { dataCurrentDoctor, typeStyle, dataHref } = this.props;
         let { nameDoctor, provinceDoctor } = this.state;
-
         return (
             <div className="intro-doctor">
                 <div className="image-doctor">
                     <img
                         className={typeStyle === 'specialty' ? 'size-specialty' : ''}
-                        src={dataCurrentDoctor.image}
+                        src={dataCurrentDoctor.imageURL}
                         alt="img"
                     />
                     {typeStyle === 'specialty' && <span className="more-detail-doctor">Xem thêm</span>}
@@ -74,6 +74,7 @@ class IntroDoctor extends Component {
                             dataCurrentDoctor.Markdown.description &&
                             `${dataCurrentDoctor.Markdown.description}`}
                     </p>
+                    <LikeAndShare dataHref={dataHref} />
                     {typeStyle === 'specialty' && (
                         <span className="address-doctor">
                             <MdAddLocation />

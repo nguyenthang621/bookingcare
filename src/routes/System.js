@@ -7,6 +7,7 @@ import ManageDoctor from '../containers/System/Admin/ManageDoctor';
 import Specialty from '../containers/System/Specialty/Specialty';
 import ManageClinic from '../containers/System/Clinic/ManageClinic';
 import Header from '../containers/Header/Header';
+import SystemWelcome from '../containers/System/SystemWelcome/SystemWelcome';
 import { withRouter } from 'react-router';
 import * as actions from '../store/actions';
 
@@ -40,9 +41,10 @@ class System extends Component {
                                 <Route path="/system/manage-doctor" component={ManageDoctor} />
                                 <Route path="/system/manage-specialty" component={Specialty} />
                                 <Route path="/system/manage-clinic" component={ManageClinic} />
+                                <Route path="/system/welcome" component={SystemWelcome} />
                                 <Route
                                     component={() => {
-                                        return <Redirect to={systemMenuPath} />;
+                                        return <Redirect to={SystemWelcome} />;
                                     }}
                                 />
                             </Switch>

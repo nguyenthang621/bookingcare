@@ -1,4 +1,5 @@
 import { IoInformationCircleOutline, IoLanguageOutline, IoBookmarkOutline, IoLogOutOutline } from 'react-icons/io5';
+import { MdManageAccounts } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
 
 export const dataMenuUser = [
@@ -34,10 +35,10 @@ export const dataMenuUser = [
     },
 
     {
-        title_vi: 'Lịch sử',
-        title_en: 'History',
+        title_vi: 'Quản lý',
+        title_en: 'Manage',
         to: '/login',
-        icon: <IoBookmarkOutline />,
+        icon: <MdManageAccounts />,
     },
     {
         title_vi: 'Đăng xuất',

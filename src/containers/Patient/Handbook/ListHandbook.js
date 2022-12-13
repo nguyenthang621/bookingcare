@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 
 import '../Specialty/ListSpecialty.scss';
 
-class ListDoctor extends Component {
+class ListHandbook extends Component {
     constructor(props) {
         super(props);
         this.state = {};
@@ -19,43 +19,30 @@ class ListDoctor extends Component {
     componentDidUpdate(prevProps) {}
 
     render() {
-        let { modalDoctor, topDoctorsRedux, languageRedux, listDataSpecialtyRedux } = this.props;
+        let { modalHandbook, listDataHandbookRedux, languageRedux, listDataSpecialtyRedux } = this.props;
         let {} = this.state;
 
         return (
             <div className="list-specialty-container">
                 <Modal
                     className="modal-booking-container"
-                    isOpen={modalDoctor}
-                    toggle={() => this.props.toggleModel('modalDoctor')}
-                    size="mn"
+                    isOpen={modalHandbook}
+                    toggle={() => this.props.toggleModel('modalHandbook')}
+                    size="lg"
                     centered={false}
                 >
-                    <ModalHeader toggle={() => this.props.toggleModel('modalDoctor')}>Danh sách bác sĩ</ModalHeader>
+                    <ModalHeader toggle={() => this.props.toggleModel('modalHandbook')}>Danh sách cẩm nang</ModalHeader>
                     <ModalBody>
                         <div className="list-specialty-content">
-                            {topDoctorsRedux.length > 0 &&
-                                topDoctorsRedux.map((item) => {
-                                    let nameSpecialty = '';
-                                    let nameVi = `${item.positionData.valueVi}, ${item.firstName} ${item.lastName} `;
-                                    let nameEn = `${item.positionData.valueEn}, ${item.lastName} ${item.firstName} `;
-                                    let idSpecialty = item.Doctor_Infor.specialtyId;
-                                    if (idSpecialty) {
-                                        nameSpecialty = listDataSpecialtyRedux.filter(
-                                            (item) => item.id === idSpecialty,
-                                        );
-                                        nameSpecialty = nameSpecialty[0].name;
-                                    }
+                            {listDataHandbookRedux.length > 0 &&
+                                listDataHandbookRedux.map((item) => {
                                     return (
-                                        <Link className="item" to={`/detail-doctor/${item.id}`} key={item.id}>
+                                        <Link className="item" to={`/detail-clinic/${item.id}`} key={item.id}>
                                             <div className="item-specialty" key={item.id}>
-                                                <div className={modalDoctor ? 'image-doctor' : 'image-specialty'}>
-                                                    <img src={item?.imageURL} alt="img"></img>
+                                                <div className={'image-specialty'}>
+                                                    <img src={item.image} alt="img"></img>
                                                 </div>
-                                                <div className="name-doctor">
-                                                    <h2>{languageRedux === LANGUAGES.VI ? nameVi : nameEn}</h2>
-                                                    <p>{nameSpecialty}</p>
-                                                </div>
+                                                <div className="name-specialty">{item.title}</div>
                                             </div>
                                         </Link>
                                     );
@@ -83,7 +70,7 @@ class ListDoctor extends Component {
 const mapStateToProps = (state) => {
     return {
         languageRedux: state.app.language,
-        listDataSpecialtyRedux: state.patient.listDataSpecialty,
+        listDataHandbookRedux: state.patient.listDataHandbook,
         topDoctorsRedux: state.doctor.topDoctors,
     };
 };
@@ -92,4 +79,4 @@ const mapDispatchToProps = (dispatch) => {
     return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListDoctor);
+export default connect(mapStateToProps, mapDispatchToProps)(ListHandbook);

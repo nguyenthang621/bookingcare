@@ -25,9 +25,16 @@ class ManageSchedule extends Component {
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.props.fetchAllDoctorRedux();
         this.props.fetchAllcodeScheduleRedux();
+        this.setState({
+            selectedDoctor: this.props.userInfo?.id,
+        });
+
+        if (this.props.roleId === 'R2') {
+            await this.props.getScheduleDoctorByDateRedux(this.props.userInfo?.id, this.state.initDate);
+        }
     }
     componentDidUpdate(prevProps) {
         if (prevProps.allDoctorRedux !== this.props.allDoctorRedux) {
@@ -70,7 +77,7 @@ class ManageSchedule extends Component {
             });
         }
     }
-
+    // change doctor:
     handleChange = async (selectedDoctor) => {
         await this.props.getScheduleDoctorByDateRedux(selectedDoctor.value, this.state.initDate);
         this.setState({
@@ -96,8 +103,11 @@ class ManageSchedule extends Component {
 
     handleSetDate = async (date) => {
         let { selectedDoctor } = this.state;
-        if (!_.isEmpty(selectedDoctor)) {
+        let { roleId } = this.props;
+        if (!_.isEmpty(selectedDoctor) && roleId === 'R1') {
             await this.props.getScheduleDoctorByDateRedux(selectedDoctor.value, date.setHours(0, 0, 0, 0));
+        } else if (selectedDoctor) {
+            await this.props.getScheduleDoctorByDateRedux(selectedDoctor, date.setHours(0, 0, 0, 0));
         }
         this.setState({
             initDate: date.setHours(0, 0, 0, 0),
@@ -218,7 +228,7 @@ class ManageSchedule extends Component {
 const mapStateToProps = (state) => {
     return {
         roleId: state.user.roleId,
-
+        userInfo: state.user.userInfo,
         isLoggedIn: state.user.isLoggedIn,
         allDoctorRedux: state.doctor.allDoctor,
         languageRedux: state.app.language,

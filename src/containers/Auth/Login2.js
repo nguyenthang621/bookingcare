@@ -59,10 +59,10 @@ class Login extends Component {
                 await this.props.userLoginSuccess(userInfor, userInfor.roleId);
                 classStorage.setItemStorage('refreshToken', classCookies.getRefreshToken('refreshToken'));
                 if (userInfor.roleId === 'R3') {
-                    classStorage.setItemStorage('email', this.state.email);
+                    // classStorage.setItemStorage('email', this.state.email);
                     this.props.history.push(`/home`);
                 } else if (userInfor.roleId === 'R1') {
-                    this.props.history.push(`/system/user-redux`);
+                    this.props.history.push(`/system/welcome`);
                 } else if (userInfor.roleId === 'R2') {
                     this.props.history.push(`/doctor/manage-patient-appointment`);
                 }

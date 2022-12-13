@@ -3,7 +3,7 @@ import { classCookies } from '../../cookies';
 
 const initialState = {
     isLoggedIn: false,
-    userInfo: null,
+    userInfo: classCookies.getDataAccessToken(),
     language: 'vi',
     queueNews: '',
     queueHandbook: '',

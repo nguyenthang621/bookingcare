@@ -150,6 +150,7 @@ class BookingModal extends Component {
     render() {
         let { isShowModalBooking, languageRedux, dataCurrentDoctor } = this.props;
         let { bookFor, exactTime, isLoading, listGender, nameDoctor, provinceDoctor } = this.state;
+        let selected = bookFor === 'others' ? 'checked' : '';
         return (
             <div className="booking-modal-container">
                 {isLoading && (

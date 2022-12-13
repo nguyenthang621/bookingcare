@@ -32,7 +32,14 @@ class Section extends Component {
                 <div className="section-content">
                     <div className="section-header">
                         <span className="section-title">{title}</span>
-                        <button className="more">{button}</button>
+                        <button
+                            className="more"
+                            onClick={() => {
+                                this.props.toggleModel(this.props.modal);
+                            }}
+                        >
+                            {button}
+                        </button>
                     </div>
                     <Slider {...settings}>
                         {typeSec === 'specialtyType' &&

@@ -3,11 +3,16 @@
     align-items: center;
     flex-direction: column;
     margin-bottom: 100px;
+
     & .specialty-title {
         margin: 40px 0px 25px 0px;
     }
     & .form-row {
         width: 80%;
+        & .preview {
+            top: -20px !important;
+            right: -220px !important;
+        }
     }
     & .specialty-editor {
         width: 80%;

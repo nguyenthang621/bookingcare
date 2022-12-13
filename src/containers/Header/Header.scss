@@ -30,6 +30,16 @@
 .box-user {
     display: flex;
     align-items: center;
+    & .btn-to-home {
+        padding: 7px;
+        background-color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        & .icon {
+        }
+    }
 }
 
 .user {

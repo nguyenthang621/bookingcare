@@ -26,7 +26,12 @@ class About extends Component {
                                 allowFullScreen
                             ></iframe>
                         </div>
-                        <div className="about-list">About us</div>
+                        <div className="about-list">
+                            <img
+                                src="https://github.com/nguyenthang621/public_image_bookingcare/blob/main/Capture.PNG?raw=true"
+                                alt="img"
+                            ></img>
+                        </div>
                     </div>
                 </div>
             </div>

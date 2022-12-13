@@ -41,3 +41,11 @@ export const TYPE_USER = {
     DOCTOR: 'R2',
     PARIENT: 'R3',
 };
+export const PATH_FIREBASE = {
+    USER: 'files/user',
+    CLINIC_IMAGE: 'files/clinic/clinic_image',
+    CLINIC_LOGO: 'files/clinic/clinic_logo',
+    SPECIALTY_IMAGE: 'files/specialty/specialty_image',
+    HANDBOOK_IMAGE: 'files/handbook/handbook_image',
+    NEWS_IMAGE: 'files/news/news_image',
+};

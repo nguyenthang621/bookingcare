@@ -3,6 +3,7 @@ import actionTypes from '../actions/actionTypes';
 const initialState = {
     listDataSpecialty: [],
     listDataClinic: [],
+    listDataHandbook: [],
 };
 
 const patientReducer = (state = initialState, action) => {
@@ -34,6 +35,16 @@ const patientReducer = (state = initialState, action) => {
             return {
                 ...state,
                 listDataClinic: [],
+            };
+        case actionTypes.GET_ALL_HANDBOOK_SUCCESS:
+            return {
+                ...state,
+                listDataHandbook: action.data,
+            };
+        case actionTypes.GET_ALL_HANDBOOK_FAIL:
+            return {
+                ...state,
+                listDataHandbook: [],
             };
 
         default:

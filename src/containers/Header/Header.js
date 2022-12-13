@@ -9,7 +9,8 @@ import { adminMenu, doctorMenu } from './menuApp';
 import { userImage } from '../../assets';
 import { classCookies } from '../../cookies';
 import { checkQueueNewsServices } from '../../services/userServices';
-
+import { Link } from 'react-router-dom';
+import { AiFillHome } from 'react-icons/ai';
 import './Header.scss';
 
 class Header extends Component {
@@ -72,6 +73,11 @@ class Header extends Component {
                             {user && user.lastName ? user.firstName + ' ' + user.lastName : ''}
                         </span>
                     </div>
+                    <Link to="/home">
+                        <div className="btn-to-home" title="Trang chủ">
+                            <AiFillHome className="icon" />
+                        </div>
+                    </Link>
                     <span className="languages" onClick={(e) => this.handleChangeLanguage(e.target.innerText)}>
                         <FormattedMessage id="language" />
                     </span>

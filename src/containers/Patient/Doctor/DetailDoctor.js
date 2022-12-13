@@ -9,6 +9,7 @@ import BookingModal from './BookingModal';
 import IntroDoctor from './IntroDoctor';
 import { Link } from 'react-router-dom';
 import Footer from '../../HomePage/Sections/Footer';
+import Comment from '../SocialPlugin/Comment';
 
 import { getDetailDoctorService } from '../../../services/doctorServices';
 
@@ -53,7 +54,7 @@ class DetailDoctor extends Component {
     };
 
     render() {
-        let { languageRedux, typeStyle, isComponentChild } = this.props;
+        let { languageRedux, typeStyle, isComponentChild, isComment } = this.props;
         let { dataCurrentDoctor, isShowModalBooking, currentRangeTime, listGender, doctorId } = this.state;
 
         let nameDoctor = '';
@@ -63,6 +64,8 @@ class DetailDoctor extends Component {
                     ? `${dataCurrentDoctor.positionData.valueVi}, ${dataCurrentDoctor.firstName} ${dataCurrentDoctor.lastName}`
                     : `${dataCurrentDoctor.positionData.valueEn}, ${dataCurrentDoctor.lastName} ${dataCurrentDoctor.firstName}`;
         }
+
+        const currentURL = process.env.REACT_APP_IS_LOCALHOST == 1 ? window.location.href : 'https://bookingcare.vn';
         return (
             <div className="doctor-container">
                 {isShowModalBooking && (
@@ -89,17 +92,23 @@ class DetailDoctor extends Component {
                                 )}
                             </Link>
                         ) : (
-                            <>
+                            <div className="intro-doctor-container coverArea">
                                 {dataCurrentDoctor && (
-                                    <IntroDoctor typeStyle={typeStyle} dataCurrentDoctor={dataCurrentDoctor} />
+                                    <IntroDoctor
+                                        dataHref={currentURL}
+                                        typeStyle={typeStyle}
+                                        dataCurrentDoctor={dataCurrentDoctor}
+                                    />
                                 )}
-                            </>
+                            </div>
                         )}
                     </div>
 
                     <div
                         className={
-                            typeStyle === 'specialty' ? 'schedule-doctor-container right' : 'schedule-doctor-container'
+                            typeStyle === 'specialty'
+                                ? 'schedule-doctor-container right'
+                                : 'schedule-doctor-container coverArea'
                         }
                     >
                         {dataCurrentDoctor && (
@@ -118,15 +127,18 @@ class DetailDoctor extends Component {
                             {dataCurrentDoctor &&
                                 dataCurrentDoctor.Markdown &&
                                 dataCurrentDoctor.Markdown.contentHTML && (
-                                    <div
-                                        className="detail-container"
-                                        dangerouslySetInnerHTML={{ __html: dataCurrentDoctor.Markdown.contentHTML }}
-                                    ></div>
+                                    <>
+                                        <div
+                                            className="detail-container"
+                                            dangerouslySetInnerHTML={{ __html: dataCurrentDoctor.Markdown.contentHTML }}
+                                        ></div>
+                                        <div className="comment-doctor"></div>
+                                    </>
                                 )}
                         </div>
                     )}
-                    <div className="comment-doctor"> </div>
                 </div>
+                {!typeStyle && <Comment dataHref={currentURL} />}
                 {!isComponentChild && <Footer />}
             </div>
         );

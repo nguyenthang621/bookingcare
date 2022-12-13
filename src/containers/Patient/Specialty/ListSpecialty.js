@@ -5,7 +5,7 @@ import * as actions from '../../../store/actions';
 import { FormattedMessage } from 'react-intl';
 import { BsLightbulbFill } from 'react-icons/bs';
 
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 import './ListSpecialty.scss';

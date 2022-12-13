@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions';
-
+import ScrollIntoView from 'react-scroll-into-view';
 import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 
 class TableManageUser extends Component {
@@ -48,14 +48,16 @@ class TableManageUser extends Component {
                                         <td>{user.lastName}</td>
                                         <td>{user.address}</td>
                                         <td>
-                                            <button
-                                                className=" trans btn btn-edit"
-                                                onClick={() => {
-                                                    this.props.handleClickEditUser(user);
-                                                }}
-                                            >
-                                                <FaPencilAlt />
-                                            </button>
+                                            <ScrollIntoView selector="#user-redux">
+                                                <button
+                                                    className=" trans btn btn-edit"
+                                                    onClick={() => {
+                                                        this.props.handleClickEditUser(user);
+                                                    }}
+                                                >
+                                                    <FaPencilAlt />
+                                                </button>
+                                            </ScrollIntoView>
                                             <button
                                                 className=" trans btn btn-delete"
                                                 onClick={() => this.handleDeleteUser(user.id)}

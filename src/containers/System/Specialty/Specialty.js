@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions';
-import { LANGUAGES, CRUD_ACTIONS, CommonUtils } from '../../../utils';
+import { LANGUAGES, CRUD_ACTIONS, CommonUtils, PATH_FIREBASE } from '../../../utils';
 import { FaFileUpload } from 'react-icons/fa';
 import { postSpecialtyServices } from '../../../services/userServices';
 import { toast } from 'react-toastify';
+import { uploadFileToFirebase } from '../../../firebase/uploadFile';
 
 import './Specialty.scss';
 import Ckeditor from '../Admin/Ckeditor';
@@ -21,7 +22,7 @@ class Specialty extends Component {
             image: '',
             specialty: '',
             previewImageUrl: '',
-
+            file: '',
             isRoomImage: false,
             isShowBoxImage: false,
         };
@@ -34,7 +35,7 @@ class Specialty extends Component {
         if (file) {
             let base64 = await CommonUtils.getBase64(file);
             let objectUrl = URL.createObjectURL(file);
-            this.setState({ previewImageUrl: objectUrl, isShowBoxImage: true, image: base64 });
+            this.setState({ previewImageUrl: objectUrl, isShowBoxImage: true, image: base64, file: file });
         }
     };
 
@@ -87,8 +88,16 @@ class Specialty extends Component {
     };
 
     handleClickSave = async () => {
-        let { descriptionHtml, descriptionMarkdown, image, specialty } = this.state;
-        let response = await postSpecialtyServices({ descriptionHtml, descriptionMarkdown, image, specialty });
+        let { descriptionHtml, descriptionMarkdown, specialty, file } = this.state;
+        let imageURL = await uploadFileToFirebase(PATH_FIREBASE.SPECIALTY_IMAGE, file);
+
+        let response = await postSpecialtyServices({
+            descriptionHtml,
+            descriptionMarkdown,
+            image: imageURL,
+            specialty,
+        });
+
         if (response && response.errorCode === 0) {
             toast.success(response.message, {
                 position: 'top-right',

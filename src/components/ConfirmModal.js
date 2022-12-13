@@ -1,32 +1,26 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import { Modal } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 import './ConfirmModal.scss';
-import * as actions from "../store/actions";
-import { KeyCodeUtils } from "../utils";
+import * as actions from '../store/actions';
+import { KeyCodeUtils } from '../utils';
 
 class ConfirmModal extends Component {
-
     constructor(props) {
         super(props);
         this.acceptBtnRef = React.createRef();
     }
 
-    initialState = {
-    };
+    initialState = {};
 
     state = {
-        ...this.initialState
+        ...this.initialState,
     };
 
     componentDidMount() {
         document.addEventListener('keydown', this.handlerKeyDown);
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('keydown', this.handlerKeyDown);
     }
 
     handlerKeyDown = (event) => {
@@ -35,7 +29,7 @@ class ConfirmModal extends Component {
             if (!this.acceptBtnRef.current || this.acceptBtnRef.current.disabled) return;
             this.acceptBtnRef.current.click();
         }
-    }
+    };
 
     onAcceptBtnClick = () => {
         const { contentOfConfirmModal } = this.props;
@@ -43,71 +37,64 @@ class ConfirmModal extends Component {
             contentOfConfirmModal.handleFunc(contentOfConfirmModal.dataFunc);
         }
         this.onClose();
-    }
+    };
 
     onClose = () => {
         this.props.setContentOfConfirmModal({
             isOpen: false,
-            messageId: "",
+            messageId: '',
             handleFunc: null,
-            dataFunc: null
+            dataFunc: null,
         });
-    }
+    };
 
     render() {
-        const { contentOfConfirmModal } = this.props;
+        const { contentOfConfirmModal, isShowConfirmModal } = this.props;
 
         return (
-            <Modal isOpen={contentOfConfirmModal.isOpen} className='confirm-modal' centered={true}>
-                <div className="modal-header">
-                    <div className="modal-title">
-                        <FormattedMessage id={"common.confirm"} />
-                    </div>
-                    <div className="col-auto">
-                        <button className="btn btn-close" onClick={this.onClose}>
-                            <i className="fal fa-times" />
-                        </button>
-                    </div>
-                </div>
-
-                <div className="modal-body">
-                    <div className="confirm-modal-content">
-                        <div className="row">
-                            <div className="col-12">
-                                <FormattedMessage id={contentOfConfirmModal.messageId ? contentOfConfirmModal.messageId : "common.confirm-this-task"} />
-                            </div>
-
-                            <hr />
-
-                            <div className="col-12">
-                                <div className="btn-container text-center">
-                                    <button className="btn btn-add" onClick={this.onClose} >
-                                        <FormattedMessage id="common.close" />
-                                    </button>
-                                    <button ref={this.acceptBtnRef} className="btn btn-add" onClick={this.onAcceptBtnClick}>
-                                        <FormattedMessage id={"common.accept"} />
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </Modal >
+            <Modal
+                className="modal-booking-container"
+                isOpen={isShowConfirmModal}
+                toggle={() => this.props.toggleConfirmModal()}
+                size="sm"
+                centered={true}
+            >
+                <ModalHeader toggle={() => this.props.toggleConfirmModal()}>
+                    {' '}
+                    <FormattedMessage id="confirm.title" />
+                </ModalHeader>
+                {/* <ModalBody>
+                {' '}
+          
+            </ModalBody> */}
+                <ModalFooter>
+                    <Button className=" button btn-save" color="danger" onClick={() => this.props.deleteFunc()}>
+                        <FormattedMessage id="confirm.accept" />
+                    </Button>{' '}
+                    <Button
+                        className="button btn btn-cancel"
+                        color="success"
+                        onClick={() => this.props.toggleConfirmModal()}
+                    >
+                        <FormattedMessage id="confirm.close" />
+                    </Button>
+                </ModalFooter>
+            </Modal>
         );
     }
-
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         lang: state.app.language,
-        contentOfConfirmModal: state.app.contentOfConfirmModal
+        contentOfConfirmModal: state.app.contentOfConfirmModal,
     };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
     return {
-        setContentOfConfirmModal: (contentOfConfirmModal) => dispatch(actions.setContentOfConfirmModal(contentOfConfirmModal))
+        setContentOfConfirmModal: (contentOfConfirmModal) =>
+            dispatch(actions.setContentOfConfirmModal(contentOfConfirmModal)),
     };
 };
 

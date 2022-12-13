@@ -9,6 +9,7 @@ import { deleteNewsServices } from '../../../services/userServices';
 import 'react-datepicker/dist/react-datepicker.css';
 import './ListNews.scss';
 import { toast } from 'react-toastify';
+import ConfirmModal from '../../../components/ConfirmModal';
 
 import ModalConfirm from '../ModalConfirm';
 import ModalNews from './ModalNews';
@@ -60,8 +61,19 @@ class ListNews extends Component {
             statusId: statusId,
         });
     };
+    toggleConfirmModal = () => {
+        this.setState({
+            isShowConfirmModal: !this.state.isShowConfirmModal,
+        });
+    };
     handleClickDelete = async (id) => {
-        let response = await deleteNewsServices(id);
+        this.toggleConfirmModal();
+        this.setState({
+            id: id,
+        });
+    };
+    acceptDeleteNews = async () => {
+        let response = await deleteNewsServices(this.state.id);
         if (response && response.errorCode === 0) {
             await this.handleGetNews(this.state.statusId);
             await this.props.checkQueueNewsRedux();
@@ -87,6 +99,7 @@ class ListNews extends Component {
                 contentHtml: '',
                 contentMarkdown: '',
             });
+            this.toggleConfirmModal();
         } else if (response && response.errorCode === 1) {
             toast.error(response.message, {
                 position: 'top-right',
@@ -99,11 +112,25 @@ class ListNews extends Component {
             });
         }
     };
+
     render() {
-        let { listNews, isShowModalNews, id, statusId } = this.state;
+        let { listNews, isShowModalNews, id, statusId, isShowConfirmModal } = this.state;
         let {} = this.props;
+        let listSelect = {
+            new: <FormattedMessage id="admin.status.new" />,
+            confirmed: <FormattedMessage id="admin.status.confirmed" />,
+            canceled: <FormattedMessage id="admin.status.canceled" />,
+            states: { new: 'S1', confirmed: 'S2', canceled: 'S3' },
+        };
         return (
             <div className="manage-handbook-container mt-2">
+                {isShowConfirmModal && (
+                    <ConfirmModal
+                        toggleConfirmModal={this.toggleConfirmModal}
+                        isShowConfirmModal={isShowConfirmModal}
+                        deleteFunc={this.acceptDeleteNews}
+                    />
+                )}
                 {isShowModalNews ? (
                     <ModalNews
                         isShowModalNews={isShowModalNews}
@@ -120,7 +147,11 @@ class ListNews extends Component {
                 </div>
                 <div className="manage-handbook-wrapper">
                     <div className="handbook-table coverArea">
-                        <SelectStatusId handleChangeInput={this.handleChangeInput} handbook={true} />
+                        <SelectStatusId
+                            handleChangeInput={this.handleChangeInput}
+                            listSelect={listSelect}
+                            statusId={statusId}
+                        />
                         <table className="table table-hover">
                             <thead>
                                 <tr>
