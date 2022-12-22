@@ -13,6 +13,8 @@ import ListClinic from '../Patient/Clinic/ListClinic';
 import ListDoctor from '../Patient/Doctor/ListDoctor';
 import ListHandbook from '../Patient/Handbook/ListHandbook';
 
+import { FormattedMessage } from 'react-intl';
+
 import { getAllClinicServices, getHandbookServices, getNewsServices } from '../../services/patientServices';
 import { nhakhoa, clinic, doctor, handbook } from '../../assets';
 import _ from 'lodash';
@@ -63,8 +65,8 @@ class HomePage extends Component {
                     listSpecialty={listDataSpecialtyRedux}
                     typeSec={'specialtyType'}
                     background="background"
-                    title="Chuyên khoa phổ biến"
-                    button="xem thêm"
+                    title={<FormattedMessage id="homepage.specialty" />}
+                    button={<FormattedMessage id="homepage.more" />}
                     modal="modalSpecialty"
                     toggleModel={this.toggleModel}
                     slideShow={4}
@@ -73,8 +75,8 @@ class HomePage extends Component {
                     type="sec"
                     typeSec="clinics"
                     listClinic={listDataClinicRedux}
-                    title="Cơ sở y tế nổi bật"
-                    button="tìm kiếm"
+                    title={<FormattedMessage id="homepage.clinic" />}
+                    button={<FormattedMessage id="homepage.search" />}
                     modal="modalClinic"
                     toggleModel={this.toggleModel}
                     slideShow={4}
@@ -85,13 +87,13 @@ class HomePage extends Component {
                     type="handbook"
                     typeSec="handbook"
                     listHandbook={listDataHandbookRedux}
-                    title="Cẩm nang"
-                    button="tất cả bài viết"
+                    title={<FormattedMessage id="homepage.handbook" />}
+                    button={<FormattedMessage id="homepage.all-handbook" />}
                     modal="modalHandbook"
                     toggleModel={this.toggleModel}
                     slideShow={2}
                 />
-                <About title="Truyền thông nói về BookingCares" />
+                <About title={<FormattedMessage id="homepage.about" />} />
                 <Footer />
             </div>
         );

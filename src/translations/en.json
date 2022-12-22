@@ -82,7 +82,13 @@
     },
     "homepage": {
         "out-standing-doctor": "Out standing doctor",
-        "more": "More"
+        "more": "More",
+        "specialty": "Popular specialties",
+        "clinic": "Outstanding medical facility",
+        "handbook": "Handbook",
+        "about": "Media talk about BookingCare",
+        "search": "Search",
+        "all-handbook": "All"
     },
     "schedule": {
         "title": "MANAGE DOCTOR'S EXAMINATION PLAN",
@@ -126,6 +132,10 @@
             "title-verify-success": "Appointment confirmed successfully",
             "title-verify-fail": "Appointment does not exist or has been verified",
             "home": "Home"
+        },
+        "doctor": {
+            "more": "More",
+            "hide": "Hide less"
         }
     },
     "admin": {

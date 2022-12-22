@@ -23,6 +23,7 @@ class DetailSpecialty extends Component {
             listProvince: [],
             specialtyId: '',
             selectedProvinceId: '',
+            moreDetail: false,
         };
     }
     async componentDidMount() {
@@ -77,21 +78,36 @@ class DetailSpecialty extends Component {
             });
         }
     };
+
+    handleClickMore = () => {
+        this.setState({
+            moreDetail: !this.state.moreDetail,
+        });
+    };
     render() {
         let {} = this.props;
-        let { introSpecialty, backgroundImage, nameSpecialty, doctors, listProvince } = this.state;
+        let { introSpecialty, backgroundImage, nameSpecialty, doctors, listProvince, moreDetail } = this.state;
 
         return (
             <div className="detail-specialty-wrapper">
                 <HomeHeader />
                 <div className="detail-specialty-container">
-                    <div className="header-intro" style={{ backgroundImage: `url(${backgroundImage})` }}>
-                        <div className="header-image"></div>
+                    <div className="header-intro">
+                        <div className="header-image">
+                            <img src={backgroundImage} alt="img"></img>
+                        </div>
                         <div className="header-text coverArea">
                             <div
-                                className="detail-specialty"
+                                className={!moreDetail ? `detail-specialty more-detail-specialty` : 'detail-specialty'}
                                 dangerouslySetInnerHTML={{ __html: introSpecialty }}
                             ></div>
+                            <div className="btn-more" onClick={() => this.handleClickMore()}>
+                                {!moreDetail ? (
+                                    <FormattedMessage id="patient.doctor.more" />
+                                ) : (
+                                    <FormattedMessage id="patient.doctor.hide" />
+                                )}
+                            </div>
                         </div>
                     </div>
 

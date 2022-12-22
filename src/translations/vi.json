@@ -83,7 +83,13 @@
     },
     "homepage": {
         "out-standing-doctor": "Bác sĩ nổi bật tuần qua",
-        "more": "Xem thêm"
+        "more": "Xem thêm",
+        "specialty": "Chuyên khoa phổ biến",
+        "clinic": "Cơ sở y tế nổi bật",
+        "handbook": "Cẩm nang",
+        "about": "Truyền thông nói về BookingCares",
+        "search": "Tìm kiếm",
+        "all-handbook": "Tất cả bài viết"
     },
     "schedule": {
         "title": "Quản lý kế hoạch khám bệnh của bác sĩ",
@@ -129,6 +135,10 @@
             "title-verify-success": "Xác nhận lịch hẹn thành công",
             "title-verify-fail": "Lịch hẹn không tồn tại hoặc đã được xác minh",
             "home": "Về trang chủ"
+        },
+        "doctor": {
+            "more": "Xem thêm",
+            "hide": "Ẩn bớt"
         }
     },
     "admin": {

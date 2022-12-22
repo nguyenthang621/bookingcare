@@ -28,11 +28,12 @@ class DetailDoctor extends Component {
         let doctorId = this.props.doctorId ? this.props.doctorId : this.props.match.params.id;
 
         let detailDoctor = await getDetailDoctorService(doctorId);
-
-        this.setState({
-            dataCurrentDoctor: detailDoctor.data,
-            doctorId: doctorId,
-        });
+        if (detailDoctor) {
+            this.setState({
+                dataCurrentDoctor: detailDoctor.data,
+                doctorId: doctorId,
+            });
+        }
     }
     async componentDidUpdate(prevProps) {
         if (
