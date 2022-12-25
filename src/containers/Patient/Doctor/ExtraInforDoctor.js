@@ -28,7 +28,7 @@ class ExtraInforDoctor extends Component {
             typePayment: doctorInfor.paymentData,
             province: doctorInfor.provinceData,
             note: doctorInfor.note,
-            nameClinic: doctorInfor.clinicData.nameClinic,
+            nameClinic: doctorInfor.clinicData?.nameClinic,
         });
     }
     componentDidUpdate(prevProps) {
@@ -44,20 +44,20 @@ class ExtraInforDoctor extends Component {
         let { price, addressClinic, typePayment, note, province, nameClinic } = this.state;
 
         if (languageRedux === LANGUAGES.VI) {
-            price = price.valueVi;
-            province = province.valueVi;
-            if (typePayment.keyMap === 'PAY3') {
+            price = price?.valueVi;
+            province = province?.valueVi;
+            if (typePayment?.keyMap === 'PAY3') {
                 typePayment = 'tiền mặt và quẹt thẻ';
             } else {
-                typePayment = typePayment.valueVi;
+                typePayment = typePayment?.valueVi;
             }
         } else {
-            price = price.valueEn;
-            province = province.valueEn;
-            if (typePayment.keyMap === 'PAY3') {
+            price = price?.valueEn;
+            province = province?.valueEn;
+            if (typePayment?.keyMap === 'PAY3') {
                 typePayment = 'cash and by swiping a card';
             } else {
-                typePayment = typePayment.valueEn;
+                typePayment = typePayment?.valueEn;
             }
         }
         return (
