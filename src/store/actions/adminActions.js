@@ -3,6 +3,7 @@ import {
     getAllCodeServices,
     createUserServices,
     getUsersById,
+    filterAndPagingUser,
     deleteUserServices,
     editUserServices,
     checkQueueNewsServices,
@@ -74,7 +75,7 @@ export const createNewUserRedux = (dataUser) => {
                     draggable: true,
                     progress: undefined,
                 });
-                dispatch(fetchAllUser());
+                dispatch(filterAndPagingUserRedux());
             } else {
                 dispatch(createNewUserReduxFail());
                 toast.error(res.message, {
@@ -103,57 +104,30 @@ const createNewUserReduxFail = () => ({
 //----------------------------------------------------------------
 // fetch all users :
 
-export const fetchAllUser = () => {
+export const filterAndPagingUserRedux = (paramsSearch) => {
     return async (dispatch) => {
         try {
-            let res = await getUsersById('ALL');
+            let res = await filterAndPagingUser(paramsSearch);
             if (res && res.errorCode === 0) {
-                dispatch(getAllUserReduxSuccess(res.users));
+                dispatch(filterAndPagingUserReduxSuccess(res.data));
             } else {
                 console.log('errorCode -1');
-                dispatch(getAllUserReduxFail());
+                dispatch(filterAndPagingUserReduxFail());
             }
         } catch (error) {
             console.log('fail get all user redux :', error);
-            dispatch(getAllUserReduxFail());
+            dispatch(filterAndPagingUserReduxFail());
         }
     };
 };
 
-const getAllUserReduxSuccess = (allUser) => ({
+const filterAndPagingUserReduxSuccess = (data) => ({
     type: actionTypes.FETCH_ALL_USER_SUCCESS,
-    data: allUser,
+    data,
 });
-const getAllUserReduxFail = () => ({
+const filterAndPagingUserReduxFail = () => ({
     type: actionTypes.FETCH_ALL_USER_FAIL,
 });
-
-// delete user:
-export const deleteUserRedux = (userId) => {
-    return async (dispatch) => {
-        try {
-            let res = await deleteUserServices(userId);
-            if (res && res.errorCode === 0) {
-                dispatch({ type: actionTypes.DELETE_USER_SUCCESS });
-                toast.success('delete done', {
-                    position: 'top-right',
-                    autoClose: 3000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-                dispatch(fetchAllUser());
-            } else {
-                dispatch({ type: actionTypes.DELETE_USER_FAIL });
-            }
-        } catch (error) {
-            console.log('delete user fail: ', error);
-            dispatch({ type: actionTypes.DELETE_USER_FAIL });
-        }
-    };
-};
 
 // update user
 
@@ -172,7 +146,7 @@ export const editUserRedux = (user) => {
                     draggable: true,
                     progress: undefined,
                 });
-                dispatch(fetchAllUser());
+                dispatch(filterAndPagingUserRedux());
             } else {
                 dispatch({ type: actionTypes.UPDATE_USER_FAIL });
             }

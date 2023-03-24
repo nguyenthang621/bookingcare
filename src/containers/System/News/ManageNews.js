@@ -11,6 +11,7 @@ import './ManageNews.scss';
 import Ckeditor from '../Admin/Ckeditor';
 import { toast } from 'react-toastify';
 import { uploadFileToFirebase } from '../../../firebase/uploadFile';
+import CKeditor from '../../../components/CKeditor/CKeditor';
 
 import _ from 'lodash';
 
@@ -73,12 +74,7 @@ class ManageNews extends Component {
             adviser: adviser.join(),
         });
     };
-    handleEditorChange = ({ html, text }) => {
-        this.setState({
-            contentHtml: html,
-            contentMarkdown: text,
-        });
-    };
+
     handleOnchangeImage = async (e) => {
         let data = e.target.files;
         let file = data[0];
@@ -87,6 +83,12 @@ class ManageNews extends Component {
             let objectUrl = URL.createObjectURL(file);
             this.setState({ previewImageUrl: objectUrl, isShowBoxImage: true, image: base64, file: file });
         }
+    };
+
+    handleEditorChange = (data) => {
+        this.setState({
+            contentHtml: data,
+        });
     };
     handleClickSubmit = async () => {
         let { adviser, authors, title, type, contentMarkdown, contentHtml, image, topic, focus, file } = this.state;
@@ -98,46 +100,46 @@ class ManageNews extends Component {
             .join('');
         htmlFocus = `<ul>${htmlFocus}</ul>`;
         let imageURL = await uploadFileToFirebase(PATH_FIREBASE.NEWS_IMAGE, file);
-        console.log(imageURL);
-        // let data = { adviser, authors, title, type, contentMarkdown, contentHtml, image: imageURL, topic, htmlFocus };
-        // let response = await postNewsServices(data);
-        // if (response && response.errorCode === 0) {
-        //     toast.success(response.message, {
-        //         position: 'top-right',
-        //         autoClose: 3000,
-        //         hideProgressBar: true,
-        //         closeOnClick: true,
-        //         pauseOnHover: true,
-        //         draggable: true,
-        //         progress: undefined,
-        //     });
-        //     this.setState({
-        //         isShowBoxImage: false,
-        //         isRoomImage: false,
-        //         previewImageUrl: '',
-        //         image: '',
 
-        //         adviser: '',
-        //         authors: '',
-        //         title: '',
-        //         type: '',
-        //         topic: '',
-        //         focus: '',
+        let data = { adviser, authors, title, type, contentMarkdown, contentHtml, image: imageURL, topic, htmlFocus };
+        let response = await postNewsServices(data);
+        if (response && response.errorCode === 0) {
+            toast.success(response.message, {
+                position: 'top-right',
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            this.setState({
+                isShowBoxImage: false,
+                isRoomImage: false,
+                previewImageUrl: '',
+                image: '',
 
-        //         contentHtml: '',
-        //         contentMarkdown: '',
-        //     });
-        // } else if (response && response.errorCode === 1) {
-        //     toast.error(response.message, {
-        //         position: 'top-right',
-        //         autoClose: 3000,
-        //         hideProgressBar: true,
-        //         closeOnClick: true,
-        //         pauseOnHover: true,
-        //         draggable: true,
-        //         progress: undefined,
-        //     });
-        // }
+                adviser: '',
+                authors: '',
+                title: '',
+                type: '',
+                topic: '',
+                focus: '',
+
+                contentHtml: '',
+                contentMarkdown: '',
+            });
+        } else if (response && response.errorCode === 1) {
+            toast.error(response.message, {
+                position: 'top-right',
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
     };
 
     render() {
@@ -256,7 +258,8 @@ class ManageNews extends Component {
                             {/* <FormattedMessage id="admin.manage-doctor.detail-doctor" /> */}
                             Bài viết:
                         </label>
-                        <Ckeditor handleEditorChange={this.handleEditorChange} value={contentMarkdown} />
+                        {/* <Ckeditor handleEditorChange={this.handleEditorChange} value={contentMarkdown} /> */}
+                        <CKeditor handleEditorChange={this.handleEditorChange} value={this.state.contentHtml} />
                     </div>
                 </div>
                 <div className="container_btn coverArea">

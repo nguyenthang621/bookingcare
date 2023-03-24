@@ -5,12 +5,18 @@ import * as actions from '../../../store/actions';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import TableManageUser from './TableManageUser';
+import { toast } from 'react-toastify';
+import { deleteUserServices } from '../../../services';
+import actionTypes from '../../../store/actions/actionTypes';
 
-import { LANGUAGES, CRUD_ACTIONS, CommonUtils, PATH_FIREBASE } from '../../../utils';
-import { uploadFileToFirebase } from '../../../firebase/uploadFile';
+import { CRUD_ACTIONS, CommonUtils } from '../../../utils';
 
 import './UserRedux.scss';
-import { FaFileUpload } from 'react-icons/fa';
+
+import ModalUser from '../ModalUser';
+import ModalConfirm from '../ModalConfirm.js';
+import SearchInput from '../../../components/SearchInput.js';
+import FooterPaging from '../../../components/FooterPaging.js';
 
 class UserRedux extends Component {
     constructor(props) {
@@ -36,18 +42,27 @@ class UserRedux extends Component {
             position: '',
             roleId: '',
             avatar: '',
-            previewImageUrl: '',
 
             currentAction: CRUD_ACTIONS.CREATE,
             currentIdUserEdit: '',
+            isOpenModel: false, // model create user
+            isShowModalConfirm: false, // model confirm
+            currentUserId: '',
+
+            keywordSearchUser: '',
+            page: 1,
+            limit: 10,
+
+            PageIndex: 1,
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.props.fetchKeyFromRedux();
+        await this.props.fetchAllUSerRedux(this.props.paramsSearchRedux);
     }
 
-    componentDidUpdate(prevProps) {
+    async componentDidUpdate(prevProps, prevState) {
         if (prevProps.keyForm !== this.props.keyForm) {
             let { genders, positions, roles } = this.props.keyForm;
             this.setState({
@@ -78,6 +93,11 @@ class UserRedux extends Component {
             });
         }
     }
+
+    handleToggleModel = () => {
+        this.setState({ isOpenModel: !this.state.isOpenModel });
+    };
+
     handleOnchangeImage = async (e) => {
         let data = e.target.files;
         let file = data[0];
@@ -87,99 +107,6 @@ class UserRedux extends Component {
             let objectUrl = URL.createObjectURL(file);
             this.setState({ previewImageUrl: objectUrl, isShowBoxImage: true, avatar: base64, file: file });
         }
-    };
-    handleOnchangeInput = (e, key) => {
-        let copyState = { ...this.state };
-        copyState[key] = e.target.value;
-        this.setState({
-            ...copyState,
-        });
-    };
-
-    handleClickSubmit = async () => {
-        let { file, fileURL } = this.state;
-        if (!file) return;
-
-        // await uploadFileToFirebase(PATH_FIREBASE.USER, file, this.handleSaveUser);
-        let imageURL = await uploadFileToFirebase(PATH_FIREBASE.USER, file);
-        this.handleSaveUser(imageURL);
-    };
-
-    handleSaveUser = async (imageURL) => {
-        let checkValidate = this.checkValidate();
-        if (!checkValidate) return;
-        if (this.state.currentAction === CRUD_ACTIONS.CREATE) {
-            await this.props.createNewUser({
-                email: this.state.email,
-                password: this.state.password,
-                firstName: this.state.firstName,
-                lastName: this.state.lastName,
-                address: this.state.address,
-                phoneNumber: this.state.phoneNumber,
-                gender: this.state.gender,
-                position: this.state.position,
-                roleId: this.state.roleId,
-                // avatar: this.state.avatar,
-                fileURL: imageURL,
-            });
-        }
-        if (this.state.currentAction === CRUD_ACTIONS.EDIT) {
-            await this.props.editUserRedux({
-                id: this.state.currentIdUserEdit,
-                email: this.state.email,
-                password: this.state.password,
-                firstName: this.state.firstName,
-                lastName: this.state.lastName,
-                address: this.state.address,
-                phoneNumber: this.state.phoneNumber,
-                gender: this.state.gender,
-                position: this.state.position,
-                roleId: this.state.roleId,
-                fileURL: imageURL,
-            });
-            this.setState({
-                currentAction: CRUD_ACTIONS.CREATE,
-                isShowBoxImage: false,
-            });
-        }
-        let { genders, positions, roles } = this.props.keyForm;
-
-        this.setState({
-            email: '',
-            password: '',
-            firstName: '',
-            lastName: '',
-            address: '',
-            phoneNumber: '',
-            avatar: '',
-
-            gender: genders && genders.length > 0 ? genders[0].keyMap : '',
-            position: positions && positions.length > 0 ? positions[0].keyMap : '',
-            roleId: roles && roles.length > 0 ? roles[0].keyMap : '',
-        });
-    };
-
-    checkValidate = () => {
-        let check = true;
-        let inputs = [
-            'email',
-            'firstName',
-            'lastName',
-            'address',
-            'password',
-            'phoneNumber',
-            'gender',
-            'position',
-            'roleId',
-        ];
-        for (let i = 0; i < inputs.length; i++) {
-            if (!this.state[inputs[i]]) {
-                check = false;
-                alert('missing parameter ' + inputs[i]);
-                break;
-            }
-        }
-        return check;
     };
 
     handleClickEditUser = (dataUser) => {
@@ -199,259 +126,159 @@ class UserRedux extends Component {
             currentAction: CRUD_ACTIONS.EDIT,
             currentIdUserEdit: dataUser.id,
         });
+        this.handleToggleModel();
     };
-    handleCancelEdit = () => {
-        let { genders, positions, roles } = this.props.keyForm;
 
+    handleShowModal = () => {
+        this.handleToggleModel();
+        this.setState({ currentAction: CRUD_ACTIONS.CREATE, previewImageUrl: '', isShowBoxImage: false });
+    };
+
+    handleShowPreviewAvatar = () => {
+        this.setState({ isRoomImage: true });
+    };
+    handleOnchangeInput = (e, key) => {
+        let copyState = { ...this.state };
+        copyState[key] = e.target.value;
         this.setState({
-            email: '',
-            firstName: '',
-            lastName: '',
-            address: '',
-            password: '',
-            phoneNumber: '',
-
-            gender: genders && genders.length > 0 ? genders[0].keyMap : '',
-            position: positions && positions.length > 0 ? positions[0].keyMap : '',
-            roleId: roles && roles.length > 0 ? roles[0].keyMap : '',
-            currentAction: CRUD_ACTIONS.CREATE,
+            ...copyState,
+        });
+    };
+    toggleModelConfirm = (userId) => {
+        this.setState({
+            isShowModalConfirm: !this.state.isShowModalConfirm,
+            currentUserId: userId,
         });
     };
 
+    handleSearchUser = (currentKeyword) => {
+        let { keywordSearchUser, page, limit } = this.state;
+        try {
+            // this.setState({
+            //     keywordSearchUser: currentKeyword,
+            // });
+            this.props.setCurrentKeywordRedux(currentKeyword, page, limit);
+            console.log(this.props.paramsSearchRedux);
+            this.props.fetchAllUSerRedux(this.props.paramsSearchRedux);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    handleChangePage = async (numberPage) => {
+        let { currentKeyword, page, limit } = this.state;
+        if (numberPage === 'next') {
+            if (page < this.props.totalPageRedux) {
+                this.setState({
+                    page: this.state.page + 1,
+                });
+                await this.props.setCurrentKeywordRedux(currentKeyword, numberPage, limit);
+            }
+        } else if (numberPage === 'back') {
+            if (page > 1) {
+                this.setState({
+                    page: this.state.page - 1,
+                });
+                await this.props.setCurrentKeywordRedux(currentKeyword, numberPage, limit);
+            }
+        } else {
+            console.log('numberPage', numberPage);
+            this.setState({
+                page: +numberPage,
+            });
+            await this.props.setCurrentKeywordRedux(currentKeyword, numberPage, limit);
+        }
+        await this.props.fetchAllUSerRedux(this.props.paramsSearchRedux);
+    };
+
+    // delete user:
+    deleteUser = async (userId) => {
+        try {
+            let res = await deleteUserServices(userId);
+            if (res && res.errorCode === 0) {
+                toast.success('Xoá người dùng thành công', {
+                    position: 'top-right',
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                this.setState({
+                    isShowModalConfirm: !this.state.isShowModalConfirm,
+                    currentUserId: '',
+                });
+                this.props.fetchAllUSerRedux();
+            } else {
+                toast.error(res.message, {
+                    position: 'top-right',
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
+        } catch (error) {
+            console.log('delete user fail: ', error);
+        }
+    };
+
     render() {
-        let { languageRedux } = this.props;
-        let {
-            email,
-            firstName,
-            lastName,
-            address,
-            password,
-            phoneNumber,
-            genders,
-            positions,
-            roles,
-            gender,
-            position,
-            roleId,
-            currentAction,
-        } = this.state;
+        let { isShowModalConfirm, page } = this.state;
+        let { paramsSearchRedux } = this.props;
+
         return (
             <div className="user-redux-container" id="user-redux">
-                <div className="title">User react-redux</div>
-                <div className="use-redux-body">
-                    <div className="container mt-4">
-                        <div className="text">
-                            <span>
-                                <FormattedMessage id="manage-user.add" />
-                            </span>
-                        </div>
-                        <div className="form-container">
-                            <div className="form-row">
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="inputEmail4">
-                                        <FormattedMessage id="manage-user.email" />
-                                    </label>
-                                    <input
-                                        type="email"
-                                        className="form-control"
-                                        placeholder="Email"
-                                        value={email}
-                                        onChange={(e) => this.handleOnchangeInput(e, 'email')}
-                                        disabled={currentAction === CRUD_ACTIONS.EDIT ? true : false}
-                                    />
-                                </div>
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="inputPassword4">
-                                        <FormattedMessage id="manage-user.password" />
-                                    </label>
-                                    <input
-                                        type="password"
-                                        className="form-control"
-                                        placeholder="Password"
-                                        value={password}
-                                        onChange={(e) => this.handleOnchangeInput(e, 'password')}
-                                        disabled={currentAction === CRUD_ACTIONS.EDIT ? true : false}
-                                    />
-                                </div>
-                            </div>
-                            <div className="form-row">
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="inputEmail4">
-                                        <FormattedMessage id="manage-user.firstName" />
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="First name"
-                                        value={firstName}
-                                        onChange={(e) => this.handleOnchangeInput(e, 'firstName')}
-                                    />
-                                </div>
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="inputPassword4">
-                                        <FormattedMessage id="manage-user.lastName" />
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="Last name"
-                                        value={lastName}
-                                        onChange={(e) => this.handleOnchangeInput(e, 'lastName')}
-                                    />
-                                </div>
-                            </div>
-                            <div className="form-row">
-                                <div className="form-group col-md-9">
-                                    <label htmlFor="inputAddress">
-                                        <FormattedMessage id="manage-user.address" />
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="1234 Main St"
-                                        value={address}
-                                        onChange={(e) => this.handleOnchangeInput(e, 'address')}
-                                    />
-                                </div>
-                                <div className="form-group col-md-3">
-                                    <label htmlFor="inputPassword4">
-                                        <FormattedMessage id="manage-user.phoneNumber" />
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="098"
-                                        value={phoneNumber}
-                                        onChange={(e) => this.handleOnchangeInput(e, 'phoneNumber')}
-                                    />
-                                </div>
-                            </div>
-                            <div className="form-row">
-                                <div className="form-group col-md-3">
-                                    <label htmlFor="inputState">
-                                        <FormattedMessage id="manage-user.gender" />
-                                    </label>
-                                    <select
-                                        id="inputState"
-                                        className="form-control"
-                                        onChange={(e) => this.handleOnchangeInput(e, 'gender')}
-                                        value={gender}
-                                    >
-                                        {genders &&
-                                            genders.length > 0 &&
-                                            genders.map((gender) => {
-                                                return (
-                                                    <option key={gender.id} value={gender.keyMap}>
-                                                        {languageRedux === LANGUAGES.VI
-                                                            ? gender.valueVi
-                                                            : gender.valueEn}
-                                                    </option>
-                                                );
-                                            })}
-                                    </select>
-                                </div>
-                                <div className="form-group col-md-3">
-                                    <label htmlFor="inputState">Position</label>
-
-                                    <select
-                                        value={position}
-                                        id="inputState"
-                                        className="form-control"
-                                        onChange={(e) => this.handleOnchangeInput(e, 'position')}
-                                    >
-                                        {positions &&
-                                            positions.length > 0 &&
-                                            positions.map((position) => {
-                                                return (
-                                                    <option key={position.id} value={position.keyMap}>
-                                                        {languageRedux === LANGUAGES.VI
-                                                            ? position.valueVi
-                                                            : position.valueEn}
-                                                    </option>
-                                                );
-                                            })}
-                                    </select>
-                                </div>
-                                <div className="form-group col-md-3">
-                                    <label htmlFor="inputState">Role</label>
-                                    <select
-                                        value={roleId}
-                                        id="inputState"
-                                        className="form-control"
-                                        onChange={(e) => this.handleOnchangeInput(e, 'roleId')}
-                                    >
-                                        {roles &&
-                                            roles.length > 0 &&
-                                            roles.map((role) => {
-                                                return (
-                                                    <option key={role.id} value={role.keyMap}>
-                                                        {languageRedux === LANGUAGES.VI ? role.valueVi : role.valueEn}
-                                                    </option>
-                                                );
-                                            })}
-                                    </select>
-                                </div>
-
-                                <div className="form-group col-md-3 upload-file-container">
-                                    <label htmlFor="inputCity">
-                                        <FormattedMessage id="manage-user.image" />
-                                    </label>
-                                    <div className="btn-container">
-                                        <input
-                                            id="uploadFile"
-                                            type="file"
-                                            className="form-control"
-                                            hidden
-                                            onChange={(e) => this.handleOnchangeImage(e)}
-                                        />
-                                        <label className="text-upload" htmlFor="uploadFile">
-                                            <FormattedMessage id="manage-user.uploadImage" />
-                                            <FaFileUpload className="icon-upload" />
-                                        </label>
-                                        {this.state.isShowBoxImage && (
-                                            <div
-                                                className="preview"
-                                                style={{ backgroundImage: `url(${this.state.previewImageUrl})` }}
-                                                onClick={() => this.setState({ isRoomImage: true })}
-                                            ></div>
-                                        )}
-                                    </div>
-                                    {this.state.isRoomImage && (
-                                        <Lightbox
-                                            mainSrc={this.state.previewImageUrl}
-                                            onCloseRequest={() => this.setState({ isRoomImage: false })}
-                                        />
-                                    )}
-                                </div>
-                            </div>
-                            <button
-                                type="text"
-                                className={
-                                    this.state.currentAction === CRUD_ACTIONS.EDIT
-                                        ? 'btn btn-warning'
-                                        : 'btn btn-primary'
-                                }
-                                onClick={() => this.handleClickSubmit()}
-                            >
-                                {this.state.currentAction === CRUD_ACTIONS.EDIT ? (
-                                    <FormattedMessage id="manage-user.edit" />
-                                ) : (
-                                    <FormattedMessage id="manage-user.save" />
-                                )}
-                            </button>
-                            {this.state.currentAction === CRUD_ACTIONS.EDIT && (
-                                <button className="btn btn-secondary ml-3" onClick={() => this.handleCancelEdit()}>
-                                    {this.state.currentAction === CRUD_ACTIONS.EDIT ? (
-                                        <FormattedMessage id="manage-user.cancel" />
-                                    ) : (
-                                        <FormattedMessage id="manage-user.cancel" />
-                                    )}
-                                </button>
-                            )}
-                        </div>
+                <div className="title">Quản lý người dùng</div>
+                <div className="wrapper-container">
+                    <div className="action-modal">
+                        <SearchInput placeholder="Tìm kiếm..." handleSearchUser={this.handleSearchUser} delay={800} />
+                        <button className="btn btn-primary btn-add-user" onClick={() => this.handleShowModal()}>
+                            <FormattedMessage id="manage-user.add" />
+                        </button>
                     </div>
+                    <ModalUser
+                        isOpenModel={this.state.isOpenModel}
+                        toggleModel={this.handleToggleModel}
+                        data={this.state}
+                        handleOnchangeInput={this.handleOnchangeInput}
+                        handleOnchangeImage={this.handleOnchangeImage}
+                        handleShowPreviewAvatar={this.handleShowPreviewAvatar}
+                    />
+                    {/* {this.state.isRoomImage && (
+                        <Lightbox
+                            mainSrc={this.state.previewImageUrl}
+                            onCloseRequest={() => this.setState({ isRoomImage: false })}
+                        />
+                    )} */}
+                    <TableManageUser
+                        handleClickEditUser={this.handleClickEditUser}
+                        toggleModelConfirm={this.toggleModelConfirm}
+                    />
+                    <FooterPaging
+                        TotalPage={this.props.totalPageRedux}
+                        PageIndex={paramsSearchRedux.page}
+                        TotalRecord={this.props.countRedux}
+                        handleChangePage={this.handleChangePage}
+                    />
+                    {isShowModalConfirm ? (
+                        <ModalConfirm
+                            toggleModel={this.toggleModel}
+                            isShowModalConfirm={isShowModalConfirm}
+                            toggleModelConfirm={this.toggleModelConfirm}
+                            handleDestroy={this.deleteUser}
+                            text="Xoá người dùng vĩnh viễn bạn chắc chắn chứ!"
+                            type="confirm"
+                            size="nm"
+                            currentUserId={this.state.currentUserId}
+                        />
+                    ) : (
+                        ''
+                    )}
                 </div>
-                <TableManageUser handleClickEditUser={this.handleClickEditUser} />
             </div>
         );
     }
@@ -462,15 +289,22 @@ const mapStateToProps = (state) => {
         languageRedux: state.app.language,
         keyForm: state.admin.keyForm,
         allUserRedux: state.admin.allUser,
+        totalPageRedux: state.admin.totalPage,
+        countRedux: state.admin.count,
+        paramsSearchRedux: state.user.paramsSearch,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchKeyFromRedux: () => dispatch(actions.fetchKeyForm()),
-        createNewUser: (dataUser) => dispatch(actions.createNewUserRedux(dataUser)),
-        fetchAllUSerRedux: () => dispatch(actions.fetchAllUser()),
+        fetchAllUSerRedux: (paramsSearch) => dispatch(actions.filterAndPagingUserRedux(paramsSearch)),
         editUserRedux: (user) => dispatch(actions.editUserRedux(user)),
+        setCurrentKeywordRedux: (keyword, page, limit) =>
+            dispatch({
+                type: actionTypes.SET_PARAMS_SEARCH,
+                data: { keyword, page, limit },
+            }),
     };
 };
 

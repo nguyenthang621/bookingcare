@@ -9,6 +9,11 @@ const initialState = {
     queueHandbook: '',
     detailUser: {},
     roleId: classCookies.getDataAccessToken()?.roleId,
+    paramsSearch: {
+        keyword: '',
+        page: 1,
+        limit: 10,
+    },
 };
 
 const userReducer = (state = initialState, action) => {
@@ -62,6 +67,15 @@ const userReducer = (state = initialState, action) => {
         case actionTypes.GET_QUEUE_HANDBOOK_FAIL:
             return {
                 ...state,
+            };
+        case actionTypes.SET_PARAMS_SEARCH:
+            return {
+                ...state,
+                paramsSearch: {
+                    keyword: action.data.keyword,
+                    page: action.data.page,
+                    limit: action.data.limit,
+                },
             };
 
         default:

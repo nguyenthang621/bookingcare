@@ -7,7 +7,7 @@ import { FaFileUpload } from 'react-icons/fa';
 import { postDetailClinicServices } from '../../../services/userServices';
 import { toast } from 'react-toastify';
 import './ManageClinic.scss';
-import Ckeditor from '../Admin/Ckeditor';
+import CKeditor from '../../../components/CKeditor/CKeditor';
 
 import { uploadMultiFileToFirebase } from '../../../firebase/uploadFile';
 
@@ -24,6 +24,7 @@ class ManageClinic extends Component {
             addressClinic: '',
             previewImageClinicUrl: '',
             previewImageLogoUrl: '',
+            contentHtml: '',
 
             files: [],
             fileURL: '',
@@ -40,7 +41,6 @@ class ManageClinic extends Component {
         if (file) {
             let base64 = await CommonUtils.getBase64(file);
             let objectUrl = URL.createObjectURL(file);
-            // this.setState({ [previewImageUrl]: objectUrl, [isShowBoxImage]: true, [image]: base64, file: file });
             this.setState({ [previewImageUrl]: objectUrl, [isShowBoxImage]: true, [image]: file });
         }
     };
@@ -111,10 +111,10 @@ class ManageClinic extends Component {
     };
 
     handleSave = async (images) => {
-        let { descriptionHtml, descriptionMarkdown, nameClinic, addressClinic } = this.state;
+        let { descriptionMarkdown, nameClinic, addressClinic, contentHtml } = this.state;
 
         let response = await postDetailClinicServices({
-            descriptionHtml,
+            descriptionHtml: contentHtml,
             descriptionMarkdown,
             imageClinic: images.imageClinic,
             imageLogo: images.imageLogo,
@@ -166,14 +166,15 @@ class ManageClinic extends Component {
         });
     };
 
+    handleEditorChange = (data) => {
+        this.setState({
+            contentHtml: data,
+        });
+    };
+
     render() {
         let {
             isChange,
-            descriptionHtml,
-            descriptionMarkdown,
-            imageClinic,
-            imageLogo,
-            files,
 
             nameClinic,
             addressClinic,
@@ -289,7 +290,7 @@ class ManageClinic extends Component {
                         {/* <FormattedMessage id="admin.manage-doctor.detail-doctor" /> */}
                         Detail specialty
                     </label>
-                    <Ckeditor handleEditorChange={this.handleEditorChange} value={descriptionMarkdown} />
+                    <CKeditor handleEditorChange={this.handleEditorChange} value={this.state.contentHtml} />
                 </div>
                 <div className="btn-save">
                     {isChange ? (

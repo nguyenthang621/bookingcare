@@ -9,8 +9,8 @@ import { toast } from 'react-toastify';
 import { uploadFileToFirebase } from '../../../firebase/uploadFile';
 
 import './Specialty.scss';
-import Ckeditor from '../Admin/Ckeditor';
-import Select from 'react-select';
+// import Ckeditor from '../Admin/Ckeditor';
+import CKeditor from '../../../components/CKeditor/CKeditor';
 
 class Specialty extends Component {
     constructor(props) {
@@ -25,6 +25,7 @@ class Specialty extends Component {
             file: '',
             isRoomImage: false,
             isShowBoxImage: false,
+            contentHtml: '',
         };
     }
     componentDidMount() {}
@@ -80,19 +81,18 @@ class Specialty extends Component {
         return result;
     };
 
-    handleEditorChange = ({ html, text }) => {
+    handleEditorChange = (data) => {
         this.setState({
-            descriptionHtml: html,
-            descriptionMarkdown: text,
+            contentHtml: data,
         });
     };
 
     handleClickSave = async () => {
-        let { descriptionHtml, descriptionMarkdown, specialty, file } = this.state;
+        let { descriptionMarkdown, specialty, file, contentHtml } = this.state;
         let imageURL = await uploadFileToFirebase(PATH_FIREBASE.SPECIALTY_IMAGE, file);
 
         let response = await postSpecialtyServices({
-            descriptionHtml,
+            descriptionHtml: contentHtml,
             descriptionMarkdown,
             image: imageURL,
             specialty,
@@ -130,6 +130,7 @@ class Specialty extends Component {
             });
         }
     };
+
     onChangeInput = (key, value) => {
         this.setState({
             [key]: value,
@@ -184,10 +185,10 @@ class Specialty extends Component {
                                 <FormattedMessage id="manage-user.uploadImage" />
                                 <FaFileUpload className="icon-upload" />
                             </label>
-                            {this.state.isShowBoxImage && (
+                            {isShowBoxImage && (
                                 <div
                                     className="preview "
-                                    style={{ backgroundImage: `url(${this.state.previewImageUrl})` }}
+                                    style={{ backgroundImage: `url(${previewImageUrl})` }}
                                     onClick={() => this.setState({ isRoomImage: true })}
                                 ></div>
                             )}
@@ -200,7 +201,7 @@ class Specialty extends Component {
                         {/* <FormattedMessage id="admin.manage-doctor.detail-doctor" /> */}
                         Detail specialty
                     </label>
-                    <Ckeditor handleEditorChange={this.handleEditorChange} value={descriptionMarkdown} />
+                    <CKeditor handleEditorChange={this.handleEditorChange} value={this.state.contentHtml} />
                 </div>
                 <div className="btn-save">
                     {isChange ? (

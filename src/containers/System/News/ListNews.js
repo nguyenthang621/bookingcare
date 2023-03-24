@@ -11,7 +11,6 @@ import './ListNews.scss';
 import { toast } from 'react-toastify';
 import ConfirmModal from '../../../components/ConfirmModal';
 
-import ModalConfirm from '../ModalConfirm';
 import ModalNews from './ModalNews';
 import SelectStatusId from '../Doctor/SelectStatusId';
 
@@ -72,6 +71,7 @@ class ListNews extends Component {
             id: id,
         });
     };
+
     acceptDeleteNews = async () => {
         let response = await deleteNewsServices(this.state.id);
         if (response && response.errorCode === 0) {

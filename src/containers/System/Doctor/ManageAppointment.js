@@ -11,7 +11,7 @@ import { classCookies } from '../../../cookies';
 import { FaUserMd } from 'react-icons/fa';
 import Loading from '../../../components/Loading';
 import SelectStatusId from './SelectStatusId';
-import ModalConfirm from '../ModalConfirm';
+import ModalConfirm from '../ModalConfirm.js';
 
 import _ from 'lodash';
 import moment from 'moment';

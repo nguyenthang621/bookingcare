@@ -5,8 +5,11 @@ import * as actions from '../../../store/actions';
 import { LANGUAGES } from '../../../utils';
 
 import './ManageDoctor.scss';
-import Ckeditor from './Ckeditor';
 import Select from 'react-select';
+import { toast } from 'react-toastify';
+import { saveDetailDoctorServices } from '../../../services';
+
+import CKeditor from '../../../components/CKeditor/CKeditor';
 
 class ManageDoctor extends Component {
     constructor(props) {
@@ -19,7 +22,6 @@ class ManageDoctor extends Component {
             description: '',
             allDoctor: [],
             detailDoctor: {},
-            isChange: false,
             //save to doctor_infor table
             listPrice: [],
             listPayment: [],
@@ -130,7 +132,6 @@ class ManageDoctor extends Component {
             let doctor_infor = detailDoctorRedux.Doctor_Infor;
 
             this.setState({
-                isChange: 'false',
                 selectedDoctor: selectedDoctor,
                 detailDoctor: this.props.detailDoctorRedux,
                 contentHtml: Markdown.contentHTML || '',
@@ -155,26 +156,22 @@ class ManageDoctor extends Component {
     };
     handleChangeTextArea = (e) => {
         this.setState({
-            isChange: 'true',
             description: e.target.value,
         });
     };
 
-    handleEditorChange = ({ html, text }) => {
+    handleEditorChange = (data) => {
         this.setState({
-            isChange: 'true',
-            contentHtml: html,
-            contentMarkdown: text,
+            contentHtml: data,
         });
     };
 
-    handleClickSave = () => {
-        this.props.saveDetailDoctorRedux({
+    handleClickSave = async () => {
+        let data = {
             contentHTML: this.state.contentHtml,
             contentMarkdown: this.state.contentMarkdown,
             description: this.state.description,
             doctorId: this.state.selectedDoctor.value,
-            isChange: this.state.isChange,
             selectedPrice: this.state.selectedPrice.value,
             selectedPayment: this.state.selectedPayment.value,
             selectedProvince: this.state.selectedProvince.value,
@@ -183,8 +180,31 @@ class ManageDoctor extends Component {
             nameClinic: this.state.selectedClinic.value,
             addressClinic: this.state.addressClinic,
             note: this.state.note,
-        });
+        };
+        let res = await saveDetailDoctorServices(data);
+        if (res && res.errorCode === 0) {
+            toast.success(res.message, {
+                position: 'top-right',
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        } else {
+            toast.error(res.message, {
+                position: 'top-right',
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
     };
+
     onChangeInput = (key, value) => {
         this.setState({
             [key]: value,
@@ -193,10 +213,10 @@ class ManageDoctor extends Component {
 
     render() {
         let {
-            isChange,
             allDoctor,
             description,
             contentMarkdown,
+            contentHtml,
             listPrice,
             listPayment,
             listProvince,
@@ -331,28 +351,18 @@ class ManageDoctor extends Component {
                     <label className="title-editor">
                         <FormattedMessage id="admin.manage-doctor.detail-doctor" />
                     </label>
-                    <Ckeditor handleEditorChange={this.handleEditorChange} value={contentMarkdown} />
+                    {/* <Ckeditor handleEditorChange={this.handleEditorChange} value={contentMarkdown} /> */}
+                    <CKeditor handleEditorChange={this.handleEditorChange} value={contentHtml} />
                 </div>
                 <div className="container_btn">
-                    {isChange === 'true' ? (
-                        <button
-                            className="btn btn-warning"
-                            onClick={() => {
-                                this.handleClickSave();
-                            }}
-                        >
-                            <FormattedMessage id="admin.manage-doctor.change" />
-                        </button>
-                    ) : (
-                        <button
-                            className="btn btn-primary"
-                            onClick={() => {
-                                this.handleClickSave();
-                            }}
-                        >
-                            <FormattedMessage id="admin.manage-doctor.save" />
-                        </button>
-                    )}
+                    <button
+                        className="btn btn-primary"
+                        onClick={() => {
+                            this.handleClickSave();
+                        }}
+                    >
+                        <FormattedMessage id="admin.manage-doctor.save" />
+                    </button>
                 </div>
             </div>
         );
@@ -372,7 +382,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         fetchAllDoctorRedux: () => dispatch(actions.fetchAllDoctor()),
         fetchRelateToDoctorInforRedux: () => dispatch(actions.fetchRelateToDoctorInfor()),
-        saveDetailDoctorRedux: (data) => dispatch(actions.saveDetailDoctor(data)),
         getDetailDoctorRedux: (id) => dispatch(actions.getDetailDoctor(id)),
     };
 };

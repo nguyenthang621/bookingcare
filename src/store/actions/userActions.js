@@ -20,8 +20,8 @@ export const userLoginFail = () => ({
 export const processLogout = () => {
     return async (dispatch) => {
         try {
-            let refreshToken = classStorage.getItemStorage('refreshToken');
-            let res = await processLogoutServices(refreshToken);
+            // let refreshToken = classStorage.getItemStorage('refreshToken');
+            let res = await processLogoutServices();
             if (res && res.errorCode === 0) {
                 dispatch({ type: actionTypes.PROCESS_LOGOUT_SUCCESS });
                 classCookies.removeToken('refreshToken');

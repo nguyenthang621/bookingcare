@@ -31,11 +31,6 @@ export const dateFormat = {
     SEND_TO_SERVER: 'DD/MM/YYYY',
 };
 
-export const YesNoObj = {
-    YES: 'Y',
-    NO: 'N',
-};
-
 export const TYPE_USER = {
     ADMIN: 'R1',
     DOCTOR: 'R2',

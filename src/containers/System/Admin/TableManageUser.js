@@ -10,10 +10,11 @@ class TableManageUser extends Component {
         super(props);
         this.state = {
             users: [],
+            keyForm: [],
         };
     }
     componentDidMount() {
-        this.props.fetchAllUSerRedux();
+        // this.props.fetchAllUSerRedux();
     }
 
     componentDidUpdate(prevProps) {
@@ -23,31 +24,50 @@ class TableManageUser extends Component {
             });
         }
     }
-    handleDeleteUser = (userId) => {
-        this.props.deleteUserRedux(userId);
+    handleClickDestroyUser = (userId) => {
+        this.props.toggleModelConfirm(userId);
+    };
+
+    convertKeyToValue = (itemId, arrData) => {
+        if (!itemId || arrData?.length <= 0) return '';
+        for (let item of arrData) {
+            if (item.keyMap === itemId) {
+                return item.valueVi;
+            }
+        }
     };
 
     render() {
         return (
             <React.Fragment>
-                <div className="users-table mt-3 mx-5 mr-2 ml-2 mb-5">
-                    <table id="customers">
+                <div className="users-table ">
+                    <table className="table table-hover">
                         <tbody>
-                            <tr>
+                            <tr className="fixedTop">
+                                <th>STT</th>
                                 <th>Email</th>
-                                <th>First name</th>
-                                <th>Last name</th>
-                                <th>Address</th>
-                                <th>Actions</th>
+                                <th>Họ tên</th>
+                                <th>Giới tính</th>
+                                <th>Địa chỉ</th>
+                                <th>Chức vụ</th>
+                                <th>Hành động</th>
                             </tr>
-                            {this.state.users.map((user) => {
+                            {this.state.users.map((user, index) => {
                                 return (
                                     <tr key={user.id}>
+                                        <td>{index + 1}</td>
                                         <td>{user.email}</td>
-                                        <td>{user.firstName}</td>
-                                        <td>{user.lastName}</td>
-                                        <td>{user.address}</td>
+                                        <td>{`${user.firstName} ${user.lastName}`}</td>
                                         <td>
+                                            {this.convertKeyToValue(user.gender, this.props?.keyForm?.genders || []) ||
+                                                ''}
+                                        </td>
+                                        <td>{user.address || ''}</td>
+                                        <td>
+                                            {this.convertKeyToValue(user.roleId, this.props?.keyForm?.roles || []) ||
+                                                ''}
+                                        </td>
+                                        <td className="dfc">
                                             <ScrollIntoView selector="#user-redux">
                                                 <button
                                                     className=" trans btn btn-edit"
@@ -60,7 +80,8 @@ class TableManageUser extends Component {
                                             </ScrollIntoView>
                                             <button
                                                 className=" trans btn btn-delete"
-                                                onClick={() => this.handleDeleteUser(user.id)}
+                                                // onClick={() => this.handleDeleteUser(user.id)}
+                                                onClick={() => this.handleClickDestroyUser(user.id)}
                                             >
                                                 <FaTrashAlt />
                                             </button>
@@ -79,13 +100,13 @@ class TableManageUser extends Component {
 const mapStateToProps = (state) => {
     return {
         allUserRedux: state.admin.allUser,
+        keyForm: state.admin.keyForm,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchAllUSerRedux: () => dispatch(actions.fetchAllUser()),
-        deleteUserRedux: (userId) => dispatch(actions.deleteUserRedux(userId)),
+        fetchAllUSerRedux: () => dispatch(actions.filterAndPagingUserRedux()),
     };
 };
 

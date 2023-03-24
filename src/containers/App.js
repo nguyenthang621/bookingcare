@@ -24,7 +24,6 @@ import ListSpecialty from './Patient/Specialty/ListSpecialty';
 
 import * as actions from '../store/actions';
 
-// import { CustomToastCloseButton } from '../components/CustomToast';
 import CustomScrollbars from '../components/CustomScrollbars';
 import VerifyBooking from './Patient/VerifyBooking';
 

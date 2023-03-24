@@ -43,41 +43,6 @@ export const fetchAllDoctor = () => {
     };
 };
 
-export const saveDetailDoctor = (data) => {
-    return async (dispatch) => {
-        try {
-            let res = await saveDetailDoctorServices(data);
-            if (res && res.errorCode === 0) {
-                let alert = data.isChange ? 'Change detail succeed' : 'Save detail succeed';
-                dispatch({ type: actionTypes.SAVE_DETAIL_DOCTOR_SUCCESS, data: res.data });
-                toast.success(alert, {
-                    position: 'top-right',
-                    autoClose: 3000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            } else {
-                toast.error(res.message, {
-                    position: 'top-right',
-                    autoClose: 3000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-                dispatch({ type: actionTypes.SAVE_DETAIL_DOCTOR_FAIL });
-            }
-        } catch (error) {
-            console.log(error);
-            dispatch({ type: actionTypes.SAVE_DETAIL_DOCTOR_FAIL });
-        }
-    };
-};
-
 export const getDetailDoctor = (id) => {
     return async (dispatch) => {
         try {

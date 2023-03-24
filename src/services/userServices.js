@@ -23,6 +23,14 @@ const getUsersById = async (inputId) => {
         console.log(error);
     }
 };
+const filterAndPagingUser = async (paramsSearch = {}) => {
+    let { page = 0, limit = 10, keyword = '' } = paramsSearch;
+    try {
+        return await axiosJWT.get(`/api/filter-user?page=${page}&limit=${limit}&keyword=${keyword}`);
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 const createUserServices = async (dataUser) => {
     try {
@@ -83,9 +91,9 @@ const refreshToken = async () => {
 };
 
 // logout
-const processLogoutServices = async (refreshToken) => {
+const processLogoutServices = async () => {
     try {
-        return await axiosJWT.post('/api/logout', { refreshToken: refreshToken });
+        return await axiosJWT.post('/api/logout');
     } catch (error) {
         console.log(error);
     }
@@ -173,4 +181,5 @@ export {
     deleteNewsServices,
     checkQueueNewsServices,
     checkQueueHandbookServices,
+    filterAndPagingUser,
 };

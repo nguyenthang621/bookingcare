@@ -38,57 +38,61 @@ class ModalConfirm extends Component {
 
     handleDestroy = async () => {
         let { emailPatient, title, reason } = this.state;
-        let { currentPatient, doctorId, initDate, languageRedux } = this.props;
-        this.setState({
-            isLoading: true,
-        });
-        let response = await confirmRemedyService({
-            email: emailPatient,
-            title,
-            reason,
-            doctorId: currentPatient.doctorId,
-            patientId: currentPatient.patientId,
-            timeType: currentPatient.timeType,
-            namePatient: currentPatient.namePatient,
-            exactTime: currentPatient.timeAppointment,
-            dataAccDoctor: currentPatient.dataAccDoctor,
-            language: languageRedux,
-            isDestroyAppointment: true,
-        });
-        if (response && response.errorCode === 0) {
+        let { currentPatient, doctorId, initDate, languageRedux, type, currentUserId } = this.props;
+        if (type === 'cancel-appointment') {
             this.setState({
-                isLoading: false,
-                title: '',
-                email: '',
-                reason: '',
-                isDestroyAppointment: false,
+                isLoading: true,
             });
-            toast.success(response.message, {
-                position: 'top-right',
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
+            let response = await confirmRemedyService({
+                email: emailPatient,
+                title,
+                reason,
+                doctorId: currentPatient.doctorId,
+                patientId: currentPatient.patientId,
+                timeType: currentPatient.timeType,
+                namePatient: currentPatient.namePatient,
+                exactTime: currentPatient.timeAppointment,
+                dataAccDoctor: currentPatient.dataAccDoctor,
+                language: languageRedux,
+                isDestroyAppointment: true,
             });
-            this.props.toggleModelConfirm();
-            await this.props.getAppointmentDoctorRedux(doctorId, initDate, this.props.statusIdRedux);
+            if (response && response.errorCode === 0) {
+                this.setState({
+                    isLoading: false,
+                    title: '',
+                    email: '',
+                    reason: '',
+                    isDestroyAppointment: false,
+                });
+                toast.success(response.message, {
+                    position: 'top-right',
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                this.props.toggleModelConfirm();
+                await this.props.getAppointmentDoctorRedux(doctorId, initDate, this.props.statusIdRedux);
+            } else {
+                toast.error('Some thing wrong, pls again', {
+                    position: 'top-right',
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
         } else {
-            toast.error('Some thing wrong, pls again', {
-                position: 'top-right',
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            this.props.handleDestroy(currentUserId);
         }
     };
 
     render() {
-        let { isShowModalConfirm, type } = this.props;
+        let { isShowModalConfirm, type, text, size } = this.props;
 
         let {} = this.state;
         return (
@@ -97,43 +101,49 @@ class ModalConfirm extends Component {
                     className="modal-booking-container"
                     isOpen={isShowModalConfirm}
                     toggle={() => this.toggle()}
-                    size="lg"
+                    size={size || 'lg'}
                     centered={true}
                 >
                     <ModalHeader toggle={() => this.toggle()}>Bạn thật sự muốn xoá</ModalHeader>
                     <ModalBody>
                         {' '}
-                        <div className="form-row ">
-                            <div className="form-group col-5">
-                                <label>Email bệnh nhân</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Email patient"
-                                    onChange={(e) => this.handleChangeInput(e, 'emailPatient')}
-                                    value={this.state.emailPatient}
-                                />
-                            </div>
-                            {type === 'cancel-appointment' && (
-                                <div className="form-group col-md-7">
-                                    <label htmlFor="inputCity">Tiêu đề mail</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="reason"
-                                        onChange={(e) => this.handleChangeInput(e, 'title')}
-                                        value={this.state.title}
-                                    />
+                        {type === 'cancel-appointment' ? (
+                            <div>
+                                <div className="form-row ">
+                                    <div className="form-group col-5">
+                                        <label>Email bệnh nhân</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Email patient"
+                                            onChange={(e) => this.handleChangeInput(e, 'emailPatient')}
+                                            value={this.state.emailPatient}
+                                        />
+                                    </div>
+                                    {type === 'cancel-appointment' && (
+                                        <div className="form-group col-md-7">
+                                            <label htmlFor="inputCity">Tiêu đề mail</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="reason"
+                                                onChange={(e) => this.handleChangeInput(e, 'title')}
+                                                value={this.state.title}
+                                            />
+                                        </div>
+                                    )}
                                 </div>
-                            )}
-                        </div>
-                        <textarea
-                            className="info-doctor form-control"
-                            rows="4"
-                            onChange={(e) => this.handleChangeInput(e, 'reason')}
-                            value={this.state.reason}
-                            placeholder="Lý do"
-                        ></textarea>
+                                <textarea
+                                    className="info-doctor form-control"
+                                    rows="4"
+                                    onChange={(e) => this.handleChangeInput(e, 'reason')}
+                                    value={this.state.reason}
+                                    placeholder="Lý do"
+                                ></textarea>
+                            </div>
+                        ) : (
+                            <p>{text}</p>
+                        )}
                     </ModalBody>
                     <ModalFooter>
                         <Button className=" button btn-save" color="danger" onClick={() => this.handleDestroy()}>
