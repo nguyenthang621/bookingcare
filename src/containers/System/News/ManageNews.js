@@ -8,7 +8,6 @@ import { postNewsServices } from '../../../services/userServices';
 import { FaFileUpload } from 'react-icons/fa';
 import Lightbox from 'react-image-lightbox';
 import './ManageNews.scss';
-import Ckeditor from '../Admin/Ckeditor';
 import { toast } from 'react-toastify';
 import { uploadFileToFirebase } from '../../../firebase/uploadFile';
 import CKeditor from '../../../components/CKeditor/CKeditor';
@@ -143,7 +142,7 @@ class ManageNews extends Component {
     };
 
     render() {
-        let { allDoctor, authors, title, type, contentMarkdown } = this.state;
+        let { allDoctor, authors, title, type } = this.state;
         return (
             <div className="handbook_container">
                 <div className="handbook-title">
@@ -181,7 +180,7 @@ class ManageNews extends Component {
                                 </label>
                                 {this.state.isShowBoxImage && (
                                     <div
-                                        className="preview pv-left"
+                                        className="preview pv-left preview-right"
                                         style={{ backgroundImage: `url(${this.state.previewImageUrl})` }}
                                         onClick={() => this.setState({ isRoomImage: true })}
                                     ></div>
@@ -258,7 +257,6 @@ class ManageNews extends Component {
                             {/* <FormattedMessage id="admin.manage-doctor.detail-doctor" /> */}
                             Bài viết:
                         </label>
-                        {/* <Ckeditor handleEditorChange={this.handleEditorChange} value={contentMarkdown} /> */}
                         <CKeditor handleEditorChange={this.handleEditorChange} value={this.state.contentHtml} />
                     </div>
                 </div>

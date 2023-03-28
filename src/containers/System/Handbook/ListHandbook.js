@@ -11,7 +11,7 @@ import './ListHandbook.scss';
 import { toast } from 'react-toastify';
 
 import ModalHandbook from './ModalHandbook';
-import SelectStatusId from '../Doctor/SelectStatusId';
+import SelectStatusId from '../../../components/SelectStatusId';
 import ConfirmModal from '../../../components/ConfirmModal';
 
 import _ from 'lodash';
@@ -53,8 +53,7 @@ class ListHandbook extends Component {
             isShowModalHandbook: !this.state.isShowModalHandbook,
         });
     };
-    handleChangeInput = async (e) => {
-        let statusId = e.target.value;
+    handleChangeInput = async (statusId) => {
         let listHandbook = await getHandbookServices('', 'manage', statusId);
         this.setState({
             listHandbook: listHandbook.data,
@@ -112,12 +111,12 @@ class ListHandbook extends Component {
     render() {
         let { listHandbook, isShowModalHandbook, id, statusId, isShowConfirmModal } = this.state;
         let {} = this.props;
-        let listSelect = {
-            new: <FormattedMessage id="admin.status.new" />,
-            confirmed: <FormattedMessage id="admin.status.confirmed" />,
-            canceled: <FormattedMessage id="admin.status.canceled" />,
-            states: { new: 'S1', confirmed: 'S2', canceled: 'S3' },
-        };
+
+        let listSelect = [
+            { text: <FormattedMessage id="admin.status.new" />, id: 'S1' },
+            { text: <FormattedMessage id="admin.status.confirmed" />, id: 'S2' },
+            { text: <FormattedMessage id="admin.status.canceled" />, id: 'S3' },
+        ];
         return (
             <div className="manage-handbook-container mt-2">
                 {isShowConfirmModal && (

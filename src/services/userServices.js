@@ -24,9 +24,9 @@ const getUsersById = async (inputId) => {
     }
 };
 const filterAndPagingUser = async (paramsSearch = {}) => {
-    let { page = 0, limit = 10, keyword = '' } = paramsSearch;
+    let { page = 0, limit = 10, keyword = '', roleId = '' } = paramsSearch;
     try {
-        return await axiosJWT.get(`/api/filter-user?page=${page}&limit=${limit}&keyword=${keyword}`);
+        return await axiosJWT.get(`/api/filter-user?page=${page}&limit=${limit}&keyword=${keyword}&roleId=${roleId}`);
     } catch (error) {
         console.log(error);
     }
@@ -161,6 +161,36 @@ const checkQueueNewsServices = async () => {
     }
 };
 
+const filterAndPagingClinic = async (page = 0, limit = 5, keyword = '') => {
+    try {
+        return await axiosJWT.get(`/api/filter-paging-clinic?page=${page}&limit=${limit}&keyword=${keyword}`);
+    } catch (error) {
+        console.log(error);
+    }
+};
+const filterAndPagingSpecialty = async (page = 0, limit = 5, keyword = '') => {
+    try {
+        return await axiosJWT.get(`/api/filter-paging-specialty?page=${page}&limit=${limit}&keyword=${keyword}`);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const deleteClinicByIdServices = async (id) => {
+    try {
+        return await axiosJWT.delete(`/api/clinic/${id}`);
+    } catch (error) {
+        console.log(error);
+    }
+};
+const deleteSpecialtyByIdServices = async (id) => {
+    try {
+        return await axiosJWT.delete(`/api/specialty/${id}`);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export {
     handleLoginApi,
     getUsersById,
@@ -182,4 +212,8 @@ export {
     checkQueueNewsServices,
     checkQueueHandbookServices,
     filterAndPagingUser,
+    filterAndPagingClinic,
+    deleteClinicByIdServices,
+    filterAndPagingSpecialty,
+    deleteSpecialtyByIdServices,
 };

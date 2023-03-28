@@ -5,7 +5,7 @@
         justify-content: center;
         flex-direction: column;
         padding: 24px;
-        padding-bottom: 48px;
+        padding-bottom: 60px;
         .text {
             margin: 40px 0px 25px 0px;
             & span {
@@ -34,11 +34,17 @@
         justify-content: space-between;
         margin-bottom: 16px;
         position: relative;
-        & .btn-add-user {
+        & .filter {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            // min-width: 700px;
+            & .filter-role {
+            }
         }
     }
     & .users-table {
-        height: 500px;
+        height: 70vh;
         overflow: auto;
         & table {
             padding-top: 84px;
@@ -54,42 +60,47 @@
     top: 0;
     background-color: #fff;
     pointer-events: none;
-    // border-top: 1px solid #ccc;
-    // border-bottom: 1px solid #ccc;
 }
-
-.upload-file-container {
-    .btn-container {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 6px 20px;
-        background-color: rgb(220, 226, 230);
-        border-radius: 4px;
-        opacity: 0.9;
-        &:hover {
-            opacity: 1;
-        }
-        .text-upload {
-            margin: 0;
-        }
-        .icon-upload {
-            margin: 0;
-            margin-left: 5px;
-            & svg {
+.user-redux-body {
+    & .container {
+        & .upload-file-container {
+            & .btn-container {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 6px 20px;
+                // background-color: rgb(220, 226, 230);
+                border-radius: 4px;
+                opacity: 0.9;
+                border: 2px dotted #ccc;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                &:hover {
+                    opacity: 1;
+                }
+                .text-upload {
+                    margin: 0;
+                }
+                .icon-upload {
+                    margin: 0;
+                    margin-left: 5px;
+                    & svg {
+                    }
+                }
+                .preview {
+                    position: absolute;
+                    top: 45px;
+                    width: 100%;
+                    height: 70px;
+                    border: 1px solid #ccc;
+                    background: center center no-repeat;
+                    background-size: contain;
+                    object-fit: contain;
+                    cursor: pointer;
+                }
             }
-        }
-        .preview {
-            position: absolute;
-            top: 45px;
-            width: 100%;
-            height: 70px;
-            border: 1px solid #ccc;
-            background: center center no-repeat;
-            background-size: contain;
-            object-fit: contain;
-            cursor: pointer;
         }
     }
 }

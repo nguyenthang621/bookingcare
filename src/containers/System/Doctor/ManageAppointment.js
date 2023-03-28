@@ -10,7 +10,7 @@ import './ManageAppointment.scss';
 import { classCookies } from '../../../cookies';
 import { FaUserMd } from 'react-icons/fa';
 import Loading from '../../../components/Loading';
-import SelectStatusId from './SelectStatusId';
+import SelectStatusId from '../../../components/SelectStatusId';
 import ModalConfirm from '../ModalConfirm.js';
 
 import _ from 'lodash';
@@ -83,9 +83,9 @@ class ManageAppointment extends Component {
         this.toggleModel();
     };
     // change input radio
-    handleChangeInput = async (e, key) => {
+    handleChangeInput = async (id) => {
         let { doctorId, initDate } = this.state;
-        await this.props.changeStatusIdRedux(e.target.value);
+        await this.props.changeStatusIdRedux(id);
         await this.props.getAppointmentDoctorRedux(doctorId, initDate, this.props.statusIdRedux);
     };
 
@@ -108,12 +108,13 @@ class ManageAppointment extends Component {
             isShowModalConfirm,
         } = this.state;
         let { languageRedux, statusIdRedux } = this.props;
-        let listSelect = {
-            new: <FormattedMessage id="appointment.newSchedule" />,
-            confirmed: <FormattedMessage id="appointment.confirmed" />,
-            canceled: <FormattedMessage id="appointment.canceled" />,
-            states: { new: 'S2', confirmed: 'S3', canceled: 'S4' },
-        };
+
+        let listSelect = [
+            { text: <FormattedMessage id="appointment.newSchedule" />, id: 'S2' },
+            { text: <FormattedMessage id="appointment.confirmed" />, id: 'S3' },
+            { text: <FormattedMessage id="appointment.canceled" />, id: 'S4' },
+        ];
+
         return (
             <div className="manage-schedule-container mt-2">
                 {isLoading && (

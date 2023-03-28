@@ -4,7 +4,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    .login-container {
+    & .login-container {
         max-width: 500px;
         min-width: 300px;
         min-height: 500px;
@@ -29,7 +29,7 @@
                     cursor: pointer;
                 }
             }
-            .btn-container {
+            & .btn-container {
                 display: flex;
                 align-items: center;
                 justify-content: center;

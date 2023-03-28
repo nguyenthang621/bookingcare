@@ -45,18 +45,20 @@
     "menu": {
         "admin": {
             "manage-user": "Người dùng",
-            "manage-doctor": "Quản lý bác sĩ",
+            "manage-doctor": "Tạo thông tin bác sĩ",
             "manage-admin": "Quản lý admin",
             "crud": "CRUD user",
             "crud-redux": "Quản lý người dùng",
             "manage-clinic": "Quản lý phòng khám",
             "clinic": "Quản lý phòng khám",
+            "listClinic": "Danh sách phòng khám",
             "manage-specialty": "Quản lý chuyên khoa",
             "specialty": "Quản lý chuyên khoa",
+            "listSpecialty": "Danh sách chuyên khoa",
             "manage-handbook": "Quản lý cẩm nang",
-            "handbook": "Quản lý cẩm nang",
+            "handbook": "Tạo cẩm nang",
             "listHandbook": "Danh sách cẩm nang",
-            "news": "Tin tức",
+            "news": "Tạo Tin tức",
             "listNews": "Danh sách tin tức"
         },
         "doctor": {
@@ -161,6 +163,12 @@
             "new": "Chờ xét duyệt",
             "confirmed": "Đã xác nhận",
             "canceled": "Đã huỷ"
+        },
+        "role": {
+            "all": "Tất cả",
+            "admin": "Quản trị viên",
+            "doctor": "Bác sĩ",
+            "patient": "Bệnh nhân"
         }
     }
 }

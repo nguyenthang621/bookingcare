@@ -18,14 +18,14 @@
         background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0.001));
     }
 
-    .content {
+    & .content {
         display: flex;
         align-items: center;
         justify-content: center;
         box-shadow: none;
         flex-direction: column;
         margin: 0;
-        .title-header {
+        & .title-header {
             // position: absolute;
             // z-index: 2;
             // top: 20%;
@@ -53,8 +53,7 @@
         }
 
         //search:
-        .search {
-            border: 1px solid rgb(209, 18, 18);
+        & .search {
             width: 456px;
             background: #f7d800;
             color: #fff;
@@ -62,12 +61,12 @@
             border-radius: 25px;
             border: 1px solid transparent;
             height: 50px;
-            overflow: hidden;
+            // overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            .icon-search {
+            & .icon-search {
                 width: 50px;
                 height: 50px;
                 font-size: 20px;
@@ -77,7 +76,7 @@
                 color: #000;
                 cursor: pointer;
             }
-            .input-search {
+            & .input-search {
                 outline: none;
                 border: none;
                 width: 90%;
@@ -87,7 +86,7 @@
                     display: block;
                 }
             }
-            .btn-clear {
+            & .btn-clear {
                 display: none;
                 position: absolute;
                 font-size: 16px;
@@ -95,9 +94,67 @@
                 right: 10px;
                 cursor: pointer;
             }
+
+            & .drop-down {
+                position: absolute;
+                background-color: #ffffff;
+                top: 60px;
+                border-radius: 4px 4px 12px 12px;
+                overflow: hidden;
+                width: inherit;
+                max-height: 230px;
+                overflow-y: scroll;
+                transition: all 0.25s linear;
+
+                &::-webkit-scrollbar-track {
+                    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+                    background-color: #f5f5f5;
+                }
+
+                &::-webkit-scrollbar {
+                    width: 6px;
+                    background-color: #f5f5f5;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background-color: #a4a4a4;
+                }
+
+                & .area {
+                    color: #333;
+                    & h4 {
+                        font-weight: bold;
+                        padding: 4px 8px;
+                        font-size: 14px;
+                        background-color: #eaeaea;
+                        margin: 0;
+                    }
+                    & .box-list-result {
+                        padding: 0;
+                        margin: 4px 0px;
+                        & .text-link {
+                            color: inherit;
+                            text-decoration: inherit;
+                        }
+                        & li {
+                            padding: 4px 8px;
+                            font-size: 13px;
+                            list-style-type: none;
+                            cursor: pointer;
+                            &:hover {
+                                background-color: #f5f4f4;
+                                color: #000;
+                            }
+                            &:not(:last-child) {
+                                border-bottom: 1px dotted #ccc;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
-        .layout-up {
+        & .layout-up {
             width: 100%;
             display: flex;
             align-items: center;
@@ -109,7 +166,7 @@
 
         //options:
 
-        .options {
+        & .options {
             display: flex;
             align-items: center;
             width: 100%;
@@ -120,7 +177,7 @@
                 rgba(255, 255, 255, 0.7),
                 rgba(255, 255, 255, 1)
             );
-            .item {
+            & .item {
                 width: 160px;
                 height: 122px;
                 font-size: 16px;
@@ -130,7 +187,7 @@
                 justify-content: center;
                 padding: 5px;
                 cursor: pointer;
-                .text-item {
+                & .text-item {
                     text-align: center;
                 }
                 &:hover .text-item {
@@ -139,7 +196,7 @@
                 &:hover .icon-item {
                     box-shadow: 1px 1px 2px var(--color-primary);
                 }
-                .icon-item {
+                & .icon-item {
                     background-color: #fff;
                     border-radius: 50%;
                     width: 50px;
@@ -157,7 +214,7 @@
                         object-fit: contain;
                     }
                 }
-                .text-item {
+                & .text-item {
                     flex: 1;
                     padding-top: 5px;
                     font-weight: bold;

@@ -65,6 +65,14 @@
     // }
 }
 
+.btn-container {
+    & .change-image {
+        & input,
+        label {
+        }
+    }
+}
+
 .dfc {
     display: flex;
     align-items: center;

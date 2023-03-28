@@ -14,12 +14,18 @@ export const adminMenu = [
     {
         //quản lý phòng khám:
         name: 'menu.admin.manage-clinic',
-        menus: [{ name: 'menu.admin.clinic', link: '/system/manage-clinic' }],
+        menus: [
+            { name: 'menu.admin.clinic', link: '/system/manage-clinic' },
+            // { name: 'menu.admin.listClinic', link: '/system/manage-clinic' },
+        ],
     },
     {
         //quản lý chuyên khoa:
         name: 'menu.admin.manage-specialty',
-        menus: [{ name: 'menu.admin.specialty', link: '/system/manage-specialty' }],
+        menus: [
+            { name: 'menu.admin.specialty', link: '/system/manage-specialty' },
+            // { name: 'menu.admin.listSpecialty', link: '/system/manage-specialty' },
+        ],
     },
 
     {

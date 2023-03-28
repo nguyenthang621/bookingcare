@@ -8,9 +8,9 @@ import { postHandbookServices } from '../../../services/userServices';
 import { FaFileUpload } from 'react-icons/fa';
 import Lightbox from 'react-image-lightbox';
 import './ManageHandbook.scss';
-import Ckeditor from '../Admin/Ckeditor';
 import { toast } from 'react-toastify';
 import { uploadFileToFirebase } from '../../../firebase/uploadFile';
+import CKeditor from '../../../components/CKeditor/CKeditor';
 
 import _ from 'lodash';
 
@@ -70,10 +70,9 @@ class ManageHandbook extends Component {
             adviser: adviser.join(),
         });
     };
-    handleEditorChange = ({ html, text }) => {
+    handleEditorChange = (data) => {
         this.setState({
-            contentHtml: html,
-            contentMarkdown: text,
+            contentHtml: data,
         });
     };
     handleOnchangeImage = async (e) => {
@@ -133,7 +132,7 @@ class ManageHandbook extends Component {
     };
 
     render() {
-        let { allDoctor, authors, title, contentMarkdown } = this.state;
+        let { allDoctor, authors, title } = this.state;
         return (
             <div className="handbook_container">
                 <div className="handbook-title">
@@ -171,7 +170,7 @@ class ManageHandbook extends Component {
                                 </label>
                                 {this.state.isShowBoxImage && (
                                     <div
-                                        className="preview pv-left"
+                                        className="preview pv-left preview-right"
                                         style={{ backgroundImage: `url(${this.state.previewImageUrl})` }}
                                         onClick={() => this.setState({ isRoomImage: true })}
                                     ></div>
@@ -215,7 +214,7 @@ class ManageHandbook extends Component {
                             {/* <FormattedMessage id="admin.manage-doctor.detail-doctor" /> */}
                             Bài viết:
                         </label>
-                        <Ckeditor handleEditorChange={this.handleEditorChange} value={contentMarkdown} />
+                        <CKeditor handleEditorChange={this.handleEditorChange} value={this.state.contentHtml} />
                     </div>
                 </div>
                 <div className="container_btn coverArea">

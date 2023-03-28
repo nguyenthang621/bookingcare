@@ -1,4 +1,4 @@
-import { IoInformationCircleOutline, IoLanguageOutline, IoBookmarkOutline, IoLogOutOutline } from 'react-icons/io5';
+import { IoInformationCircleOutline, IoLanguageOutline, IoLogOutOutline } from 'react-icons/io5';
 import { MdManageAccounts } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
 

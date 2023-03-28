@@ -1,127 +1,99 @@
 import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import * as actions from '../../../store/actions';
-import { LANGUAGES, CommonUtils, PATH_FIREBASE } from '../../../utils';
-import { FaFileUpload } from 'react-icons/fa';
-import { postDetailClinicServices } from '../../../services/userServices';
-import { toast } from 'react-toastify';
 import './ManageClinic.scss';
-import CKeditor from '../../../components/CKeditor/CKeditor';
-
-import { uploadMultiFileToFirebase } from '../../../firebase/uploadFile';
+import ModalClinic from './ModalClinic';
+import { filterAndPagingClinic } from '../../../services/userServices';
+import SearchInput from '../../../components/SearchInput';
+import FooterPaging from '../../../components/FooterPaging';
+import ModalConfirm from '../ModalConfirm';
+import { deleteClinicByIdServices } from '../../../services';
+import { toast } from 'react-toastify';
 
 class ManageClinic extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // Save to markdown table
-            descriptionHtml: '',
-            descriptionMarkdown: '',
-            imageClinic: '',
-            imageLogo: '',
-            nameClinic: '',
-            addressClinic: '',
-            previewImageClinicUrl: '',
-            previewImageLogoUrl: '',
-            contentHtml: '',
+            isOpenModel: false,
+            listClinic: [],
 
-            files: [],
-            fileURL: '',
+            limit: 5,
+            keyword: '',
+            totalPage: 1,
+            count: 0,
+            pageIndex: 1,
 
-            isShowBoxImageClinic: false,
-            isShowBoxImageLogo: false,
+            isShowModalConfirm: false,
+            currentClinicId: '',
         };
     }
-    componentDidMount() {}
-    componentDidUpdate(prevProps, prevState) {}
-    handleOnchangeImage = async (e, image, previewImageUrl, isShowBoxImage) => {
-        let data = e.target.files;
-        let file = data[0];
-        if (file) {
-            let base64 = await CommonUtils.getBase64(file);
-            let objectUrl = URL.createObjectURL(file);
-            this.setState({ [previewImageUrl]: objectUrl, [isShowBoxImage]: true, [image]: file });
-        }
-    };
+    async componentDidMount() {
+        let { pageIndex, limit, keyword } = this.state;
+        this.handleFilterAndPaging(pageIndex, limit, keyword);
+    }
+    componentDidUpdate() {}
 
-    buildInputSelectName = (data) => {
-        let result = [];
-        if (data && data.length > 0) {
-            result = data.map((item, index) => {
-                let object = {};
-                let labelVi = `${item.firstName} ${item.lastName}`;
-                let labelEn = `${item.lastName} ${item.firstName}`;
-                object.label = this.props.languageRedux === LANGUAGES.VI ? labelVi : labelEn;
-                object.value = item.id;
-                return object;
-            });
-        }
-        return result;
-    };
-    buildInputSelect = (data, type) => {
-        let result = [];
-        if (data && data.length > 0) {
-            result = data.map((item, index) => {
-                let object = {};
-                if (type === 'currency') {
-                    object.label =
-                        this.props.languageRedux === LANGUAGES.VI ? `${item.valueVi} VND` : `${item.valueEn} $`;
-                } else {
-                    object.label = this.props.languageRedux === LANGUAGES.VI ? item.valueVi : item.valueEn;
-                }
-                object.value = item.keyMap;
-                return object;
-            });
-        }
-        return result;
-    };
-
-    findValueDefault = (key, data) => {
-        let result = '';
-        if (key && data) {
-            result = data.find((item) => item && item.value === key);
-            return result;
-        }
-        return result;
-    };
-
-    handleEditorChange = ({ html, text }) => {
-        this.setState({
-            descriptionHtml: html,
-            descriptionMarkdown: text,
-        });
-    };
-    setStateFile = (item) => {
-        this.setState({
-            files: [...this.state.files, item],
-        });
-    };
-
-    handleClickSave = async () => {
-        let { imageClinic, imageLogo } = this.state;
-
-        let arrFiles = [
-            { path: PATH_FIREBASE.CLINIC_IMAGE, file: imageClinic, name: 'imageClinic' },
-            { path: PATH_FIREBASE.CLINIC_LOGO, file: imageLogo, name: 'imageLogo' },
-        ];
-
-        let images = await uploadMultiFileToFirebase(arrFiles);
-        this.handleSave(images);
-    };
-
-    handleSave = async (images) => {
-        let { descriptionMarkdown, nameClinic, addressClinic, contentHtml } = this.state;
-
-        let response = await postDetailClinicServices({
-            descriptionHtml: contentHtml,
-            descriptionMarkdown,
-            imageClinic: images.imageClinic,
-            imageLogo: images.imageLogo,
-            nameClinic,
-            addressClinic,
-        });
+    handleFilterAndPaging = async (pageIndex, limit, keyword) => {
+        let response = await filterAndPagingClinic(pageIndex, limit, keyword);
         if (response && response.errorCode === 0) {
+            this.setState({
+                listClinic: response.data.rows,
+                totalPage: response.data.totalPage,
+                count: response.data.count,
+                pageIndex: pageIndex,
+            });
+        }
+    };
+
+    handleToggleModel = () => {
+        this.setState({ isOpenModel: !this.state.isOpenModel });
+    };
+
+    handleSearch = async (currentKeyword) => {
+        let { limit, pageIndex } = this.state;
+        try {
+            let response = await filterAndPagingClinic(pageIndex, limit, currentKeyword);
+            if (response && response.errorCode === 0) {
+                this.setState({
+                    listClinic: response.data.rows,
+                    totalPage: response.data.totalPage,
+                    count: response.data.count,
+                    pageIndex: pageIndex,
+                    keyword: currentKeyword,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    handleChangePage = async (numberPage) => {
+        console.log(numberPage);
+        let { limit, keyword, pageIndex, totalPage } = this.state;
+        if (numberPage === 'next') {
+            if (+pageIndex < +totalPage) {
+                this.handleFilterAndPaging(pageIndex + 1, limit, keyword);
+            }
+        } else if (numberPage === 'back') {
+            if (+pageIndex > 1) {
+                this.handleFilterAndPaging(pageIndex - 1, limit, keyword);
+            }
+        } else {
+            this.handleFilterAndPaging(numberPage, limit, keyword);
+        }
+    };
+
+    toggleModelConfirm = (id) => {
+        this.setState({
+            isShowModalConfirm: !this.state.isShowModalConfirm,
+            currentClinicId: id,
+        });
+    };
+    handleDestroy = async () => {
+        let response = await deleteClinicByIdServices(this.state.currentClinicId);
+        if (response && response.errorCode === 0) {
+            this.toggleModelConfirm('');
+            let { pageIndex, limit, keyword } = this.state;
+            this.handleFilterAndPaging(pageIndex, limit, keyword);
             toast.success(response.message, {
                 position: 'top-right',
                 autoClose: 3000,
@@ -131,24 +103,9 @@ class ManageClinic extends Component {
                 draggable: true,
                 progress: undefined,
             });
-            this.setState({
-                descriptionHtml: '',
-                descriptionMarkdown: '',
-                imageClinic: '',
-                imageLogo: '',
-                nameClinic: '',
-                addressClinic: '',
-                previewImageClinicUrl: '',
-                previewImageLogoUrl: '',
-
-                files: [],
-                fileURL: '',
-
-                isShowBoxImageClinic: false,
-                isShowBoxImageLogo: false,
-            });
         } else {
-            toast.error(response?.data?.message, {
+            this.toggleModelConfirm('');
+            toast.success(response.message || 'Có lỗi xảy ra lui lòng tử lại.', {
                 position: 'top-right',
                 autoClose: 3000,
                 hideProgressBar: true,
@@ -160,160 +117,89 @@ class ManageClinic extends Component {
         }
     };
 
-    onChangeInput = (key, value) => {
-        this.setState({
-            [key]: value,
-        });
-    };
-
-    handleEditorChange = (data) => {
-        this.setState({
-            contentHtml: data,
-        });
-    };
-
     render() {
-        let {
-            isChange,
-
-            nameClinic,
-            addressClinic,
-            previewImageClinicUrl,
-            previewImageLogoUrl,
-
-            isShowBoxImageClinic,
-            isShowBoxImageLogo,
-        } = this.state;
+        let { isOpenModel, listClinic, count, totalPage, pageIndex, isShowModalConfirm } = this.state;
         return (
-            <div className="specialty-container">
-                <div className="specialty-title">
-                    <h3>Quản lý cơ sở khám bệnh</h3>
-                </div>
+            <>
+                {isOpenModel && (
+                    <ModalClinic
+                        toggleModel={this.handleToggleModel}
+                        isOpenModel={this.state.isOpenModel}
+                        reloadData={this.handleFilterAndPaging}
+                    />
+                )}
+                {isShowModalConfirm ? (
+                    <ModalConfirm
+                        isShowModalConfirm={isShowModalConfirm}
+                        toggleModelConfirm={this.toggleModelConfirm}
+                        handleDeleteItem={this.handleDestroy}
+                        text="Bạn muốn xoá phòng khám này"
+                        type="confirm"
+                        size="nm"
+                        currentUserId={this.state.currentUserId}
+                    />
+                ) : (
+                    ''
+                )}
+                <div className="container-table">
+                    <div className="title">Quản lý cơ sở khám bệnh</div>
+                    <div className="wrapper-table">
+                        <div className="action-container">
+                            <SearchInput placeholder="Tìm kiếm..." handleSearch={this.handleSearch} delay={800} />
+                            <button className="btn btn-primary" onClick={() => this.handleToggleModel()}>
+                                Thêm mới phòng khám
+                            </button>
+                        </div>
+                        <div className="wrapper-scroll">
+                            <table className="table table-hover">
+                                <thead>
+                                    <tr className="fixedTop">
+                                        <th scope="col">STT</th>
+                                        <th scope="col">Image Logo</th>
+                                        <th scope="col">Tên cơ sở</th>
+                                        <th scope="col">Địa chỉ</th>
+                                        <th scope="col">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {listClinic &&
+                                        listClinic.length > 0 &&
+                                        listClinic.map((item, index) => {
+                                            return (
+                                                <tr key={index}>
+                                                    <th scope="row">{index + 1}</th>
+                                                    <td>
+                                                        <div className="img-wrapper">
+                                                            <img src={item.imageLogo} atl="img"></img>
+                                                        </div>
+                                                    </td>
+                                                    <td>{item.nameClinic}</td>
 
-                <div className="form-row">
-                    <div className="form-group col-md-6">
-                        <label forhtml="inputEmail4">
-                            {/* <FormattedMessage id="admin.manage-doctor.name-clinic" /> */}
-                            Tên cơ sở
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="inputEmail4"
-                            value={nameClinic}
-                            onChange={(e) => this.onChangeInput('nameClinic', e.target.value)}
+                                                    <td>{item.addressClinic}</td>
+                                                    <td>
+                                                        <button
+                                                            className="btn btn-warning"
+                                                            onClick={() => this.toggleModelConfirm(item.id)}
+                                                        >
+                                                            Xoá
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
+                                </tbody>
+                            </table>
+                        </div>
+                        <FooterPaging
+                            titleTotalRecord="Tổng cơ sở"
+                            TotalPage={totalPage}
+                            PageIndex={pageIndex}
+                            TotalRecord={count}
+                            handleChangePage={this.handleChangePage}
                         />
                     </div>
-                    <div className="form-group col-md-2 upload-file-container">
-                        <label forhtml="inputEmail4">
-                            {/* <FormattedMessage id="admin.manage-doctor.name-clinic" /> */}
-                            Upload clinic
-                        </label>
-                        <div className="btn-container">
-                            <input
-                                id="uploadFileClinic"
-                                type="file"
-                                className="form-control"
-                                hidden
-                                onChange={(e) =>
-                                    this.handleOnchangeImage(
-                                        e,
-                                        'imageClinic',
-                                        'previewImageClinicUrl',
-                                        `isShowBoxImageClinic`,
-                                    )
-                                }
-                            />
-                            <label className="text-upload" htmlFor="uploadFileClinic">
-                                <FormattedMessage id="manage-user.uploadImage" />
-                                <FaFileUpload className="icon-upload" />
-                            </label>
-                            {isShowBoxImageClinic && (
-                                <div
-                                    className="preview-clinic "
-                                    style={{ backgroundImage: `url(${previewImageClinicUrl})` }}
-                                ></div>
-                            )}
-                        </div>
-                    </div>
                 </div>
-                <div className="form-row">
-                    <div className="form-group col-md-6">
-                        <label forhtml="inputEmail4">
-                            {/* <FormattedMessage id="admin.manage-doctor.name-clinic" /> */}
-                            Địa chỉ cơ sở
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="inputEmail4"
-                            value={addressClinic}
-                            onChange={(e) => this.onChangeInput('addressClinic', e.target.value)}
-                        />
-                    </div>
-                    <div className="form-group col-md-2 upload-file-container">
-                        <label forhtml="inputEmail4">
-                            {/* <FormattedMessage id="admin.manage-doctor.name-clinic" /> */}
-                            Upload logo
-                        </label>
-                        <div className="btn-container">
-                            <input
-                                id="uploadFileLogo"
-                                type="file"
-                                className="form-control"
-                                hidden
-                                onChange={(e) =>
-                                    this.handleOnchangeImage(
-                                        e,
-                                        'imageLogo',
-                                        'previewImageLogoUrl',
-                                        `isShowBoxImageLogo`,
-                                    )
-                                }
-                            />
-                            <label className="text-upload" htmlFor="uploadFileLogo">
-                                <FormattedMessage id="manage-user.uploadImage" />
-                                <FaFileUpload className="icon-upload" />
-                            </label>
-                            {isShowBoxImageLogo && (
-                                <div
-                                    className="preview-logo"
-                                    style={{ backgroundImage: `url(${previewImageLogoUrl})` }}
-                                ></div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-
-                <div className="specialty-editor">
-                    <label className="title-editor">
-                        {/* <FormattedMessage id="admin.manage-doctor.detail-doctor" /> */}
-                        Detail specialty
-                    </label>
-                    <CKeditor handleEditorChange={this.handleEditorChange} value={this.state.contentHtml} />
-                </div>
-                <div className="btn-save">
-                    {isChange ? (
-                        <button
-                            className="btn btn-warning flex-end"
-                            onClick={() => {
-                                this.handleClickSave();
-                            }}
-                        >
-                            <FormattedMessage id="admin.manage-doctor.change" />
-                        </button>
-                    ) : (
-                        <button
-                            className="btn btn-primary flex-end"
-                            onClick={() => {
-                                this.handleClickSave();
-                            }}
-                        >
-                            <FormattedMessage id="admin.manage-doctor.save" />
-                        </button>
-                    )}
-                </div>
-            </div>
+            </>
         );
     }
 }

@@ -1,104 +1,98 @@
 import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import * as actions from '../../../store/actions';
-import { LANGUAGES, CRUD_ACTIONS, CommonUtils, PATH_FIREBASE } from '../../../utils';
-import { FaFileUpload } from 'react-icons/fa';
-import { postSpecialtyServices } from '../../../services/userServices';
-import { toast } from 'react-toastify';
-import { uploadFileToFirebase } from '../../../firebase/uploadFile';
-
 import './Specialty.scss';
-// import Ckeditor from '../Admin/Ckeditor';
-import CKeditor from '../../../components/CKeditor/CKeditor';
+import ModalSpecialty from './ModalSpecialty';
+import SearchInput from '../../../components/SearchInput';
+import FooterPaging from '../../../components/FooterPaging';
+import { filterAndPagingSpecialty, deleteSpecialtyByIdServices } from '../../../services/userServices';
+import ModalConfirm from '../ModalConfirm';
+import { toast } from 'react-toastify';
 
 class Specialty extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // Save to markdown table
-            descriptionHtml: '',
-            descriptionMarkdown: '',
-            image: '',
-            specialty: '',
-            previewImageUrl: '',
-            file: '',
-            isRoomImage: false,
-            isShowBoxImage: false,
-            contentHtml: '',
+            isOpenModel: false,
+            listSpecialty: [],
+
+            count: 1,
+            totalPage: 1,
+
+            pageIndex: 1,
+            limit: 5,
+            keyword: '',
+            currentSpecialtyId: '',
         };
     }
-    componentDidMount() {}
+    componentDidMount() {
+        let { pageIndex, limit, keyword } = this.state;
+        this.handleFilterAndPaging(pageIndex, limit, keyword);
+    }
     componentDidUpdate(prevProps) {}
-    handleOnchangeImage = async (e) => {
-        let data = e.target.files;
-        let file = data[0];
-        if (file) {
-            let base64 = await CommonUtils.getBase64(file);
-            let objectUrl = URL.createObjectURL(file);
-            this.setState({ previewImageUrl: objectUrl, isShowBoxImage: true, image: base64, file: file });
-        }
-    };
 
-    buildInputSelectName = (data) => {
-        let result = [];
-        if (data && data.length > 0) {
-            result = data.map((item, index) => {
-                let object = {};
-                let labelVi = `${item.firstName} ${item.lastName}`;
-                let labelEn = `${item.lastName} ${item.firstName}`;
-                object.label = this.props.languageRedux === LANGUAGES.VI ? labelVi : labelEn;
-                object.value = item.id;
-                return object;
-            });
-        }
-        return result;
-    };
-    buildInputSelect = (data, type) => {
-        let result = [];
-        if (data && data.length > 0) {
-            result = data.map((item, index) => {
-                let object = {};
-                if (type === 'currency') {
-                    object.label =
-                        this.props.languageRedux === LANGUAGES.VI ? `${item.valueVi} VND` : `${item.valueEn} $`;
-                } else {
-                    object.label = this.props.languageRedux === LANGUAGES.VI ? item.valueVi : item.valueEn;
-                }
-                object.value = item.keyMap;
-                return object;
-            });
-        }
-        return result;
-    };
-
-    findValueDefault = (key, data) => {
-        let result = '';
-        if (key && data) {
-            result = data.find((item) => item && item.value === key);
-            return result;
-        }
-        return result;
-    };
-
-    handleEditorChange = (data) => {
-        this.setState({
-            contentHtml: data,
-        });
-    };
-
-    handleClickSave = async () => {
-        let { descriptionMarkdown, specialty, file, contentHtml } = this.state;
-        let imageURL = await uploadFileToFirebase(PATH_FIREBASE.SPECIALTY_IMAGE, file);
-
-        let response = await postSpecialtyServices({
-            descriptionHtml: contentHtml,
-            descriptionMarkdown,
-            image: imageURL,
-            specialty,
-        });
-
+    handleFilterAndPaging = async (pageIndex, limit, keyword) => {
+        let response = await filterAndPagingSpecialty(pageIndex, limit, keyword);
         if (response && response.errorCode === 0) {
+            this.setState({
+                listSpecialty: response.data.rows,
+                totalPage: response.data.totalPage,
+                count: response.data.count,
+                pageIndex: pageIndex,
+            });
+        }
+    };
+
+    handleToggleModel = () => {
+        this.setState({ isOpenModel: !this.state.isOpenModel });
+    };
+
+    handleChangePage = async (numberPage) => {
+        console.log(numberPage);
+        let { limit, keyword, pageIndex, totalPage } = this.state;
+        if (numberPage === 'next') {
+            if (+pageIndex < +totalPage) {
+                this.handleFilterAndPaging(pageIndex + 1, limit, keyword);
+            }
+        } else if (numberPage === 'back') {
+            if (+pageIndex > 1) {
+                this.handleFilterAndPaging(pageIndex - 1, limit, keyword);
+            }
+        } else {
+            this.handleFilterAndPaging(numberPage, limit, keyword);
+        }
+    };
+
+    handleSearch = async (currentKeyword) => {
+        let { limit, pageIndex } = this.state;
+        try {
+            let response = await filterAndPagingSpecialty(pageIndex, limit, currentKeyword);
+            if (response && response.errorCode === 0) {
+                this.setState({
+                    listSpecialty: response.data.rows,
+                    totalPage: response.data.totalPage,
+                    count: response.data.count,
+                    pageIndex: pageIndex,
+                    keyword: currentKeyword,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    toggleModelConfirm = (id) => {
+        this.setState({
+            isShowModalConfirm: !this.state.isShowModalConfirm,
+            currentSpecialtyId: id,
+        });
+    };
+
+    handleDestroy = async () => {
+        let response = await deleteSpecialtyByIdServices(this.state.currentSpecialtyId);
+        if (response && response.errorCode === 0) {
+            this.toggleModelConfirm('');
+            let { pageIndex, limit, keyword } = this.state;
+            this.handleFilterAndPaging(pageIndex, limit, keyword);
             toast.success(response.message, {
                 position: 'top-right',
                 autoClose: 3000,
@@ -108,18 +102,9 @@ class Specialty extends Component {
                 draggable: true,
                 progress: undefined,
             });
-            this.setState({
-                descriptionHtml: '',
-                descriptionMarkdown: '',
-                image: '',
-                specialty: '',
-                previewImageUrl: '',
-
-                isRoomImage: false,
-                isShowBoxImage: false,
-            });
         } else {
-            toast.error(response.message, {
+            this.toggleModelConfirm('');
+            toast.error(response.message || 'Có lỗi xảy ra lui lòng tử lại.', {
                 position: 'top-right',
                 autoClose: 3000,
                 hideProgressBar: true,
@@ -131,98 +116,89 @@ class Specialty extends Component {
         }
     };
 
-    onChangeInput = (key, value) => {
-        this.setState({
-            [key]: value,
-        });
-    };
-
     render() {
-        let {
-            isChange,
-            descriptionHtml,
-            descriptionMarkdown,
-            image,
-            specialty,
-            previewImageUrl,
-            isRoomImage,
-            isShowBoxImage,
-        } = this.state;
+        let { isOpenModel, listSpecialty, count, pageIndex, totalPage, limit, keyword, isShowModalConfirm } =
+            this.state;
         return (
             <div className="specialty-container">
-                <div className="specialty-title">
-                    <h3>Quản lý chuyên khoa</h3>
-                </div>
+                {isOpenModel && (
+                    <ModalSpecialty
+                        toggleModel={this.handleToggleModel}
+                        isOpenModel={this.state.isOpenModel}
+                        reloadData={this.handleFilterAndPaging(pageIndex, limit, keyword)}
+                    />
+                )}
+                {isShowModalConfirm ? (
+                    <ModalConfirm
+                        isShowModalConfirm={isShowModalConfirm}
+                        toggleModelConfirm={this.toggleModelConfirm}
+                        handleDeleteItem={this.handleDestroy}
+                        text="Bạn muốn xoá chuyên khoa này"
+                        type="confirm"
+                        size="nm"
+                        currentUserId={this.state.currentUserId}
+                    />
+                ) : (
+                    ''
+                )}
 
-                <div className="form-row">
-                    <div className="form-group col-md-6">
-                        <label forhtml="inputEmail4">
-                            {/* <FormattedMessage id="admin.manage-doctor.name-clinic" /> */}
-                            Chuyên khoa
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="inputEmail4"
-                            value={specialty}
-                            onChange={(e) => this.onChangeInput('specialty', e.target.value)}
+                <div className="container-table">
+                    <div className="title">Quản lý chuyên khoa</div>
+                    <div className="wrapper-table">
+                        <div className="action-container">
+                            <SearchInput placeholder="Tên cơ sở..." handleSearch={this.handleSearch} delay={800} />
+                            <button className="btn btn-primary" onClick={() => this.handleToggleModel()}>
+                                Thêm mới phòng khám
+                            </button>
+                        </div>
+                        <div className="wrapper-scroll">
+                            <table className="table table-hover">
+                                <thead>
+                                    <tr className="fixedTop">
+                                        <th scope="col">STT</th>
+                                        <th scope="col">Image Logo</th>
+                                        <th scope="col">Tên cơ sở</th>
+                                        <th scope="col">Địa chỉ</th>
+                                        <th scope="col">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {listSpecialty &&
+                                        listSpecialty.length > 0 &&
+                                        listSpecialty.map((item, index) => {
+                                            return (
+                                                <tr key={index}>
+                                                    <th scope="row">{index + 1}</th>
+                                                    <td>
+                                                        <div className="img-wrapper">
+                                                            <img src={item.image} atl="img"></img>
+                                                        </div>
+                                                    </td>
+                                                    <td>{item.name}</td>
+
+                                                    <td>{item.createdAt}</td>
+                                                    <td>
+                                                        <button
+                                                            className="btn btn-warning"
+                                                            onClick={() => this.toggleModelConfirm(item.id)}
+                                                        >
+                                                            Xoá
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
+                                </tbody>
+                            </table>
+                        </div>
+                        <FooterPaging
+                            titleTotalRecord="Tổng chuyên khoa"
+                            TotalPage={totalPage}
+                            PageIndex={pageIndex}
+                            TotalRecord={count}
+                            handleChangePage={this.handleChangePage}
                         />
                     </div>
-                    <div className="form-group col-md-2 upload-file-container">
-                        <label forhtml="inputEmail4">
-                            {/* <FormattedMessage id="admin.manage-doctor.name-clinic" /> */}
-                            Upload
-                        </label>
-                        <div className="btn-container">
-                            <input
-                                id="uploadFile"
-                                type="file"
-                                className="form-control"
-                                hidden
-                                onChange={(e) => this.handleOnchangeImage(e)}
-                            />
-                            <label className="text-upload" htmlFor="uploadFile">
-                                <FormattedMessage id="manage-user.uploadImage" />
-                                <FaFileUpload className="icon-upload" />
-                            </label>
-                            {isShowBoxImage && (
-                                <div
-                                    className="preview "
-                                    style={{ backgroundImage: `url(${previewImageUrl})` }}
-                                    onClick={() => this.setState({ isRoomImage: true })}
-                                ></div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-
-                <div className="specialty-editor">
-                    <label className="title-editor">
-                        {/* <FormattedMessage id="admin.manage-doctor.detail-doctor" /> */}
-                        Detail specialty
-                    </label>
-                    <CKeditor handleEditorChange={this.handleEditorChange} value={this.state.contentHtml} />
-                </div>
-                <div className="btn-save">
-                    {isChange ? (
-                        <button
-                            className="btn btn-warning flex-end"
-                            onClick={() => {
-                                this.handleClickSave();
-                            }}
-                        >
-                            <FormattedMessage id="admin.manage-doctor.change" />
-                        </button>
-                    ) : (
-                        <button
-                            className="btn btn-primary flex-end"
-                            onClick={() => {
-                                this.handleClickSave();
-                            }}
-                        >
-                            <FormattedMessage id="admin.manage-doctor.save" />
-                        </button>
-                    )}
                 </div>
             </div>
         );

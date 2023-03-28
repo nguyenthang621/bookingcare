@@ -6,7 +6,7 @@ import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import TableManageUser from './TableManageUser';
 import { toast } from 'react-toastify';
-import { deleteUserServices } from '../../../services';
+import { deleteUserServices, filterAndPagingUser } from '../../../services';
 import actionTypes from '../../../store/actions/actionTypes';
 
 import { CRUD_ACTIONS, CommonUtils } from '../../../utils';
@@ -17,6 +17,7 @@ import ModalUser from '../ModalUser';
 import ModalConfirm from '../ModalConfirm.js';
 import SearchInput from '../../../components/SearchInput.js';
 import FooterPaging from '../../../components/FooterPaging.js';
+import SelectStatusId from '../../../components/SelectStatusId';
 
 class UserRedux extends Component {
     constructor(props) {
@@ -49,43 +50,54 @@ class UserRedux extends Component {
             isShowModalConfirm: false, // model confirm
             currentUserId: '',
 
-            keywordSearchUser: '',
-            page: 1,
-            limit: 10,
+            users: [],
+            totalPage: 1, // toltalPage
+            count: 1,
 
+            keywordSearchUser: '',
+            roleIdSelected: '', // roleId filter
             PageIndex: 1,
+            limit: 10,
         };
     }
 
     async componentDidMount() {
         this.props.fetchKeyFromRedux();
-        await this.props.fetchAllUSerRedux(this.props.paramsSearchRedux);
+        await this.handleRefreshTable();
     }
 
-    async componentDidUpdate(prevProps, prevState) {
+    reRenderFilterAndPaging = async (keywordSearchUser, roleIdSelected, PageIndex, limit) => {
+        let response = await filterAndPagingUser({
+            keyword: keywordSearchUser,
+            roleId: roleIdSelected,
+            page: PageIndex,
+            limit,
+        });
+        if (response && response.errorCode === 0) {
+            this.setState({
+                keywordSearchUser: keywordSearchUser,
+                roleIdSelected: roleIdSelected,
+                PageIndex: PageIndex,
+                limit: limit,
+                totalPage: response.data.totalPage,
+                count: response.data.count,
+                users: response.data.rows,
+            });
+        }
+    };
+
+    handleRefreshTable = async () => {
+        let { keywordSearchUser, roleIdSelected, PageIndex, limit } = this.state;
+        await this.reRenderFilterAndPaging(keywordSearchUser, roleIdSelected, PageIndex, limit);
+    };
+
+    async componentDidUpdate(prevProps) {
         if (prevProps.keyForm !== this.props.keyForm) {
             let { genders, positions, roles } = this.props.keyForm;
             this.setState({
                 genders: genders,
                 positions: positions,
                 roles: roles,
-
-                gender: genders && genders.length > 0 ? genders[0].keyMap : '',
-                position: positions && positions.length > 0 ? positions[0].keyMap : '',
-                roleId: roles && roles.length > 0 ? roles[0].keyMap : '',
-            });
-        }
-        if (prevProps.allUserRedux !== this.props.allUserRedux) {
-            let { genders, positions, roles } = this.props.keyForm;
-            this.setState({
-                email: '',
-                password: '',
-                firstName: '',
-                lastName: '',
-                address: '',
-                phoneNumber: '',
-                avatar: '',
-                previewImageUrl: '',
 
                 gender: genders && genders.length > 0 ? genders[0].keyMap : '',
                 position: positions && positions.length > 0 ? positions[0].keyMap : '',
@@ -152,48 +164,46 @@ class UserRedux extends Component {
     };
 
     handleSearchUser = (currentKeyword) => {
-        let { keywordSearchUser, page, limit } = this.state;
+        let { roleIdSelected, limit } = this.state;
         try {
-            // this.setState({
-            //     keywordSearchUser: currentKeyword,
-            // });
-            this.props.setCurrentKeywordRedux(currentKeyword, page, limit);
-            console.log(this.props.paramsSearchRedux);
-            this.props.fetchAllUSerRedux(this.props.paramsSearchRedux);
+            console.log(currentKeyword);
+            this.reRenderFilterAndPaging(currentKeyword, roleIdSelected, 1, limit);
         } catch (error) {
             console.log(error);
         }
     };
 
     handleChangePage = async (numberPage) => {
-        let { currentKeyword, page, limit } = this.state;
+        let { keywordSearchUser, roleIdSelected, PageIndex, limit, totalPage } = this.state;
+
         if (numberPage === 'next') {
-            if (page < this.props.totalPageRedux) {
+            if (+PageIndex < +totalPage) {
+                console.log('next');
+                this.reRenderFilterAndPaging(keywordSearchUser, roleIdSelected, +this.state.PageIndex + 1, limit);
                 this.setState({
-                    page: this.state.page + 1,
+                    PageIndex: this.state.PageIndex + 1,
                 });
-                await this.props.setCurrentKeywordRedux(currentKeyword, numberPage, limit);
             }
         } else if (numberPage === 'back') {
-            if (page > 1) {
+            if (+PageIndex > 1) {
+                console.log('back');
+                this.reRenderFilterAndPaging(keywordSearchUser, roleIdSelected, +this.state.PageIndex - 1, limit);
                 this.setState({
-                    page: this.state.page - 1,
+                    PageIndex: this.state.PageIndex - 1,
                 });
-                await this.props.setCurrentKeywordRedux(currentKeyword, numberPage, limit);
             }
         } else {
-            console.log('numberPage', numberPage);
             this.setState({
-                page: +numberPage,
+                PageIndex: +numberPage,
             });
-            await this.props.setCurrentKeywordRedux(currentKeyword, numberPage, limit);
+            this.reRenderFilterAndPaging(keywordSearchUser, roleIdSelected, numberPage, limit);
         }
-        await this.props.fetchAllUSerRedux(this.props.paramsSearchRedux);
     };
 
     // delete user:
     deleteUser = async (userId) => {
         try {
+            let { keywordSearchUser, roleIdSelected, PageIndex, limit } = this.state;
             let res = await deleteUserServices(userId);
             if (res && res.errorCode === 0) {
                 toast.success('Xoá người dùng thành công', {
@@ -209,7 +219,8 @@ class UserRedux extends Component {
                     isShowModalConfirm: !this.state.isShowModalConfirm,
                     currentUserId: '',
                 });
-                this.props.fetchAllUSerRedux();
+
+                await this.reRenderFilterAndPaging(keywordSearchUser, roleIdSelected, PageIndex, limit);
             } else {
                 toast.error(res.message, {
                     position: 'top-right',
@@ -226,16 +237,44 @@ class UserRedux extends Component {
         }
     };
 
+    handleChangeInput = async (id) => {
+        // change input radio
+        let { keywordSearchUser, PageIndex, limit } = this.state;
+        this.reRenderFilterAndPaging(keywordSearchUser, id, PageIndex, limit);
+    };
+
     render() {
-        let { isShowModalConfirm, page } = this.state;
-        let { paramsSearchRedux } = this.props;
+        let { isShowModalConfirm, users } = this.state;
+        let {} = this.props;
+
+        let listSelect = [
+            { text: <FormattedMessage id="admin.role.all" />, id: '' },
+            { text: <FormattedMessage id="admin.role.admin" />, id: 'R1' },
+            { text: <FormattedMessage id="admin.role.doctor" />, id: 'R2' },
+            { text: <FormattedMessage id="admin.role.patient" />, id: 'R3' },
+        ];
 
         return (
             <div className="user-redux-container" id="user-redux">
                 <div className="title">Quản lý người dùng</div>
                 <div className="wrapper-container">
                     <div className="action-modal">
-                        <SearchInput placeholder="Tìm kiếm..." handleSearchUser={this.handleSearchUser} delay={800} />
+                        <div className="df filter">
+                            <SearchInput
+                                placeholder="Tìm kiếm..."
+                                handleSearch={this.handleSearchUser}
+                                delay={800}
+                                className="mr8"
+                            />
+                            <div className="filter-role ml8">
+                                <SelectStatusId
+                                    handleChangeInput={this.handleChangeInput}
+                                    listSelect={listSelect}
+                                    appointment
+                                    statusId={this.state.roleIdSelected}
+                                />
+                            </div>
+                        </div>
                         <button className="btn btn-primary btn-add-user" onClick={() => this.handleShowModal()}>
                             <FormattedMessage id="manage-user.add" />
                         </button>
@@ -247,6 +286,7 @@ class UserRedux extends Component {
                         handleOnchangeInput={this.handleOnchangeInput}
                         handleOnchangeImage={this.handleOnchangeImage}
                         handleShowPreviewAvatar={this.handleShowPreviewAvatar}
+                        handleRefreshTable={this.handleRefreshTable}
                     />
                     {/* {this.state.isRoomImage && (
                         <Lightbox
@@ -257,11 +297,13 @@ class UserRedux extends Component {
                     <TableManageUser
                         handleClickEditUser={this.handleClickEditUser}
                         toggleModelConfirm={this.toggleModelConfirm}
+                        users={users}
                     />
                     <FooterPaging
-                        TotalPage={this.props.totalPageRedux}
-                        PageIndex={paramsSearchRedux.page}
-                        TotalRecord={this.props.countRedux}
+                        titleTotalRecord="Tổng người dùng"
+                        TotalPage={this.state.totalPage}
+                        PageIndex={this.state.PageIndex}
+                        TotalRecord={this.state.count}
                         handleChangePage={this.handleChangePage}
                     />
                     {isShowModalConfirm ? (
@@ -269,7 +311,7 @@ class UserRedux extends Component {
                             toggleModel={this.toggleModel}
                             isShowModalConfirm={isShowModalConfirm}
                             toggleModelConfirm={this.toggleModelConfirm}
-                            handleDestroy={this.deleteUser}
+                            handleDeleteItem={this.deleteUser}
                             text="Xoá người dùng vĩnh viễn bạn chắc chắn chứ!"
                             type="confirm"
                             size="nm"
@@ -291,7 +333,7 @@ const mapStateToProps = (state) => {
         allUserRedux: state.admin.allUser,
         totalPageRedux: state.admin.totalPage,
         countRedux: state.admin.count,
-        paramsSearchRedux: state.user.paramsSearch,
+        paramsSearchRedux: state.admin.paramsSearch,
     };
 };
 
@@ -300,10 +342,10 @@ const mapDispatchToProps = (dispatch) => {
         fetchKeyFromRedux: () => dispatch(actions.fetchKeyForm()),
         fetchAllUSerRedux: (paramsSearch) => dispatch(actions.filterAndPagingUserRedux(paramsSearch)),
         editUserRedux: (user) => dispatch(actions.editUserRedux(user)),
-        setCurrentKeywordRedux: (keyword, page, limit) =>
+        setCurrentKeywordRedux: (keyword, page, limit, roleId) =>
             dispatch({
                 type: actionTypes.SET_PARAMS_SEARCH,
-                data: { keyword, page, limit },
+                data: { keyword, page, limit, roleId },
             }),
     };
 };

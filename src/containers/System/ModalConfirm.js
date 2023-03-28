@@ -87,7 +87,7 @@ class ModalConfirm extends Component {
                 });
             }
         } else {
-            this.props.handleDestroy(currentUserId);
+            this.props.handleDeleteItem(currentUserId);
         }
     };
 

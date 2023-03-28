@@ -9,22 +9,21 @@ class SearchInput extends Component {
         super(props);
         this.state = {
             keyword: '',
-            idTimeOutSearch: '',
         };
         this.timer = null;
     }
     componentDidMount() {}
-    componentDidUpdate(prevProps, prevState) {}
+    componentDidUpdate() {}
 
     handleOnChangeInput = (input) => {
         let { delay } = this.props;
 
         this.setState({
-            keyword: input.trim(),
+            keyword: input,
         });
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
-            this.props.handleSearchUser(this.state.keyword);
+            this.props.handleSearch(this.state.keyword.trim());
         }, delay || 500);
     };
 

@@ -70,6 +70,22 @@ const getDetailUserServices = async () => {
         console.log(error);
     }
 };
+
+const searchAllServices = async (keyword) => {
+    try {
+        return await axiosJWT.get(`/api/search-all?keyword=${keyword}`);
+    } catch (error) {
+        console.log(error);
+    }
+};
+const searchDoctorServices = async (page = 0, limit = 10, keyword = '', roleId = 'R2') => {
+    try {
+        return await axiosJWT.get(`/api/filter-doctor?page=${page}&limit=${limit}&keyword=${keyword}&roleId=${roleId}`);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export {
     postBookingAppointmentServices,
     verifyBookingAppointmentServices,
@@ -80,4 +96,6 @@ export {
     getHandbookServices,
     getNewsServices,
     getDetailUserServices,
+    searchAllServices,
+    searchDoctorServices,
 };

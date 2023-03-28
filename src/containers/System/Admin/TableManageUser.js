@@ -52,7 +52,7 @@ class TableManageUser extends Component {
                                 <th>Chức vụ</th>
                                 <th>Hành động</th>
                             </tr>
-                            {this.state.users.map((user, index) => {
+                            {this.props.users.map((user, index) => {
                                 return (
                                     <tr key={user.id}>
                                         <td>{index + 1}</td>

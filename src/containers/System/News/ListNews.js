@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 import ConfirmModal from '../../../components/ConfirmModal';
 
 import ModalNews from './ModalNews';
-import SelectStatusId from '../Doctor/SelectStatusId';
+import SelectStatusId from '../../../components/SelectStatusId';
 
 import _ from 'lodash';
 
@@ -52,8 +52,7 @@ class ListNews extends Component {
             isShowModalNews: !this.state.isShowModalNews,
         });
     };
-    handleChangeInput = async (e) => {
-        let statusId = e.target.value;
+    handleChangeInput = async (statusId) => {
         let listNews = await getNewsServices('', 'manage', statusId);
         this.setState({
             listNews: listNews.data,
@@ -116,12 +115,12 @@ class ListNews extends Component {
     render() {
         let { listNews, isShowModalNews, id, statusId, isShowConfirmModal } = this.state;
         let {} = this.props;
-        let listSelect = {
-            new: <FormattedMessage id="admin.status.new" />,
-            confirmed: <FormattedMessage id="admin.status.confirmed" />,
-            canceled: <FormattedMessage id="admin.status.canceled" />,
-            states: { new: 'S1', confirmed: 'S2', canceled: 'S3' },
-        };
+
+        let listSelect = [
+            { text: <FormattedMessage id="admin.status.new" />, id: 'S1' },
+            { text: <FormattedMessage id="admin.status.confirmed" />, id: 'S2' },
+            { text: <FormattedMessage id="admin.status.canceled" />, id: 'S3' },
+        ];
         return (
             <div className="manage-handbook-container mt-2">
                 {isShowConfirmModal && (

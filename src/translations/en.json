@@ -43,19 +43,21 @@
     },
     "menu": {
         "admin": {
-            "manage-user": "Users",
-            "manage-doctor": "Manage doctor",
+            "manage-user": "Manage users",
+            "manage-doctor": "Create information doctor",
             "manage-admin": "Manage admin",
             "crud": "CRUD user",
             "crud-redux": "Manage user",
             "manage-clinic": "Manage clinic",
-            "clinic": "Clinic",
+            "listClinic": "List Clinic",
+            "clinic": "Manage clinic",
             "manage-specialty": "Manage specialty",
-            "specialty": "specialty",
+            "listSpecialty": "List specialty",
+            "specialty": "Manage specialty",
             "manage-handbook": "Manage handbook",
-            "handbook": "Handbook",
+            "handbook": "Create handbook",
             "listHandbook": "List Handbook",
-            "news": "News",
+            "news": "Create news",
             "listNews": "List News"
         },
         "doctor": {
@@ -158,6 +160,12 @@
             "new": "Waiting",
             "confirmed": "Confirmed",
             "canceled": "Canceled"
+        },
+        "role": {
+            "all": "All",
+            "admin": "Admin",
+            "doctor": "Doctor",
+            "patient": "Patient"
         }
     }
 }

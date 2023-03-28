@@ -12,6 +12,7 @@ import { editUserServices, createUserServices } from '../../services/userService
 import './Admin/UserRedux.scss';
 import { FaFileUpload } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import './Modal.scss';
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
@@ -77,6 +78,7 @@ class ModalUser extends Component {
 
         if (response?.errorCode == 0) {
             let { genders, positions, roles } = this.props.keyForm;
+            this.props.handleRefreshTable();
             this.setState({
                 email: '',
                 password: '',
@@ -320,17 +322,20 @@ class ModalUser extends Component {
                                                 <FormattedMessage id="manage-user.image" />
                                             </label>
                                             <div className="btn-container">
-                                                <input
-                                                    id="uploadFile"
-                                                    type="file"
-                                                    className="form-control"
-                                                    hidden
-                                                    onChange={(e) => this.props.handleOnchangeImage(e)}
-                                                />
-                                                <label className="text-upload" htmlFor="uploadFile">
-                                                    <FormattedMessage id="manage-user.uploadImage" />
-                                                    <FaFileUpload className="icon-upload" />
-                                                </label>
+                                                <div className="change-image">
+                                                    <input
+                                                        id="uploadFile"
+                                                        type="file"
+                                                        className="form-control"
+                                                        accept=".jpg, .jpeg, .png"
+                                                        hidden
+                                                        onChange={(e) => this.props.handleOnchangeImage(e)}
+                                                    />
+                                                    <label className="text-upload" htmlFor="uploadFile">
+                                                        <FormattedMessage id="manage-user.uploadImage" />
+                                                        <FaFileUpload className="icon-upload" />
+                                                    </label>
+                                                </div>
                                                 {this.props.data.isShowBoxImage && (
                                                     <div
                                                         className="preview"
@@ -363,15 +368,6 @@ class ModalUser extends Component {
                                 <FormattedMessage id="manage-user.save" />
                             )}
                         </button>
-                        {/* {this.props.data.currentAction === CRUD_ACTIONS.EDIT && (
-                            <button className="btn btn-secondary ml-3" onClick={() => this.handleCancelEdit()}>
-                                {this.props.data.currentAction === CRUD_ACTIONS.EDIT ? (
-                                    <FormattedMessage id="manage-user.cancel" />
-                                ) : (
-                                    <FormattedMessage id="manage-user.cancel" />
-                                )}
-                            </button>
-                        )} */}
                         <Button className="button btn btn-cancel" color="secondary" onClick={() => this.toggle()}>
                             Cancel
                         </Button>

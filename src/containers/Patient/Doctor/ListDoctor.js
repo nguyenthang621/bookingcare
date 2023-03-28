@@ -1,27 +1,89 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { LANGUAGES } from '../../../utils';
-import * as actions from '../../../store/actions';
-import { FormattedMessage } from 'react-intl';
 import { BsLightbulbFill } from 'react-icons/bs';
 
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Link } from 'react-router-dom';
-
+import { searchDoctorServices } from '../../../services';
+import SearchInput from '../../../components/SearchInput';
+import FooterPaging from '../../../components/FooterPaging';
 import '../Specialty/ListSpecialty.scss';
 
 class ListDoctor extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            listDoctor: [],
+
+            limit: 5,
+            keyword: '',
+            totalPage: 1,
+            count: 0,
+            pageIndex: 1,
+            roleId: 'R2',
+        };
     }
-    async componentDidMount() {}
-    componentDidUpdate(prevProps) {}
+    async componentDidMount() {
+        let { pageIndex, limit, keyword, roleId } = this.state;
+
+        this.handleFilterAndPaging(pageIndex, limit, keyword, roleId);
+    }
+    componentDidUpdate() {}
+
+    handleFilterAndPaging = async (pageIndex, limit, keyword, roleId) => {
+        let response = await searchDoctorServices(pageIndex, limit, keyword, roleId);
+        if (response && response.errorCode === 0) {
+            this.setState({
+                listDoctor: response.data.rows,
+                totalPage: response.data.totalPage,
+                count: response.data.count,
+                pageIndex: pageIndex,
+            });
+        }
+    };
+
+    handleToggleModel = () => {
+        this.setState({ isOpenModel: !this.state.isOpenModel });
+    };
+
+    handleSearch = async (currentKeyword) => {
+        let { limit, pageIndex, roleId } = this.state;
+        try {
+            let response = await searchDoctorServices(pageIndex, limit, currentKeyword, roleId);
+            if (response && response.errorCode === 0) {
+                this.setState({
+                    listDoctor: response.data.rows,
+                    totalPage: response.data.totalPage,
+                    count: response.data.count,
+                    pageIndex: pageIndex,
+                    keyword: currentKeyword,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    handleChangePage = async (numberPage) => {
+        console.log(numberPage);
+        let { limit, keyword, pageIndex, totalPage } = this.state;
+        if (numberPage === 'next') {
+            if (+pageIndex < +totalPage) {
+                this.handleFilterAndPaging(pageIndex + 1, limit, keyword);
+            }
+        } else if (numberPage === 'back') {
+            if (+pageIndex > 1) {
+                this.handleFilterAndPaging(pageIndex - 1, limit, keyword);
+            }
+        } else {
+            this.handleFilterAndPaging(numberPage, limit, keyword);
+        }
+    };
 
     render() {
-        let { modalDoctor, topDoctorsRedux, languageRedux, listDataSpecialtyRedux } = this.props;
-        let {} = this.state;
-
+        let { modalDoctor, languageRedux, listDataSpecialtyRedux } = this.props;
+        let { listDoctor, count, totalPage, pageIndex } = this.state;
         return (
             <div className="list-specialty-container">
                 <Modal
@@ -33,9 +95,12 @@ class ListDoctor extends Component {
                 >
                     <ModalHeader toggle={() => this.props.toggleModel('modalDoctor')}>Danh sách bác sĩ</ModalHeader>
                     <ModalBody>
+                        <div className="search-container-list-patient">
+                            <SearchInput placeholder="Tìm kiếm..." handleSearch={this.handleSearch} delay={800} />
+                        </div>
                         <div className="list-specialty-content">
-                            {topDoctorsRedux.length > 0 &&
-                                topDoctorsRedux.map((item) => {
+                            {listDoctor.length > 0 &&
+                                listDoctor.map((item) => {
                                     let nameSpecialty = '';
                                     let nameVi = `${item.positionData.valueVi}, ${item.firstName} ${item.lastName} `;
                                     let nameEn = `${item.positionData.valueEn}, ${item.lastName} ${item.firstName} `;
@@ -61,6 +126,13 @@ class ListDoctor extends Component {
                                     );
                                 })}
                         </div>
+                        <FooterPaging
+                            titleTotalRecord="Tổng số bác sĩ"
+                            TotalPage={totalPage}
+                            PageIndex={pageIndex}
+                            TotalRecord={count}
+                            handleChangePage={this.handleChangePage}
+                        />
                     </ModalBody>
                     <ModalFooter>
                         <div className="intro-bookingCare ">

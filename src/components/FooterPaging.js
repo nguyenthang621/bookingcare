@@ -33,7 +33,7 @@ class FooterPaging extends Component {
         if (TotalRecord < PageIndex) {
             pagesToShow = [1];
         } else if (TotalPage < 5) {
-            for (let i = 1; i < TotalPage; i++) {
+            for (let i = 1; i <= TotalPage; i++) {
                 pagesToShow.push(i);
             }
         } else {
@@ -45,22 +45,25 @@ class FooterPaging extends Component {
                 pagesToShow = [1, null, PageIndex, PageIndex + 1, PageIndex + 2, null, TotalPage];
             }
         }
-        console.log('pagesToShow', pagesToShow);
         return pagesToShow;
     };
 
     render() {
-        let { TotalPage, PageIndex, TotalRecord } = this.props;
+        let { titleTotalRecord, PageIndex, TotalRecord } = this.props;
         let { pages } = this.state;
         return (
             <div className="footer-paging">
                 <div className="wrapper-page df">
                     <div className="total-count df">
-                        <p className="text-total">Tổng người dùng:&nbsp; </p> <p className="total"> {TotalRecord}</p>
+                        <p className="text-total">{titleTotalRecord || 'Tổng bản ghi'}:&nbsp; </p>{' '}
+                        <p className="total"> {TotalRecord}</p>
                     </div>
                     <div className="paging-container df">
                         <div className="control-change-page df">
-                            <div className="btn-back btn-control-page">
+                            <div
+                                className="btn-back btn-control-page"
+                                onClick={() => this.props.handleChangePage('back')}
+                            >
                                 <IoChevronBack />
                             </div>
                             <div className="pages-container df">
@@ -86,7 +89,11 @@ class FooterPaging extends Component {
                                     <div className="pageNumber pageActive">1</div>
                                 )}
                             </div>
-                            <div className="btn-next btn-control-page">
+
+                            <div
+                                className="btn-next btn-control-page"
+                                onClick={() => this.props.handleChangePage('next')}
+                            >
                                 <IoChevronForwardOutline />
                             </div>
                         </div>
