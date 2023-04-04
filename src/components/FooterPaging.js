@@ -25,6 +25,11 @@ class FooterPaging extends Component {
                 pages: this.handleArrPaging(TotalPage, PageIndex, TotalRecord),
             });
         }
+        if (prevProps.PageIndex !== this.props.PageIndex) {
+            this.setState({
+                pages: this.handleArrPaging(TotalPage, PageIndex, TotalRecord),
+            });
+        }
     }
 
     handleArrPaging = (TotalPage, PageIndex, TotalRecord) => {
@@ -51,6 +56,7 @@ class FooterPaging extends Component {
     render() {
         let { titleTotalRecord, PageIndex, TotalRecord } = this.props;
         let { pages } = this.state;
+
         return (
             <div className="footer-paging">
                 <div className="wrapper-page df">

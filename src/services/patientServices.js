@@ -70,7 +70,7 @@ const getNewsServices = async (id, type, statusId) => {
         return await axios.get(`/api/get-news?id=${id}&type=${type}&statusId=${statusId}`);
     } catch (error) {
         console.log(error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 const getDetailUserServices = async () => {

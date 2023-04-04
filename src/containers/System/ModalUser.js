@@ -78,22 +78,11 @@ class ModalUser extends Component {
             });
         }
 
-        if (response?.errorCode == 0) {
-            let { genders, positions, roles } = this.props.keyForm;
-            this.props.handleRefreshTable();
-            this.setState({
-                email: '',
-                password: '',
-                firstName: '',
-                lastName: '',
-                address: '',
-                phoneNumber: '',
-                avatar: '',
+        console.log(response);
+        if (response?.errorCode === 0) {
+            this.props.refreshForm();
 
-                gender: genders && genders.length > 0 ? genders[0].keyMap : '',
-                position: positions && positions.length > 0 ? positions[0].keyMap : '',
-                roleId: roles && roles.length > 0 ? roles[0].keyMap : '',
-            });
+            this.props.handleRefreshTable();
             this.props.toggleModel();
             toast.success(response?.message, {
                 position: 'top-right',

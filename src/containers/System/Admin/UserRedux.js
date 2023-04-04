@@ -241,6 +241,23 @@ class UserRedux extends Component {
         }
     };
 
+    refreshForm = () => {
+        let { genders, positions, roles } = this.props.keyForm;
+        this.setState({
+            email: '',
+            password: '',
+            firstName: '',
+            lastName: '',
+            address: '',
+            phoneNumber: '',
+            avatar: '',
+
+            gender: genders && genders.length > 0 ? genders[0].keyMap : '',
+            position: positions && positions.length > 0 ? positions[0].keyMap : '',
+            roleId: roles && roles.length > 0 ? roles[0].keyMap : '',
+        });
+    };
+
     handleChangeInput = async (id) => {
         // change input radio
         let { keywordSearchUser, PageIndex, limit } = this.state;
@@ -303,6 +320,7 @@ class UserRedux extends Component {
                         handleOnchangeImage={this.handleOnchangeImage}
                         handleShowPreviewAvatar={this.handleShowPreviewAvatar}
                         handleRefreshTable={this.handleRefreshTable}
+                        refreshForm={this.refreshForm}
                     />
                     {/* {this.state.isRoomImage && (
                         <Lightbox

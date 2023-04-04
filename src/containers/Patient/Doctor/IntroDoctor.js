@@ -49,12 +49,16 @@ class IntroDoctor extends Component {
     render() {
         let { dataCurrentDoctor, typeStyle, dataHref } = this.props;
         let { nameDoctor, provinceDoctor } = this.state;
+
         return (
             <div className="intro-doctor">
                 <div className="image-doctor">
                     <img
                         className={typeStyle === 'specialty' ? 'size-specialty' : ''}
-                        src={dataCurrentDoctor.imageURL}
+                        src={
+                            dataCurrentDoctor?.imageURL ||
+                            'https://firebasestorage.googleapis.com/v0/b/bookingcare-6a74c.appspot.com/o/files%2Fuser%2Fuser_d%C3%A8ault.png?alt=media&token=22bdda3a-856e-416d-bce5-b9e52a6004c7'
+                        }
                         alt="img"
                     />
                     {typeStyle === 'specialty' && <span className="more-detail-doctor">Xem thêm</span>}
