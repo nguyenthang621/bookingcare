@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { LANGUAGES, CommonUtils } from '../../../utils';
 import * as actions from '../../../store/actions';
 import { FormattedMessage } from 'react-intl';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { BsLightbulbFill } from 'react-icons/bs';
 
 import { toast } from 'react-toastify';
-import DetailHandbook from '../../Patient/Handbook/DetailHandbook';
 import { getHandbookServices } from '../../../services/patientServices';
 import { confirmHandbookServices } from '../../../services/userServices';
 import moment from 'moment';
@@ -30,9 +28,10 @@ class ModalHandbook extends Component {
             });
         }
     }
-    componentDidUpdate(prevProps) {}
+    componentDidUpdate() {}
 
     handleConfirm = async (id) => {
+        this.props.handleShowLoading();
         let response = await confirmHandbookServices(id);
         if (response && response.errorCode === 0) {
             this.props.toggleModelConfirm();
@@ -48,6 +47,7 @@ class ModalHandbook extends Component {
                 draggable: true,
                 progress: undefined,
             });
+            this.props.handleHideLoading();
         } else {
             toast.error(response.message, {
                 position: 'top-right',
@@ -62,7 +62,7 @@ class ModalHandbook extends Component {
     };
 
     render() {
-        let { isShowModalHandbook, id } = this.props;
+        let { isShowModalHandbook, id, statusId } = this.props;
 
         let { handbookData } = this.state;
         return (
@@ -111,12 +111,23 @@ class ModalHandbook extends Component {
                         </div>
                     </ModalBody>
                     <ModalFooter>
-                        <Button className=" button btn-save" color="success" onClick={() => this.handleConfirm(id)}>
-                            Confirm
-                        </Button>{' '}
+                        {statusId === 'S1' && (
+                            <Button className=" button btn-save" color="success" onClick={() => this.handleConfirm(id)}>
+                                Confirm
+                            </Button>
+                        )}{' '}
+                        {statusId === 'S2' && (
+                            <Button
+                                className=" button btn-save"
+                                color="warning"
+                                onClick={() => this.props.handleClickDelete(id)}
+                            >
+                                Delete
+                            </Button>
+                        )}{' '}
                         <Button
                             className="button btn btn-cancel"
-                            color="warning"
+                            color="success"
                             onClick={() => this.props.toggleModelConfirm()}
                         >
                             <FormattedMessage id="appointment.cancel" />
@@ -138,7 +149,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        postBookingAppointmentRedux: (data) => dispatch(actions.postBookingAppointment(data)),
         getAppointmentDoctorRedux: (doctorId, initDate, statusId) =>
             dispatch(actions.getAppointmentDoctor(doctorId, initDate, statusId)),
 

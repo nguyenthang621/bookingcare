@@ -142,16 +142,18 @@ class BoxBackground extends Component {
                         </div>
                     </div>
                     <div className="options">
-                        {options.map((item, index) => {
-                            return (
-                                <div className="item" key={index}>
-                                    <div className="icon-item">
-                                        <img src={item.link} alt="img icon" />
+                        <div className=" w-options">
+                            {options.map((item, index) => {
+                                return (
+                                    <div className="item" key={index}>
+                                        <div className="icon-item">
+                                            <img src={item.link} alt="img icon" />
+                                        </div>
+                                        <div className="text-item">{item.text}</div>
                                     </div>
-                                    <div className="text-item">{item.text}</div>
-                                </div>
-                            );
-                        })}
+                                );
+                            })}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -160,9 +162,7 @@ class BoxBackground extends Component {
 }
 
 const mapStateToProps = (state) => {
-    return {
-        isLoggedIn: state.user.isLoggedIn,
-    };
+    return {};
 };
 
 const mapDispatchToProps = (dispatch) => {

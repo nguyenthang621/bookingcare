@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { LANGUAGES } from '../../../utils';
 import * as actions from '../../../store/actions';
-import { FormattedMessage } from 'react-intl';
-import HomeHeader from '../../HomePage/HomeHeader/HomeHeader';
 import { getDetailClinicByIdServices } from '../../../services/patientServices';
 import { MdAddLocation } from 'react-icons/md';
 import DetailDoctor from '../../Patient/Doctor/DetailDoctor';
 import { BsLightbulbFill } from 'react-icons/bs';
-import Footer from '../../HomePage/Sections/Footer';
+import Loading from '../../../components/Loading';
 
 import './DetailClinic.scss';
+import FooterContent from '../../HomePage/FooterContent';
 
 class DetailSpecialty extends Component {
     constructor(props) {
@@ -42,8 +40,8 @@ class DetailSpecialty extends Component {
         let {} = this.props;
         let { clinicData, doctors } = this.state;
         return (
-            <div className="detail-clinic-wrapper">
-                <HomeHeader />
+            <div className="detail-clinic-wrapper position-loading">
+                {/* <HomeHeader /> */}
                 <div className="detail-clinic-container">
                     <div className="detail-clinic-header">
                         <div className="clinic-header coverArea">
@@ -80,32 +78,33 @@ class DetailSpecialty extends Component {
                         className="detail-clinic coverArea"
                         dangerouslySetInnerHTML={{ __html: clinicData.descriptionHtml }}
                     ></div>
-                    <div className="doctors-container coverArea">
-                        <div className="doctors">
-                            {doctors && doctors.length > 0 ? (
-                                doctors.map((item) => {
-                                    return (
-                                        <div className="sec-doctor" key={item.doctorId}>
-                                            <div className="right">
-                                                <DetailDoctor
-                                                    className="item"
-                                                    doctorId={item.doctorId}
-                                                    typeStyle="specialty"
-                                                    isComponentChild
-                                                />
+                    {doctors?.length > 0 && (
+                        <div className="doctors-container coverArea">
+                            <h4 className="title-doctors">Bác sĩ</h4>
+                            <div className="doctors">
+                                {doctors &&
+                                    doctors.length > 0 &&
+                                    doctors.map((item) => {
+                                        return (
+                                            <div className="sec-doctor" key={item.doctorId}>
+                                                <div className="right">
+                                                    <DetailDoctor
+                                                        className="item"
+                                                        doctorId={item.doctorId}
+                                                        typeStyle="specialty"
+                                                        isComponentChild
+                                                    />
+                                                </div>
                                             </div>
-                                        </div>
-                                    );
-                                })
-                            ) : (
-                                <div className="text-not-found">
-                                    <p>Không tìm được bác sĩ</p>
-                                </div>
-                            )}
+                                        );
+                                    })}
+                            </div>
                         </div>
+                    )}
+                    <div className="coverArea">
+                        <FooterContent />
                     </div>
                 </div>
-                <Footer />
             </div>
         );
     }

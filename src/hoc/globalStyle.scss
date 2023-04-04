@@ -23,7 +23,7 @@
     background-color: var(--toastify-color-light);
 }
 .coverArea {
-    width: 80%;
+    width: 65%;
     margin: 0 auto;
 }
 
@@ -101,4 +101,18 @@ td > img {
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover;
+}
+
+.position-loading {
+    position: relative;
+}
+
+.w60 {
+    width: 70% !important;
+    margin: 0 auto;
+}
+
+.w80 {
+    width: 80%;
+    margin: 0 auto;
 }

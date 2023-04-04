@@ -106,8 +106,8 @@ class ListClinic extends Component {
                                     return (
                                         <Link className="item" to={`/detail-clinic/${item.id}`} key={item.id}>
                                             <div className="item-specialty" key={item.id}>
-                                                <div className={'image-specialty'}>
-                                                    <img src={item.imageClinic} alt="img"></img>
+                                                <div className={'image-clinic'}>
+                                                    <img className="img-clinic" src={item.imageLogo} alt="img"></img>
                                                 </div>
                                                 <div className="name-specialty">{item.nameClinic}</div>
                                             </div>

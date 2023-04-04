@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import HomeHeader from '../../HomePage/HomeHeader/HomeHeader';
-import Footer from '../../HomePage/Sections/Footer';
 
-import { LANGUAGES } from '../../../utils';
 import * as actions from '../../../store/actions';
 import { BiUserCircle } from 'react-icons/bi';
-import { getDetailUserServices } from '../../../services/patientServices';
 import './DetailUser.scss';
 
 class DetailUser extends Component {
@@ -18,6 +14,9 @@ class DetailUser extends Component {
     }
     async componentDidMount() {
         await this.props.getDetailUserRedux();
+        this.setState({
+            dataUser: this.props.detailUserRedux,
+        });
     }
     async componentDidUpdate(prevProps) {
         if (prevProps.detailUserRedux !== this.props.detailUserRedux) {
@@ -31,7 +30,6 @@ class DetailUser extends Component {
         let { dataUser } = this.state;
         return (
             <div className="detail-user-container">
-                <HomeHeader />
                 <div className="wrapper-detail-user coverArea">
                     <div className="content-detail-user">
                         <div className="avatar">
@@ -49,16 +47,15 @@ class DetailUser extends Component {
                                 <p>{dataUser?.roleData?.valueVi}</p>
                             </p>
                             <div className="more-infor coverArea">
-                                <p>{`Name: ${dataUser?.firstName} ${dataUser?.lastName}`}</p>
+                                <p>{`Họ tên: ${dataUser?.firstName} ${dataUser?.lastName}`}</p>
                                 <p>{`Email: ${dataUser?.email} `}</p>
-                                <p>{`Gender: ${dataUser?.genderData?.valueVi}`}</p>
-                                <p>{`Phone Number: ${dataUser?.phoneNumber}`}</p>
-                                <p>{`Address: ${dataUser?.address}`}</p>
+                                <p>{`Giới tính: ${dataUser?.genderData?.valueVi}` || 'Chưa xác định'}</p>
+                                <p>{`Số điện thoại: ${dataUser?.phoneNumber}` || 'Chưa xác định'}</p>
+                                <p>{`Địa chỉ: ${dataUser?.address}` || 'Chưa xác định'}</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <Footer />
             </div>
         );
     }

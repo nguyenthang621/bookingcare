@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { LANGUAGES, CommonUtils } from '../../../utils';
+import { CommonUtils } from '../../../utils';
 import * as actions from '../../../store/actions';
 import { FormattedMessage } from 'react-intl';
 import { confirmRemedyService } from '../../../services/doctorServices';
@@ -26,7 +26,7 @@ class RemedyModal extends Component {
         };
     }
     async componentDidMount() {
-        let { languageRedux, currentPatient } = this.props;
+        let { currentPatient } = this.props;
         if (currentPatient && !_.isEmpty(currentPatient) && currentPatient.dataAcc.email) {
             this.setState({
                 emailPatient: currentPatient.dataAcc.email,
@@ -34,7 +34,7 @@ class RemedyModal extends Component {
         }
     }
     componentDidUpdate(prevProps) {
-        let { languageRedux, currentPatient } = this.props;
+        let { currentPatient } = this.props;
         if (prevProps.currentPatient !== currentPatient) {
         }
     }
@@ -111,7 +111,7 @@ class RemedyModal extends Component {
     };
 
     render() {
-        let { isShowModalRemedy, languageRedux, currentPatient, statusIdRedux } = this.props;
+        let { isShowModalRemedy, statusIdRedux } = this.props;
         let { isLoading } = this.state;
         return (
             <div className="booking-modal-container">
@@ -162,7 +162,7 @@ class RemedyModal extends Component {
                                         </label>
                                         {this.state.isShowBoxImage && (
                                             <div
-                                                className="preview pv-left"
+                                                className="preview preview-right"
                                                 style={{ backgroundImage: `url(${this.state.previewImageUrl})` }}
                                                 onClick={() => this.setState({ isRoomImage: true })}
                                             ></div>
@@ -209,7 +209,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        postBookingAppointmentRedux: (data) => dispatch(actions.postBookingAppointment(data)),
         getAppointmentDoctorRedux: (doctorId, initDate, statusId) =>
             dispatch(actions.getAppointmentDoctor(doctorId, initDate, statusId)),
     };

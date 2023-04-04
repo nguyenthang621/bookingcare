@@ -13,6 +13,7 @@ import { uploadFileToFirebase } from '../../../firebase/uploadFile';
 import CKeditor from '../../../components/CKeditor/CKeditor';
 
 import _ from 'lodash';
+import Loading from '../../../components/Loading';
 
 class ManageNews extends Component {
     constructor(props) {
@@ -33,10 +34,11 @@ class ManageNews extends Component {
             contentMarkdown: '',
             topic: '',
             focus: '',
+            isShowLoading: false,
         };
     }
     async componentDidMount() {
-        let { languageRedux } = this.props;
+        let {} = this.props;
         this.props.fetchAllDoctorRedux();
     }
     componentDidUpdate(prevProps) {
@@ -90,7 +92,10 @@ class ManageNews extends Component {
         });
     };
     handleClickSubmit = async () => {
-        let { adviser, authors, title, type, contentMarkdown, contentHtml, image, topic, focus, file } = this.state;
+        this.setState({
+            isShowLoading: true,
+        });
+        let { adviser, authors, title, type, contentMarkdown, contentHtml, topic, focus, file } = this.state;
         let htmlFocus = focus
             .split('\n')
             .map((item) => {
@@ -127,6 +132,7 @@ class ManageNews extends Component {
 
                 contentHtml: '',
                 contentMarkdown: '',
+                isShowLoading: false,
             });
         } else if (response && response.errorCode === 1) {
             toast.error(response.message, {
@@ -142,9 +148,10 @@ class ManageNews extends Component {
     };
 
     render() {
-        let { allDoctor, authors, title, type } = this.state;
+        let { allDoctor, authors, title, type, isShowLoading } = this.state;
         return (
-            <div className="handbook_container">
+            <div className="handbook_container position-loading">
+                {isShowLoading && <Loading />}
                 <div className="handbook-title">
                     <h3>Quản lý tin tức</h3>
                 </div>

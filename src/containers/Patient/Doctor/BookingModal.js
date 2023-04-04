@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { LANGUAGES } from '../../../utils';
-import * as actions from '../../../store/actions';
-import { FormattedMessage } from 'react-intl';
 import moment from 'moment';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import './BookingModal.scss';
 import Loading from '../../../components/Loading';
 import { getAllCodeServices } from '../../../services/userServices';
+import { toast } from 'react-toastify';
+import { postBookingAppointmentServices } from '../../../services/patientServices';
 
 class BookingModal extends Component {
     constructor(props) {
@@ -117,11 +117,32 @@ class BookingModal extends Component {
             nameDoctor: this.props.nameDoctor,
             language: this.props.languageRedux,
         };
-        await this.props.postBookingAppointmentRedux(result);
+        let res = await postBookingAppointmentServices(result);
+        if (res && res.errorCode === 0) {
+            toast.success(res.message, {
+                position: 'top-right',
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            this.toggle();
+        } else {
+            toast.error(res?.message || 'Vui lòng điền đủ thông tin.', {
+                position: 'top-right',
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
         this.setState({
             isLoading: false,
         });
-        this.toggle();
     };
     capitalizeFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
@@ -148,9 +169,9 @@ class BookingModal extends Component {
     };
 
     render() {
-        let { isShowModalBooking, languageRedux, dataCurrentDoctor } = this.props;
-        let { bookFor, exactTime, isLoading, listGender, nameDoctor, provinceDoctor } = this.state;
-        let selected = bookFor === 'others' ? 'checked' : '';
+        let { isShowModalBooking, languageRedux } = this.props;
+        let { bookFor, exactTime, isLoading, listGender, nameDoctor } = this.state;
+        // let selected = bookFor === 'others' ? 'checked' : '';
         return (
             <div className="booking-modal-container">
                 {isLoading && (
@@ -370,9 +391,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-        postBookingAppointmentRedux: (data) => dispatch(actions.postBookingAppointment(data)),
-    };
+    return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BookingModal);

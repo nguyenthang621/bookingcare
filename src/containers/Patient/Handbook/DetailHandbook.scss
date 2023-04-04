@@ -2,6 +2,11 @@
     padding-top: 75px;
     & .handbook-wrapper {
         margin-top: 20px;
+        & .handbook-detail-info {
+            & li {
+                padding-bottom: 4px;
+            }
+        }
 
         & .detail-clinic {
             background-color: var(--color-background-handbook);

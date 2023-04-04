@@ -167,16 +167,18 @@
         //options:
 
         & .options {
-            display: flex;
-            align-items: center;
             width: 100%;
-            justify-content: space-evenly;
             margin-top: 255px;
             background-image: linear-gradient(
                 rgba(255, 255, 255, 0.01),
                 rgba(255, 255, 255, 0.7),
                 rgba(255, 255, 255, 1)
             );
+            & .w-options {
+                display: flex;
+                align-items: center;
+                justify-content: space-evenly;
+            }
             & .item {
                 width: 160px;
                 height: 122px;

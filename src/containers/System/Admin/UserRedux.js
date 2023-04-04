@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions';
-import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import TableManageUser from './TableManageUser';
 import { toast } from 'react-toastify';
@@ -18,6 +17,7 @@ import ModalConfirm from '../ModalConfirm.js';
 import SearchInput from '../../../components/SearchInput.js';
 import FooterPaging from '../../../components/FooterPaging.js';
 import SelectStatusId from '../../../components/SelectStatusId';
+import Loading from '../../../components/Loading';
 
 class UserRedux extends Component {
     constructor(props) {
@@ -58,6 +58,8 @@ class UserRedux extends Component {
             roleIdSelected: '', // roleId filter
             PageIndex: 1,
             limit: 10,
+
+            isShowLoading: false,
         };
     }
 
@@ -67,6 +69,7 @@ class UserRedux extends Component {
     }
 
     reRenderFilterAndPaging = async (keywordSearchUser, roleIdSelected, PageIndex, limit) => {
+        this.isShowLoading();
         let response = await filterAndPagingUser({
             keyword: keywordSearchUser,
             roleId: roleIdSelected,
@@ -82,6 +85,7 @@ class UserRedux extends Component {
                 totalPage: response.data.totalPage,
                 count: response.data.count,
                 users: response.data.rows,
+                isShowLoading: false,
             });
         }
     };
@@ -206,7 +210,7 @@ class UserRedux extends Component {
             let { keywordSearchUser, roleIdSelected, PageIndex, limit } = this.state;
             let res = await deleteUserServices(userId);
             if (res && res.errorCode === 0) {
-                toast.success('Xoá người dùng thành công', {
+                toast.success(res?.message, {
                     position: 'top-right',
                     autoClose: 3000,
                     hideProgressBar: true,
@@ -243,6 +247,17 @@ class UserRedux extends Component {
         this.reRenderFilterAndPaging(keywordSearchUser, id, PageIndex, limit);
     };
 
+    isShowLoading = () => {
+        this.setState({
+            isShowLoading: true,
+        });
+    };
+    isHideLoading = () => {
+        this.setState({
+            isShowLoading: false,
+        });
+    };
+
     render() {
         let { isShowModalConfirm, users } = this.state;
         let {} = this.props;
@@ -255,7 +270,8 @@ class UserRedux extends Component {
         ];
 
         return (
-            <div className="user-redux-container" id="user-redux">
+            <div className="user-redux-container position-loading" id="user-redux">
+                {this.state.isShowLoading && <Loading />}
                 <div className="title">Quản lý người dùng</div>
                 <div className="wrapper-container">
                     <div className="action-modal">

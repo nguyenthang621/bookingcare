@@ -19,11 +19,13 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 class ModalUser extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            error: {},
+        };
     }
 
     componentDidMount() {}
-    componentDidUpdate(prevProps) {}
+    componentDidUpdate() {}
 
     toggle = () => {
         this.props.toggleModel();
@@ -117,21 +119,31 @@ class ModalUser extends Component {
 
     checkValidate = () => {
         let check = true;
-        let inputs = [
-            'email',
-            'firstName',
-            'lastName',
-            'address',
-            'password',
-            'phoneNumber',
-            'gender',
-            'position',
-            'roleId',
+        const inputs = [
+            { field: 'email', text: 'Chưa điền email' },
+            { field: 'firstName', text: 'Chưa điền Họ' },
+            { field: 'lastName', text: 'Chưa điền tên' },
+            { field: 'address', text: 'Chưa điền địa chỉ' },
+            { field: 'password', text: 'Chưa điền mật khẩu' },
+            // { field: 'gender', text: 'Chưa chọn giới tính' },
+            // { field: 'position', text: 'Chưa chọn chuyên khoa' },
+            // { field: 'roleId', text: 'Chưa điền thông tin giới thiệu bác sĩ' },
         ];
         for (let i = 0; i < inputs.length; i++) {
-            if (!this.props.data[inputs[i]]) {
+            if (!this.props.data[inputs[i]['field']]) {
                 check = false;
-                alert('missing parameter ' + inputs[i]);
+                // this.setState({
+                //     error[[inputs[i]['field']]:[inputs[i]['text']
+                // })
+                toast.warning(inputs[i]['text'], {
+                    position: 'top-right',
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 break;
             }
         }
@@ -155,6 +167,7 @@ class ModalUser extends Component {
             roleId,
             currentAction,
         } = this.props.data;
+        console.log(languageRedux);
         return (
             <>
                 <Modal
@@ -379,7 +392,10 @@ class ModalUser extends Component {
 }
 
 const mapStateToProps = (state) => {
-    return { keyForm: state.admin.keyForm };
+    return {
+        keyForm: state.admin.keyForm,
+        languageRedux: state.app.language,
+    };
 };
 
 const mapDispatchToProps = (dispatch) => {

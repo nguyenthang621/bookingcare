@@ -17,7 +17,7 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoggedIn: true,
-                userInfo: action.userInfor,
+                userInfo: action.userInfor || classCookies.getDataAccessToken(),
                 roleId: action.roleId,
             };
         case actionTypes.USER_LOGIN_FAIL:

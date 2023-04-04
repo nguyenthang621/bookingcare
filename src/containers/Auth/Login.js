@@ -4,116 +4,229 @@ import { push } from 'connected-react-router';
 
 import * as actions from '../../store/actions';
 import './Login.scss';
-// import { FormattedMessage } from 'react-intl';
-import { FaGoogle, FaFacebookF } from 'react-icons/fa';
-import { handleLoginApi } from '../../services/userServices';
+import './Login2.scss';
+import { handleLoginApi, registerServices } from '../../services/userServices';
 import Cookies from 'universal-cookie';
 import { classCookies } from '../../cookies';
 import { classStorage } from '../../storage';
 import { withRouter } from 'react-router';
+import { validateEmail, validatePhonenumber } from '../../utils/validate';
+import { KeyCodeUtils } from '../../utils';
 
 class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userName: '',
+            firstName: '',
+            lastName: '',
+            phoneNumber: '',
+            email: '',
             password: '',
             confirmPassword: '',
+
             message: '',
             isRegister: false,
+            isShowMessage: false,
         };
     }
-    componentDidMount() {}
+    componentDidMount() {
+        // document.addEventListener('keyup', this.handlerKeyDown);
+    }
+
+    handlerKeyDown = (event) => {
+        const keyCode = event.which || event.keyCode;
+        if (keyCode === KeyCodeUtils.ENTER) {
+            this.handleLogin();
+        }
+    };
 
     handleChange = (e, name) => {
-        this.setState({ [name]: e.target.value });
+        this.setState({ [name]: e.target.value, message: '' });
     };
+
     handleLogin = async () => {
         this.setState({ message: '' });
         try {
-            let dataResponse = await handleLoginApi(this.state.userName, this.state.password);
+            let dataResponse = await handleLoginApi(this.state.email, this.state.password);
+
             if (dataResponse && dataResponse.errorCode === 1 && dataResponse.message) {
-                this.setState({ message: dataResponse.message });
+                this.setState({ message: dataResponse.message, isShowMessage: true });
             }
             if (dataResponse && dataResponse.errorCode === 0) {
                 //login success
                 const cookies = new Cookies();
                 cookies.set('accessToken', dataResponse.accessToken, { path: '/' });
                 let userInfor = classCookies.getDataAccessToken();
-                await this.props.userLoginSuccess(userInfor, userInfor.roleId);
                 classStorage.setItemStorage('refreshToken', classCookies.getRefreshToken('refreshToken'));
 
-                this.props.history.push(`/system/welcome`);
+                await this.props.userLoginSuccess(userInfor, userInfor.roleId);
+                if (userInfor.roleId === 'R3') {
+                    // classStorage.setItemStorage('email', this.state.email);
+                    this.props.history.push(`/`);
+                } else if (userInfor.roleId === 'R1') {
+                    this.props.history.push(`/system/welcome`);
+                } else if (userInfor.roleId === 'R2') {
+                    this.props.history.push(`/doctor/manage-patient-appointment`);
+                }
             }
         } catch (error) {
             if (error.response && error.response.data) {
-                this.setState({ message: error.response.message });
+                this.setState({ message: error.response.message, isShowMessage: true });
             }
         }
     };
-    handleClickSignUp = () => {};
+
+    handleRegister = async () => {
+        this.setState({ message: '' });
+        let { email, password, confirmPassword, firstName, lastName, phoneNumber } = this.state;
+
+        if (!validateEmail(email)) {
+            this.setState({ message: 'Email không hợp lệ.', isShowMessage: true });
+            return;
+        } else {
+            try {
+                if (phoneNumber) {
+                    if (!validatePhonenumber(phoneNumber)) {
+                        this.setState({ message: 'Số điện thoại không hợp lệ.', isShowMessage: true });
+                        return;
+                    }
+                }
+                let dataResponse = await registerServices({
+                    firstName,
+                    lastName,
+                    phoneNumber,
+                    email,
+                    password,
+                    confirmPassword,
+                });
+                if (dataResponse && dataResponse.errorCode === 1 && dataResponse.message) {
+                    this.setState({ message: dataResponse.message, isShowMessage: true });
+                }
+                if (dataResponse && dataResponse.errorCode === 0) {
+                    //login success
+                    const cookies = new Cookies();
+                    cookies.set('accessToken', dataResponse.accessToken, { path: '/' });
+                    classStorage.setItemStorage('refreshToken', classCookies.getRefreshToken('refreshToken'));
+
+                    this.handleLogin();
+                    this.props.history.push(`/home`);
+                }
+            } catch (error) {
+                if (error.response && error.response.data) {
+                    this.setState({ message: error.response.message, isShowMessage: true });
+                }
+            }
+        }
+    };
+
+    handleClickSubmit = () => {
+        let { isRegister } = this.state;
+        if (isRegister) {
+            this.handleRegister();
+        } else {
+            this.handleLogin();
+        }
+    };
+
+    handleClickSignUp = () => {
+        this.setState({
+            isRegister: !this.state.isRegister,
+            isShowMessage: false,
+            message: '',
+        });
+    };
 
     render() {
+        let { isRegister } = this.state;
         return (
             <div className="login-background">
                 <div className="login-container">
                     <div className="login-content">
-                        <div className="col-12 text-center">login</div>
-                        <div className="col-12 from-group">
-                            <label>Username</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Enter your username"
-                                value={this.state.userName}
-                                onChange={(e) => this.handleChange(e, 'userName')}
-                            />
-                        </div>
-                        <div className="col-12 from-group">
-                            <label>Password</label>
-                            <input
-                                type="password"
-                                className="form-control"
-                                placeholder="Enter your password"
-                                value={this.state.password}
-                                onChange={(e) => this.handleChange(e, 'password')}
-                            />
-                        </div>
-                        <div className="col-12 from-group">
-                            <label>Confirm password</label>
-                            <input
-                                type="password"
-                                className="form-control"
-                                placeholder="Enter your password"
-                                value={this.state.confirmPassword}
-                                onChange={(e) => this.handleChange(e, 'confirmPassword')}
-                            />
-                        </div>
-                        <div className="col-12 text-response">{this.state.message}</div>
-                        <div className="col-12 btn-container">
-                            <button className="btn-login" onClick={() => this.handleLogin()}>
-                                Login
-                            </button>
-                        </div>
-                        <div className="col-12 title-forgot">
-                            <span>Forgot your password?</span>
-                        </div>
-                        <div className="col-12 login-other">
-                            <span>Or sign in with:</span>
-                            <div className="icon-login-other">
-                                <a href="https://react-icons.github.io/react-icons">
-                                    <FaGoogle />
-                                </a>
-                                <a href="https://react-icons.github.io/react-icons">
-                                    <FaFacebookF />
-                                </a>
+                        <div className="col-12 text-center">{isRegister ? 'Đăng kí' : 'Đăng nhập'}</div>
+                        <div className="login-form">
+                            {/* ho va ten khi dang ki */}
+                            {isRegister && (
+                                <>
+                                    <div className="form-row mt-4 col-md-12 ">
+                                        <div className="form-group col-md-6 m0">
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="Họ (*)"
+                                                value={this.state.firstName}
+                                                onChange={(e) => this.handleChange(e, 'firstName')}
+                                            />
+                                        </div>
+                                        <div className="form-group col-md-6 m0">
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="Tên (*)"
+                                                value={this.state.lastName}
+                                                onChange={(e) => this.handleChange(e, 'lastName')}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="form-group col-md-12 mt-4">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="inputEmail4"
+                                            placeholder="Số điện thoại (*)"
+                                            value={this.state.phoneNumber}
+                                            onChange={(e) => this.handleChange(e, 'phoneNumber')}
+                                        />
+                                    </div>
+                                </>
+                            )}
+                            <div className="form-group col-md-12 mt-4">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Email (*)"
+                                    value={this.state.email}
+                                    onChange={(e) => this.handleChange(e, 'email')}
+                                />
+                            </div>
+                            <div className="form-group col-md-12">
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    id="inputPassword4"
+                                    placeholder="Password (*)"
+                                    value={this.state.password}
+                                    onChange={(e) => this.handleChange(e, 'password')}
+                                />
                             </div>
                         </div>
+
+                        {isRegister && (
+                            <div className="form-group col-md-12">
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    placeholder="Enter your password (*)"
+                                    value={this.state.confirmPassword}
+                                    onChange={(e) => this.handleChange(e, 'confirmPassword')}
+                                />
+                            </div>
+                        )}
+                        <div className="col-12 text-response">{this.state.message}</div>
+                        <div className="col-12 btn-container">
+                            <button className="btn btn-primary" onClick={() => this.handleClickSubmit()}>
+                                {isRegister ? 'Đăng kí' : 'Đăng nhập'}
+                            </button>
+                        </div>
+                        {/* <div className="col-12 title-forgot">
+                            <span>Forgot your password?</span>
+                        </div> */}
+
                         <div className="col-12 register">
                             <span>
-                                Not a member?{' '}
+                                {!isRegister && 'Not a member? '}
                                 <span className="btn-signup" onClick={() => this.handleClickSignUp()}>
-                                    Signup
+                                    {isRegister ? 'Đăng nhập' : 'Đăng kí'}
                                 </span>
                             </span>
                         </div>

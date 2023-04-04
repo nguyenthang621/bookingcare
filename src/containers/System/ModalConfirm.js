@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { LANGUAGES, CommonUtils } from '../../utils';
 import * as actions from '../../store/actions';
 import { FormattedMessage } from 'react-intl';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
@@ -19,7 +18,7 @@ class ModalConfirm extends Component {
         };
     }
     async componentDidMount() {
-        let { languageRedux, currentPatient } = this.props;
+        let { currentPatient } = this.props;
         if (currentPatient && !_.isEmpty(currentPatient) && currentPatient.dataAcc.email) {
             this.setState({
                 emailPatient: currentPatient.dataAcc.email,
@@ -169,7 +168,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        postBookingAppointmentRedux: (data) => dispatch(actions.postBookingAppointment(data)),
         getAppointmentDoctorRedux: (doctorId, initDate, statusId) =>
             dispatch(actions.getAppointmentDoctor(doctorId, initDate, statusId)),
     };

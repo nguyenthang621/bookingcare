@@ -43,7 +43,7 @@ class HomeHeader extends Component {
 
         return (
             <div className="home-header-container">
-                <div className="home-header-content">
+                <div className="home-header-content w80">
                     <div className="left-content">
                         <Link to="/home">
                             <div className="header-logo"></div>

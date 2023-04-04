@@ -1,11 +1,8 @@
 import Cookies from 'universal-cookie';
-import jwt from 'jsonwebtoken';
-import { refreshToken } from './services/userServices';
+
 import jwt_decode from 'jwt-decode';
-import axios from 'axios';
 import _ from 'lodash';
 
-let axiosJWT = axios.create();
 const cookies = new Cookies();
 
 export const classCookies = {

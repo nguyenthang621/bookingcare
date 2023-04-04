@@ -37,8 +37,9 @@ export const dataMenuUser = [
     {
         title_vi: 'Quản lý',
         title_en: 'Manage',
-        to: '/login',
+        to: '/system/welcome',
         icon: <MdManageAccounts />,
+        role: ['R1', 'R2'],
     },
     {
         title_vi: 'Đăng xuất',

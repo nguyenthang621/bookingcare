@@ -1,7 +1,6 @@
 import {
     getTopDoctorServices,
     getAllDoctorService,
-    saveDetailDoctorServices,
     getDetailDoctorService,
     saveScheduleDoctorServices,
     getScheduleDoctorByDateService,

@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { LANGUAGES } from '../../../utils';
-import * as actions from '../../../store/actions';
-import { FormattedMessage } from 'react-intl';
 import { BsLightbulbFill } from 'react-icons/bs';
 
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 import '../Specialty/ListSpecialty.scss';
@@ -16,10 +13,10 @@ class ListHandbook extends Component {
         this.state = {};
     }
     async componentDidMount() {}
-    componentDidUpdate(prevProps) {}
+    componentDidUpdate() {}
 
     render() {
-        let { modalHandbook, listDataHandbookRedux, languageRedux, listDataSpecialtyRedux } = this.props;
+        let { modalHandbook, listDataHandbookRedux } = this.props;
         let {} = this.state;
 
         return (
@@ -75,7 +72,7 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = () => {
     return {};
 };
 

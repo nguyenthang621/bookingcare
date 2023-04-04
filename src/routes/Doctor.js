@@ -23,7 +23,7 @@ class Doctor extends Component {
         let isAuth = roleId === TYPE_USER.DOCTOR || roleId === TYPE_USER.ADMIN;
         return (
             <React.Fragment>
-                {this.props.isLoggedIn && <Header />}
+                <Header />
                 <div className="system-container">
                     <div className="system-list">
                         {isAuth && (
@@ -50,7 +50,7 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = () => {
     return {};
 };
 

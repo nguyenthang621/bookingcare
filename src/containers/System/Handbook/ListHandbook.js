@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions';
-import { LANGUAGES } from '../../../utils';
 import { getHandbookServices } from '../../../services/patientServices';
 import { deleteHandbookServices } from '../../../services/userServices';
 
@@ -13,6 +12,7 @@ import { toast } from 'react-toastify';
 import ModalHandbook from './ModalHandbook';
 import SelectStatusId from '../../../components/SelectStatusId';
 import ConfirmModal from '../../../components/ConfirmModal';
+import Loading from '../../../components/Loading';
 
 import _ from 'lodash';
 
@@ -25,6 +25,11 @@ class ListHandbook extends Component {
             id: '',
             statusId: 'S1',
             isShowConfirmModal: false,
+
+            count: 1,
+            totalPage: 1,
+            pageIndex: 1,
+            limit: 5,
         };
     }
 
@@ -32,7 +37,8 @@ class ListHandbook extends Component {
         let { statusId } = this.state;
         await this.handleGetHandbook(statusId);
     }
-    componentDidUpdate(prevProps) {}
+    componentDidUpdate() {}
+
     handleClickDetail = async (id) => {
         this.toggleModelConfirm();
         this.setState({
@@ -71,7 +77,21 @@ class ListHandbook extends Component {
             id: id,
         });
     };
+
+    handleShowLoading = () => {
+        this.setState({
+            isShowLoading: true,
+        });
+    };
+
+    handleHideLoading = () => {
+        this.setState({
+            isShowLoading: false,
+        });
+    };
+
     acceptDeleteHandbook = async () => {
+        this.handleShowLoading();
         let response = await deleteHandbookServices(this.state.id);
         if (response && response.errorCode === 0) {
             await this.handleGetHandbook(this.state.statusId);
@@ -94,6 +114,7 @@ class ListHandbook extends Component {
                 title: '',
                 contentHtml: '',
                 contentMarkdown: '',
+                isShowLoading: false,
             });
             this.toggleConfirmModal();
         } else if (response && response.errorCode === 1) {
@@ -109,7 +130,7 @@ class ListHandbook extends Component {
         }
     };
     render() {
-        let { listHandbook, isShowModalHandbook, id, statusId, isShowConfirmModal } = this.state;
+        let { listHandbook, isShowModalHandbook, id, statusId, isShowConfirmModal, isShowLoading } = this.state;
         let {} = this.props;
 
         let listSelect = [
@@ -119,11 +140,14 @@ class ListHandbook extends Component {
         ];
         return (
             <div className="manage-handbook-container mt-2">
+                {isShowLoading && <Loading />}
+
                 {isShowConfirmModal && (
                     <ConfirmModal
                         toggleConfirmModal={this.toggleConfirmModal}
                         isShowConfirmModal={isShowConfirmModal}
                         deleteFunc={this.acceptDeleteHandbook}
+                        content="Xoá cẩm nang này."
                     />
                 )}
                 {isShowModalHandbook ? (
@@ -133,70 +157,76 @@ class ListHandbook extends Component {
                         id={id}
                         statusId={statusId}
                         handleGetHandbook={this.handleGetHandbook}
+                        handleShowLoading={this.handleShowLoading}
+                        handleHideLoading={this.handleHideLoading}
+                        handleClickDelete={this.handleClickDelete}
                     />
                 ) : (
                     ''
                 )}
-                <div className="handbook-title">
-                    <h3>Danh sách cẩm nang</h3>
-                </div>
-                <div className="manage-handbook-wrapper">
-                    <div className="handbook-table coverArea">
-                        <SelectStatusId
-                            handleChangeInput={this.handleChangeInput}
-                            listSelect={listSelect}
-                            statusId={statusId}
-                        />
-                        <table className="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Image</th>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">Sender</th>
-                                    <th scope="col">State</th>
-                                    {this.state.statusId !== 'S3' && <th scope="col">Confirm</th>}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {listHandbook &&
-                                    listHandbook.length > 0 &&
-                                    listHandbook.map((item, index) => {
-                                        return (
-                                            <tr key={index}>
-                                                <th scope="row">{index + 1}</th>
-                                                <td>
-                                                    <img src={item.image} atl="img"></img>
-                                                </td>
-                                                <td>{item.title}</td>
-                                                <td>{`${item.senderData.firstName} ${item.senderData.lastName}`}</td>
-                                                <td>{item.statusId}</td>
-                                                <td>
-                                                    {this.state.statusId === 'S1' && (
-                                                        <button
-                                                            className="btn btn-primary"
-                                                            onClick={() => this.handleClickDetail(item.id)}
-                                                        >
-                                                            Detail
-                                                        </button>
-                                                    )}
+                <div className="w60">
+                    <div className="handbook-title">
+                        <h3>Danh sách cẩm nang</h3>
+                    </div>
+                    <div className="manage-handbook-wrapper">
+                        <div className="handbook-table">
+                            <SelectStatusId
+                                handleChangeInput={this.handleChangeInput}
+                                listSelect={listSelect}
+                                statusId={statusId}
+                            />
+                            <table className="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Tiêu đề</th>
+                                        <th scope="col">Người gửi</th>
+                                        <th scope="col">Trạng thái</th>
+                                        <th scope="col">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {listHandbook &&
+                                        listHandbook.length > 0 &&
+                                        listHandbook.map((item, index) => {
+                                            return (
+                                                <tr key={index}>
+                                                    <th scope="row">{index + 1}</th>
+                                                    <td>
+                                                        <img src={item.image} atl="img"></img>
+                                                    </td>
+                                                    <td>{item.title}</td>
+                                                    <td>{`${item.senderData.firstName} ${item.senderData.lastName}`}</td>
+                                                    <td>{item.statusId}</td>
+                                                    <td>
+                                                        {(this.state.statusId === 'S1' ||
+                                                            this.state.statusId === 'S2') && (
+                                                            <button
+                                                                className="btn btn-primary"
+                                                                onClick={() => this.handleClickDetail(item.id)}
+                                                            >
+                                                                Detail
+                                                            </button>
+                                                        )}
 
-                                                    {'  '}
+                                                        {'  '}
 
-                                                    {this.state.statusId !== 'S3' && (
+                                                        {/* {this.state.statusId !== 'S3' && ( */}
                                                         <button
                                                             className="btn btn-warning"
                                                             onClick={() => this.handleClickDelete(item.id)}
                                                         >
-                                                            Delete
+                                                            {this.state.statusId === 'S3' ? 'Đăng lại' : 'Xoá'}
                                                         </button>
-                                                    )}
-                                                </td>
-                                            </tr>
-                                        );
-                                    })}
-                            </tbody>
-                        </table>
+                                                        {/* )} */}
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

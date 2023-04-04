@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import * as actions from '../../../store/actions';
 import { LANGUAGES, CommonUtils, PATH_FIREBASE } from '../../../utils';
 import { FaFileUpload } from 'react-icons/fa';
 import { postDetailClinicServices } from '../../../services/userServices';
@@ -117,7 +116,7 @@ class ModalClinic extends Component {
 
     handleSave = async (images) => {
         let { descriptionMarkdown, nameClinic, addressClinic, contentHtml } = this.state;
-
+        this.props.handleShowLoading();
         let response = await postDetailClinicServices({
             descriptionHtml: contentHtml,
             descriptionMarkdown,
@@ -165,6 +164,7 @@ class ModalClinic extends Component {
                 progress: undefined,
             });
         }
+        this.props.handleHideLoading();
     };
 
     onChangeInput = (key, value) => {

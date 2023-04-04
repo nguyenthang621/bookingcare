@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { LANGUAGES } from '../../../utils';
-import * as actions from '../../../store/actions';
-import { FormattedMessage } from 'react-intl';
 
 class Comment extends Component {
     constructor(props) {
@@ -13,11 +11,7 @@ class Comment extends Component {
         let {} = this.props;
         this.initFacebookSDK();
     }
-    componentDidUpdate(prevProps) {
-        let { languageRedux } = this.props;
-        if (prevProps.languageRedux !== this.props.languageRedux) {
-        }
-    }
+    componentDidUpdate() {}
     initFacebookSDK() {
         if (window.FB) {
             window.FB.XFBML.parse();
@@ -70,7 +64,7 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = () => {
     return {};
 };
 

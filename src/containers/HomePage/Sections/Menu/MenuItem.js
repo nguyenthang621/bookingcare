@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { LANGUAGES } from '../../../../utils';
 import './Menu.scss';
 
@@ -18,6 +17,7 @@ class MenuItem extends Component {
     //render các item MenuItem:
     render() {
         const { itemCurrent, languageRedux } = this.props;
+
         return (
             <>
                 {itemCurrent &&
@@ -44,6 +44,7 @@ const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
         languageRedux: state.app.language,
+        userInfo: state.user.userInfo,
     };
 };
 

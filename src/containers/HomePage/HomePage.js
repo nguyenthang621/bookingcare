@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import HomeHeader from './HomeHeader/HomeHeader';
 import BoxBackground from './Sections/BoxBackground';
 import Section from './Sections/Section';
 import News from './Sections/News';
 import About from './Sections/About';
 import TopDoctor from './Sections/TopDoctor';
-import Footer from './Sections/Footer';
 import * as actions from '../../store/actions';
+
 import ListSpecialty from '../Patient/Specialty/ListSpecialty';
 import ListClinic from '../Patient/Clinic/ListClinic';
 import ListDoctor from '../Patient/Doctor/ListDoctor';
@@ -15,8 +14,6 @@ import ListHandbook from '../Patient/Handbook/ListHandbook';
 
 import { FormattedMessage } from 'react-intl';
 
-import { getAllClinicServices, getHandbookServices, getNewsServices } from '../../services/patientServices';
-import { nhakhoa, clinic, doctor, handbook } from '../../assets';
 import _ from 'lodash';
 
 class HomePage extends Component {
@@ -30,34 +27,24 @@ class HomePage extends Component {
             modalHealth: false,
         };
     }
-    async componentDidMount() {
-        await this.props.getAllSpecialtyRedux();
-        await this.props.getAllClinicRedux('true');
-        await this.props.getHandbookRedux();
-    }
-    componentDidUpdate(prevProps) {
-        if (prevProps.listDataSpecialtyRedux !== this.props.listDataSpecialtyRedux) {
-            this.setState({
-                listSpecialty: this.props.listDataSpecialtyRedux,
-            });
-        }
-    }
+    async componentDidMount() {}
+    componentDidUpdate() {}
     toggleModel = (modal) => {
         this.setState({
             [modal]: !this.state[modal],
         });
     };
+
     render() {
-        let { modalSpecialty, modalClinic, modalDoctor, modalHandbook } = this.state;
         let { listDataClinicRedux, listDataSpecialtyRedux, listDataHandbookRedux } = this.props;
+        let { modalSpecialty, modalClinic, modalDoctor, modalHandbook } = this.state;
 
         return (
             <div className="home-container">
-                <HomeHeader modalSpecialty={modalSpecialty} toggleModel={this.toggleModel} />
-                {modalSpecialty ? <ListSpecialty modalSpecialty={modalSpecialty} toggleModel={this.toggleModel} /> : ''}
-                {modalClinic ? <ListClinic modalClinic={modalClinic} toggleModel={this.toggleModel} /> : ''}
-                {modalDoctor ? <ListDoctor modalDoctor={modalDoctor} toggleModel={this.toggleModel} /> : ''}
-                {modalHandbook ? <ListHandbook modalHandbook={modalHandbook} toggleModel={this.toggleModel} /> : ''}
+                {modalSpecialty && <ListSpecialty modalSpecialty={modalSpecialty} toggleModel={this.toggleModel} />}
+                {modalClinic && <ListClinic modalClinic={modalClinic} toggleModel={this.toggleModel} />}
+                {modalDoctor && <ListDoctor modalDoctor={modalDoctor} toggleModel={this.toggleModel} />}
+                {modalHandbook && <ListHandbook modalHandbook={modalHandbook} toggleModel={this.toggleModel} />}
                 <BoxBackground />
                 <News />
                 <Section
@@ -94,7 +81,6 @@ class HomePage extends Component {
                     slideShow={2}
                 />
                 <About title={<FormattedMessage id="homepage.about" />} />
-                <Footer />
             </div>
         );
     }

@@ -11,6 +11,7 @@ import './ManageHandbook.scss';
 import { toast } from 'react-toastify';
 import { uploadFileToFirebase } from '../../../firebase/uploadFile';
 import CKeditor from '../../../components/CKeditor/CKeditor';
+import Loading from '../../../components/Loading';
 
 import _ from 'lodash';
 
@@ -30,10 +31,12 @@ class ManageHandbook extends Component {
             title: '',
             contentHtml: '',
             contentMarkdown: '',
+
+            isShowLoading: false,
         };
     }
     async componentDidMount() {
-        let { languageRedux } = this.props;
+        let {} = this.props;
         this.props.fetchAllDoctorRedux();
     }
     componentDidUpdate(prevProps) {
@@ -85,6 +88,9 @@ class ManageHandbook extends Component {
         }
     };
     handleClickSubmit = async () => {
+        this.setState({
+            isShowLoading: true,
+        });
         let { adviser, authors, title, contentMarkdown, contentHtml, file } = this.state;
         let imageURL = await uploadFileToFirebase(PATH_FIREBASE.HANDBOOK_IMAGE, file);
 
@@ -117,6 +123,8 @@ class ManageHandbook extends Component {
                 title: '',
                 contentHtml: '',
                 contentMarkdown: '',
+
+                isShowLoading: false,
             });
         } else if (response && response.errorCode === 1) {
             toast.error(response.message, {
@@ -132,20 +140,19 @@ class ManageHandbook extends Component {
     };
 
     render() {
-        let { allDoctor, authors, title } = this.state;
+        let { allDoctor, authors, title, isShowLoading } = this.state;
         return (
-            <div className="handbook_container">
+            <div className="handbook_container position-loading">
+                {isShowLoading && <Loading />}
+
                 <div className="handbook-title">
                     <h3>Quản lý cẩm nang</h3>
                 </div>
 
-                <div className="wrapper-handbook coverArea">
+                <div className="wrapper-handbook w60">
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label forhtml="inputEmail4">
-                                {/* <FormattedMessage id="admin.manage-doctor.name-clinic" /> */}
-                                Tiêu đề
-                            </label>
+                            <label forhtml="inputEmail4">Tiêu đề</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -186,10 +193,7 @@ class ManageHandbook extends Component {
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label forhtml="inputEmail4">
-                                {/* <FormattedMessage id="admin.manage-doctor.name-clinic" /> */}
-                                Nhóm tác giả
-                            </label>
+                            <label forhtml="inputEmail4">Nhóm tác giả</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -216,16 +220,16 @@ class ManageHandbook extends Component {
                         </label>
                         <CKeditor handleEditorChange={this.handleEditorChange} value={this.state.contentHtml} />
                     </div>
-                </div>
-                <div className="container_btn coverArea">
-                    <button
-                        className="btn btn-warning"
-                        onClick={() => {
-                            this.handleClickSubmit();
-                        }}
-                    >
-                        Đăng bài
-                    </button>
+                    <div className="container_btn">
+                        <button
+                            className="btn btn-warning"
+                            onClick={() => {
+                                this.handleClickSubmit();
+                            }}
+                        >
+                            Đăng bài
+                        </button>
+                    </div>
                 </div>
             </div>
         );

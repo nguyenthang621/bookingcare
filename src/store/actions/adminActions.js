@@ -2,9 +2,7 @@ import actionTypes from './actionTypes';
 import {
     getAllCodeServices,
     createUserServices,
-    getUsersById,
     filterAndPagingUser,
-    deleteUserServices,
     editUserServices,
     checkQueueNewsServices,
     checkQueueHandbookServices,

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { LANGUAGES } from '../../../utils';
-import * as actions from '../../../store/actions';
-import { FormattedMessage } from 'react-intl';
 
 class IntroDoctor extends Component {
     constructor(props) {
@@ -14,7 +12,7 @@ class IntroDoctor extends Component {
         this.initFacebookSDK();
     }
     componentDidUpdate(prevProps) {
-        let { languageRedux } = this.props;
+        let {} = this.props;
         if (prevProps.languageRedux !== this.props.languageRedux) {
         }
     }
@@ -73,7 +71,7 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = () => {
     return {};
 };
 

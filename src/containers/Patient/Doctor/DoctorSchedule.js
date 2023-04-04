@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { LANGUAGES } from '../../../utils';
-import * as actions from '../../../store/actions';
 import { FormattedMessage } from 'react-intl';
 import './DoctorSchedule.scss';
 import moment from 'moment';
-import localization from 'moment/locale/vi';
 import { FaCalendarAlt, FaRegHandPointUp } from 'react-icons/fa';
 import ExtraInforDoctor from './ExtraInforDoctor';
 import { getScheduleDoctorByDateService } from '../../../services/doctorServices';

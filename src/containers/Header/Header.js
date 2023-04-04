@@ -8,9 +8,11 @@ import Navigator from '../../components/Navigator';
 import { adminMenu, doctorMenu } from './menuApp';
 import { userImage } from '../../assets';
 import { classCookies } from '../../cookies';
-import { checkQueueNewsServices } from '../../services/userServices';
 import { Link } from 'react-router-dom';
 import { AiFillHome } from 'react-icons/ai';
+import { push } from 'connected-react-router';
+import { withRouter } from 'react-router';
+
 import './Header.scss';
 
 class Header extends Component {
@@ -54,7 +56,7 @@ class Header extends Component {
         return;
     };
     render() {
-        const { processLogout, language, userInfo } = this.props;
+        const { processLogout } = this.props;
         const { user } = this.state;
 
         return (
@@ -103,6 +105,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        navigate: (path) => dispatch(push(path)),
         processLogout: () => dispatch(actions.processLogout()),
         changeLanguageRedux: (language) => dispatch(actions.changeLanguageApp(language)),
         checkQueueNewsRedux: () => dispatch(actions.checkQueueNewsRedux()),
@@ -110,4 +113,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

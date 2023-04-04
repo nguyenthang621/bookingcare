@@ -5,7 +5,7 @@
     margin: 30px 0 20px 0;
 
     .section-content {
-        margin: 0px 150px;
+        // margin: 0px 150px;
         padding-bottom: 20px;
     }
 }
@@ -49,6 +49,14 @@
 
 .background {
     background-color: var(--color-background-section);
+}
+
+.img-clinic {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    object-fit: contain;
+    overflow: hidden;
 }
 
 // -------------------------doctor---------------------
@@ -146,18 +154,20 @@
     &:hover {
         color: var(--color-primary);
     }
-    .item-sec {
+    & .item-sec {
         display: flex;
         flex-direction: column;
         margin: 5px;
         cursor: pointer;
 
-        .img-sec {
+        & .img-sec {
+            border-radius: 5px;
+            border: 0.5px solid #eee;
             height: 160px;
             width: 100%;
             overflow: hidden;
         }
-        .text-sec {
+        & .text-sec {
             color: #111;
             padding-top: 5px;
             font-size: 13px;

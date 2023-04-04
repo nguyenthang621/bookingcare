@@ -8,6 +8,7 @@ import FooterPaging from '../../../components/FooterPaging';
 import ModalConfirm from '../ModalConfirm';
 import { deleteClinicByIdServices } from '../../../services';
 import { toast } from 'react-toastify';
+import Loading from '../../../components/Loading';
 
 class ManageClinic extends Component {
     constructor(props) {
@@ -24,6 +25,8 @@ class ManageClinic extends Component {
 
             isShowModalConfirm: false,
             currentClinicId: '',
+
+            isShowLoading: false,
         };
     }
     async componentDidMount() {
@@ -33,6 +36,9 @@ class ManageClinic extends Component {
     componentDidUpdate() {}
 
     handleFilterAndPaging = async (pageIndex, limit, keyword) => {
+        this.setState({
+            isShowLoading: true,
+        });
         let response = await filterAndPagingClinic(pageIndex, limit, keyword);
         if (response && response.errorCode === 0) {
             this.setState({
@@ -40,6 +46,7 @@ class ManageClinic extends Component {
                 totalPage: response.data.totalPage,
                 count: response.data.count,
                 pageIndex: pageIndex,
+                isShowLoading: false,
             });
         }
     };
@@ -50,6 +57,9 @@ class ManageClinic extends Component {
 
     handleSearch = async (currentKeyword) => {
         let { limit, pageIndex } = this.state;
+        this.setState({
+            isShowLoading: true,
+        });
         try {
             let response = await filterAndPagingClinic(pageIndex, limit, currentKeyword);
             if (response && response.errorCode === 0) {
@@ -59,6 +69,7 @@ class ManageClinic extends Component {
                     count: response.data.count,
                     pageIndex: pageIndex,
                     keyword: currentKeyword,
+                    isShowLoading: false,
                 });
             }
         } catch (error) {
@@ -89,6 +100,9 @@ class ManageClinic extends Component {
         });
     };
     handleDestroy = async () => {
+        this.setState({
+            isShowLoading: true,
+        });
         let response = await deleteClinicByIdServices(this.state.currentClinicId);
         if (response && response.errorCode === 0) {
             this.toggleModelConfirm('');
@@ -103,6 +117,9 @@ class ManageClinic extends Component {
                 draggable: true,
                 progress: undefined,
             });
+            this.setState({
+                isShowLoading: false,
+            });
         } else {
             this.toggleModelConfirm('');
             toast.success(response.message || 'Có lỗi xảy ra lui lòng tử lại.', {
@@ -116,16 +133,28 @@ class ManageClinic extends Component {
             });
         }
     };
+    handleShowLoading = () => {
+        this.setState({
+            isShowLoading: true,
+        });
+    };
+    handleHideLoading = () => {
+        this.setState({
+            isShowLoading: false,
+        });
+    };
 
     render() {
-        let { isOpenModel, listClinic, count, totalPage, pageIndex, isShowModalConfirm } = this.state;
+        let { isOpenModel, listClinic, count, totalPage, pageIndex, isShowModalConfirm, isShowLoading } = this.state;
         return (
-            <>
+            <div>
                 {isOpenModel && (
                     <ModalClinic
                         toggleModel={this.handleToggleModel}
                         isOpenModel={this.state.isOpenModel}
                         reloadData={this.handleFilterAndPaging}
+                        handleHideLoading={this.handleHideLoading}
+                        handleShowLoading={this.handleShowLoading}
                     />
                 )}
                 {isShowModalConfirm ? (
@@ -141,9 +170,10 @@ class ManageClinic extends Component {
                 ) : (
                     ''
                 )}
-                <div className="container-table">
+                <div className="container-table position-loading">
+                    {isShowLoading && <Loading />}
                     <div className="title">Quản lý cơ sở khám bệnh</div>
-                    <div className="wrapper-table">
+                    <div className="wrapper-table w60">
                         <div className="action-container">
                             <SearchInput placeholder="Tìm kiếm..." handleSearch={this.handleSearch} delay={800} />
                             <button className="btn btn-primary" onClick={() => this.handleToggleModel()}>
@@ -155,7 +185,7 @@ class ManageClinic extends Component {
                                 <thead>
                                     <tr className="fixedTop">
                                         <th scope="col">STT</th>
-                                        <th scope="col">Image Logo</th>
+                                        <th scope="col">Ảnh Logo</th>
                                         <th scope="col">Tên cơ sở</th>
                                         <th scope="col">Địa chỉ</th>
                                         <th scope="col">Hành động</th>
@@ -199,7 +229,7 @@ class ManageClinic extends Component {
                         />
                     </div>
                 </div>
-            </>
+            </div>
         );
     }
 }

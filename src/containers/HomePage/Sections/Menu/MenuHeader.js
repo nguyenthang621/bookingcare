@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+
 import './Menu.scss';
 
 class MenuItem extends Component {
@@ -13,6 +13,7 @@ class MenuItem extends Component {
     //render các item MenuItem:
     render() {
         const { title, onBack, iconBack } = this.props;
+
         return (
             <div className="header-menu" onClick={() => onBack()}>
                 <span className="icon_back">{iconBack}</span>

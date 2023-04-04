@@ -20,26 +20,28 @@ class System extends Component {
 
     async componentDidMount() {
         let { roleId } = this.props;
-        if (roleId === 'R3' || !roleId) {
+        if (!roleId) {
             await this.props.processLogout();
             this.props.history.push(`/login`);
         }
+        if (roleId === 'R3') {
+            this.props.history.push(`/`);
+        }
     }
     render() {
-        const { systemMenuPath, roleId } = this.props;
-
+        const { roleId } = this.props;
         return (
             <React.Fragment>
-                {this.props.isLoggedIn && <Header />}
+                <Header />
                 <div className="system-container">
                     <div className="system-list">
                         {roleId === TYPE_USER.ADMIN && (
                             <Switch>
-                                <Route path="/system/user-redux" component={UserRedux} />
-                                <Route path="/system/manage-doctor" component={ManageDoctor} />
-                                <Route path="/system/manage-specialty" component={Specialty} />
-                                <Route path="/system/manage-clinic" component={ManageClinic} />
-                                <Route path="/system/welcome" component={SystemWelcome} />
+                                <Route exact path="/system/user-redux" component={UserRedux} />
+                                <Route exact path="/system/manage-doctor" component={ManageDoctor} />
+                                <Route exact path="/system/manage-specialty" component={Specialty} />
+                                <Route exact path="/system/manage-clinic" component={ManageClinic} />
+                                <Route exact path="/system/welcome" component={SystemWelcome} />
                                 <Route
                                     component={() => {
                                         return <Redirect to={SystemWelcome} />;

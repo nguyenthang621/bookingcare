@@ -45,41 +45,44 @@ class News extends Component {
         let { listNews } = this.state;
         return (
             <div className="news-container">
-                <div className="news-content">
-                    <Slider {...settings}>
-                        {listNews &&
-                            listNews.length > 0 &&
-                            listNews.map((item) => {
-                                return (
-                                    <div
-                                        className="item-slide"
-                                        key={item.id}
-                                        onClick={() => this.handleClickNews(item.id)}
-                                    >
-                                        {/* <Link to={`/detail-news/${item.id}`}> */}
-                                        <div className="item">
-                                            <div className="topic">{item?.type}</div>
-                                            <div
-                                                className="img-news"
-                                                style={{ backgroundImage: `url(${item?.image})` }}
-                                            ></div>
-                                            <div className="news-brief">
-                                                <h3 className="news-title">{item?.title}</h3>
+                <div className="w60">
+                    <div className="news-content">
+                        <Slider {...settings}>
+                            {listNews &&
+                                listNews.length > 0 &&
+                                listNews.map((item) => {
+                                    return (
+                                        <div
+                                            className="item-slide"
+                                            key={item.id}
+                                            onClick={() => this.handleClickNews(item.id)}
+                                        >
+                                            {/* <Link to={`/detail-news/${item.id}`}> */}
+                                            <div className="item">
+                                                <div className="topic">{item?.type}</div>
                                                 <div
-                                                    className="highlight-content"
-                                                    dangerouslySetInnerHTML={{ __html: item?.focus }}
+                                                    className="img-news"
+                                                    style={{ backgroundImage: `url(${item?.image})` }}
                                                 ></div>
+                                                <div className="news-brief">
+                                                    <h3 className="news-title">{item?.title}</h3>
+                                                    <div
+                                                        className="highlight-content"
+                                                        dangerouslySetInnerHTML={{ __html: item?.focus }}
+                                                    ></div>
 
-                                                <div className="detail">
-                                                    <span>Xem chi tiết</span> <FaAngleRight className="iconDetail" />
+                                                    <div className="detail">
+                                                        <span>Xem chi tiết</span>{' '}
+                                                        <FaAngleRight className="iconDetail" />
+                                                    </div>
                                                 </div>
                                             </div>
+                                            {/* </Link> */}
                                         </div>
-                                        {/* </Link> */}
-                                    </div>
-                                );
-                            })}
-                    </Slider>
+                                    );
+                                })}
+                        </Slider>
+                    </div>
                 </div>
             </div>
         );
@@ -87,9 +90,7 @@ class News extends Component {
 }
 
 const mapStateToProps = (state) => {
-    return {
-        isLoggedIn: state.user.isLoggedIn,
-    };
+    return {};
 };
 
 const mapDispatchToProps = (dispatch) => {

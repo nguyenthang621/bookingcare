@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions';
-import { LANGUAGES } from '../../../utils';
+
 import { getNewsServices } from '../../../services/patientServices';
 import { deleteNewsServices } from '../../../services/userServices';
 
@@ -15,6 +15,7 @@ import ModalNews from './ModalNews';
 import SelectStatusId from '../../../components/SelectStatusId';
 
 import _ from 'lodash';
+import Loading from '../../../components/Loading';
 
 class ListNews extends Component {
     constructor(props) {
@@ -24,6 +25,8 @@ class ListNews extends Component {
             isShowModalNews: false,
             id: '',
             statusId: 'S1',
+
+            isShowLoading: false,
         };
     }
 
@@ -31,7 +34,7 @@ class ListNews extends Component {
         let { statusId } = this.state;
         await this.handleGetNews(statusId);
     }
-    componentDidUpdate(prevProps) {}
+    componentDidUpdate() {}
     handleClickDetail = async (id) => {
         this.toggleModelConfirm();
         this.setState({
@@ -68,6 +71,17 @@ class ListNews extends Component {
         this.toggleConfirmModal();
         this.setState({
             id: id,
+        });
+    };
+    handleShowLoading = () => {
+        this.setState({
+            isShowLoading: true,
+        });
+    };
+
+    handleHideLoading = () => {
+        this.setState({
+            isShowLoading: false,
         });
     };
 
@@ -113,7 +127,7 @@ class ListNews extends Component {
     };
 
     render() {
-        let { listNews, isShowModalNews, id, statusId, isShowConfirmModal } = this.state;
+        let { listNews, isShowModalNews, id, statusId, isShowConfirmModal, isShowLoading } = this.state;
         let {} = this.props;
 
         let listSelect = [
@@ -122,7 +136,9 @@ class ListNews extends Component {
             { text: <FormattedMessage id="admin.status.canceled" />, id: 'S3' },
         ];
         return (
-            <div className="manage-handbook-container mt-2">
+            <div className="manage-handbook-container mt-2  position-loading">
+                {isShowLoading && <Loading />}
+
                 {isShowConfirmModal && (
                     <ConfirmModal
                         toggleConfirmModal={this.toggleConfirmModal}
@@ -137,15 +153,19 @@ class ListNews extends Component {
                         id={id}
                         statusId={statusId}
                         handleGetNews={this.handleGetNews}
+                        handleShowLoading={this.handleShowLoading}
+                        handleHideLoading={this.handleHideLoading}
+                        handleClickDelete={this.handleClickDelete}
                     />
                 ) : (
                     ''
                 )}
+
                 <div className="handbook-title">
                     <h3>Danh sách tin tức</h3>
                 </div>
-                <div className="manage-handbook-wrapper">
-                    <div className="handbook-table coverArea">
+                <div className="manage-handbook-wrapper w60">
+                    <div className="handbook-table">
                         <SelectStatusId
                             handleChangeInput={this.handleChangeInput}
                             listSelect={listSelect}
@@ -156,10 +176,10 @@ class ListNews extends Component {
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Image</th>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">Sender</th>
-                                    <th scope="col">State</th>
-                                    <th scope="col">Confirm</th>
+                                    <th scope="col">Tiêu đề</th>
+                                    <th scope="col">Người gửi</th>
+                                    <th scope="col">Trạng thái</th>
+                                    <th scope="col">Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -176,7 +196,7 @@ class ListNews extends Component {
                                                 <td>{`${item.senderDataNews.firstName} ${item.senderDataNews.lastName}`}</td>
                                                 <td>{item.statusId}</td>
                                                 <td>
-                                                    {this.state.statusId === 'S1' && (
+                                                    {(this.state.statusId === 'S1' || this.state.statusId === 'S2') && (
                                                         <button
                                                             className="btn btn-primary"
                                                             onClick={() => this.handleClickDetail(item.id)}
@@ -191,7 +211,7 @@ class ListNews extends Component {
                                                         className="btn btn-warning"
                                                         onClick={() => this.handleClickDelete(item.id)}
                                                     >
-                                                        Delete
+                                                        {this.state.statusId === 'S3' ? 'Đăng lại' : 'Xoá'}
                                                     </button>
                                                 </td>
                                             </tr>

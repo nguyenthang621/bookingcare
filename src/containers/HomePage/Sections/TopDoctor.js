@@ -47,58 +47,62 @@ class TopDoctor extends Component {
             prevArrow: <PrevArrow />,
         };
         let { topDoctors } = this.state;
-        let { listDataClinicRedux, listDataSpecialtyRedux } = this.props;
+        let { listDataSpecialtyRedux } = this.props;
         return (
             <div className={`section-container ${this.props.background}`}>
-                <div className="section-content">
-                    <div className="section-header">
-                        <span className="section-title">
-                            <FormattedMessage id="homepage.out-standing-doctor" />
-                        </span>
-                        <button
-                            className="more"
-                            onClick={() => {
-                                this.props.toggleModel(this.props.modal);
-                            }}
-                        >
-                            <FormattedMessage id="homepage.more" />
-                        </button>
-                    </div>
-                    <Slider {...settings}>
-                        {topDoctors &&
-                            topDoctors.length > 0 &&
-                            topDoctors.map((doctor) => {
-                                let nameSpecialty = '';
-                                let nameVi = `${doctor.positionData.valueVi}, ${doctor.firstName} ${doctor.lastName} `;
-                                let nameEn = `${doctor.positionData.valueEn}, ${doctor.lastName} ${doctor.firstName} `;
-                                let idSpecialty = doctor.Doctor_Infor.specialtyId;
-                                if (idSpecialty) {
-                                    nameSpecialty = listDataSpecialtyRedux.filter((item) => item.id === idSpecialty);
-                                    nameSpecialty = nameSpecialty[0]?.name;
-                                }
-                                return (
-                                    <div
-                                        className="item-slide hover"
-                                        key={doctor.id}
-                                        onClick={() => this.handleClickDetailDoctor(doctor)}
-                                    >
-                                        <div className={`item-${this.props.type}`}>
-                                            <div className={`img-${this.props.type}`}>
-                                                <img className="img" src={doctor?.imageURL} alt="img" />
+                <div className="w60">
+                    <div className="section-content">
+                        <div className="section-header">
+                            <span className="section-title">
+                                <FormattedMessage id="homepage.out-standing-doctor" />
+                            </span>
+                            <button
+                                className="more"
+                                onClick={() => {
+                                    this.props.toggleModel(this.props.modal);
+                                }}
+                            >
+                                <FormattedMessage id="homepage.more" />
+                            </button>
+                        </div>
+                        <Slider {...settings}>
+                            {topDoctors &&
+                                topDoctors.length > 0 &&
+                                topDoctors.map((doctor) => {
+                                    let nameSpecialty = '';
+                                    let nameVi = `${doctor.positionData.valueVi}, ${doctor.firstName} ${doctor.lastName} `;
+                                    let nameEn = `${doctor.positionData.valueEn}, ${doctor.lastName} ${doctor.firstName} `;
+                                    let idSpecialty = doctor.Doctor_Infor.specialtyId;
+                                    if (idSpecialty) {
+                                        nameSpecialty = listDataSpecialtyRedux.filter(
+                                            (item) => item.id === idSpecialty,
+                                        );
+                                        nameSpecialty = nameSpecialty[0]?.name;
+                                    }
+                                    return (
+                                        <div
+                                            className="item-slide hover"
+                                            key={doctor.id}
+                                            onClick={() => this.handleClickDetailDoctor(doctor)}
+                                        >
+                                            <div className={`item-${this.props.type}`}>
+                                                <div className={`img-${this.props.type}`}>
+                                                    <img className="img" src={doctor?.imageURL} alt="img" />
+                                                </div>
+
+                                                <h4 className="position">
+                                                    {this.props.languageRedux === LANGUAGES.VI ? nameVi : nameEn}
+                                                </h4>
+
+                                                {nameSpecialty && (
+                                                    <p className={`text-${this.props.type}`}>{nameSpecialty}</p>
+                                                )}
                                             </div>
-
-                                            <h4 className="position">
-                                                {this.props.languageRedux === LANGUAGES.VI ? nameVi : nameEn}
-                                            </h4>
-
-                                            {nameSpecialty && (
-                                                <p className={`text-${this.props.type}`}>{nameSpecialty}</p>
-                                            )}
                                         </div>
-                                    </div>
-                                );
-                            })}
-                    </Slider>
+                                    );
+                                })}
+                        </Slider>
+                    </div>
                 </div>
             </div>
         );

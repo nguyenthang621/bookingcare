@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import * as actions from '../../../../store/actions';
 import MenuItem from './MenuItem';
 import MenuHeader from './MenuHeader';
@@ -28,7 +27,7 @@ class Menu extends Component {
     }
 
     componentDidMount() {
-        let { history, current } = this.state;
+        let {} = this.state;
         this.setState({
             history: [{ data: this.props.items }],
         });
@@ -66,9 +65,10 @@ class Menu extends Component {
     };
 
     render() {
-        let { language, children, hideOnClick = false, items = [] } = this.props;
+        let { language, children, items = [] } = this.props;
         let { history } = this.state;
         let current = history[history.length - 1];
+
         return (
             <>
                 <HeadlessTippy
@@ -77,7 +77,7 @@ class Menu extends Component {
                     placement="bottom-end"
                     // visible // luon hien
                     // onHide={handleResetToFirstPage}
-                    render={(attrs) => (
+                    render={() => (
                         <div className="menu-list">
                             {history.length > 1 && (
                                 <MenuHeader
@@ -99,7 +99,6 @@ class Menu extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        isLoggedIn: state.user.isLoggedIn,
         language: state.app.language,
     };
 };

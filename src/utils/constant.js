@@ -10,7 +10,7 @@ export const path = {
     DETAIL_HANDBOOK: '/detail-handbook/:id',
     DETAIL_NEWS: '/detail-news/:id',
     VERIFY_BOOING: '/verify-booking',
-    USER_DETAIL: '/detail-user',
+    DETAIL_USER: '/detail-user',
 
     DOCTOR: '/doctor',
 };

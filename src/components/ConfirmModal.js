@@ -49,7 +49,7 @@ class ConfirmModal extends Component {
     };
 
     render() {
-        const { contentOfConfirmModal, isShowConfirmModal } = this.props;
+        const { isShowConfirmModal, content } = this.props;
 
         return (
             <Modal
@@ -63,10 +63,7 @@ class ConfirmModal extends Component {
                     {' '}
                     <FormattedMessage id="confirm.title" />
                 </ModalHeader>
-                {/* <ModalBody>
-                {' '}
-          
-            </ModalBody> */}
+                <ModalBody> {content}</ModalBody>
                 <ModalFooter>
                     <Button className=" button btn-save" color="danger" onClick={() => this.props.deleteFunc()}>
                         <FormattedMessage id="confirm.accept" />

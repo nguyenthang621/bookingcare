@@ -1,17 +1,14 @@
 import axios from 'axios';
-import Cookies from 'universal-cookie';
 import { classCookies } from './cookies.js';
 import { classStorage } from './storage';
 import jwt_decode from 'jwt-decode';
 import { refreshToken } from './services/userServices';
-
-// import _ from 'lodash';
+import { processLogout } from './store/actions/userActions.js';
+import reduxStore from './redux.js';
 
 const axiosjwt = axios.create({
     baseURL: process.env.REACT_APP_BACKEND_URL,
     withCredentials: true,
-    // headers: { accessToken: cookies.get('accessToken') },
-    // headers: { accessToken: classCookies.getAccessToken() },
 });
 
 axiosjwt.interceptors.request.use(async (config) => {
@@ -27,29 +24,23 @@ axiosjwt.interceptors.request.use(async (config) => {
 
     const decodedToken = jwt_decode(accessToken);
     if (parseInt(decodedToken?.exp) < parseInt(now)) {
-        classCookies.removeToken('accessToken');
+        // classCookies.removeToken('accessToken');
         const data = await refreshToken();
         classStorage.setItemStorage('refreshToken', classCookies.getRefreshToken('refreshToken'));
 
         if (data && data.accessToken) {
             classCookies.setToken('accessToken', data.accessToken);
+        } else {
+            //chuyển sang trang login
+            reduxStore.dispatch(processLogout());
         }
     }
     config.headers['accessToken'] = classCookies.getAccessToken();
+    // config.headers['accessToken'] = classCookies.getRefreshToken('refreshToken');
     return config;
 });
 
-// export const isSuccessStatusCode = (s) => {
-//     // May be string or number
-//     const statusType = typeof s;
-//     return (statusType === 'number' && s === 0) || (statusType === 'string' && s.toUpperCase() === 'OK');
-// };
-
-// axios.defaults.headers.common['headers'] = { accessToken: cookies.get('accessToken') };
-
 axiosjwt.interceptors.response.use((response) => {
-    // Thrown error for request with OK status code
-    // const { data } = response;
     return response.data;
 });
 

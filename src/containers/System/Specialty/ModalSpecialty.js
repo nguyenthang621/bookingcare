@@ -121,6 +121,8 @@ class Specialty extends Component {
                 isRoomImage: false,
                 isShowBoxImage: false,
             });
+            this.props.toggleModel();
+            this.props.reloadData();
         } else {
             toast.error(response.message, {
                 position: 'top-right',

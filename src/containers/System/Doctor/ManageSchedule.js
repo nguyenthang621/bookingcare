@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import Header from '../../../containers/Header/Header';
+
 import * as actions from '../../../store/actions';
-import { LANGUAGES, dateFormat } from '../../../utils';
+import { LANGUAGES } from '../../../utils';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Select from 'react-select';
 import './ManageSchedule.scss';
-import moment from 'moment';
 import _ from 'lodash';
 import { toast } from 'react-toastify';
+import { IoCheckboxOutline } from 'react-icons/io5';
 
 class ManageSchedule extends Component {
     constructor(props) {
@@ -22,12 +22,14 @@ class ManageSchedule extends Component {
             // dateSelected: moment(new Date()).format(dateFormat.SEND_TO_SERVER),
             listSchedule: [],
             scheduleDoctorCurrent: '',
+            isSelectedAll: false,
         };
     }
 
     async componentDidMount() {
         this.props.fetchAllDoctorRedux();
         this.props.fetchAllcodeScheduleRedux();
+
         this.setState({
             selectedDoctor: this.props.userInfo?.id,
         });
@@ -77,6 +79,18 @@ class ManageSchedule extends Component {
             });
         }
     }
+    handleChangeInput = () => {
+        let { listSchedule, isSelectedAll } = this.state;
+        if (!isSelectedAll) {
+            listSchedule.map((item) => (item.isSelected = true));
+        } else {
+            listSchedule.map((item) => (item.isSelected = false));
+        }
+        this.setState({
+            isSelectedAll: !this.state.isSelectedAll,
+            listSchedule: listSchedule,
+        });
+    };
     // change doctor:
     handleChange = async (selectedDoctor) => {
         await this.props.getScheduleDoctorByDateRedux(selectedDoctor.value, this.state.initDate);
@@ -89,7 +103,7 @@ class ManageSchedule extends Component {
     buildInputSelect = (data) => {
         let result = [];
         if (data && data.length > 0) {
-            result = data.map((item, index) => {
+            result = data.map((item) => {
                 let object = {};
                 let labelVi = `${item.firstName} ${item.lastName}`;
                 let labelEn = `${item.lastName} ${item.firstName}`;
@@ -111,6 +125,7 @@ class ManageSchedule extends Component {
         }
         this.setState({
             initDate: date.setHours(0, 0, 0, 0),
+            isSelectedAll: false,
         });
     };
     handleClickRange = (rangeTime) => {
@@ -141,14 +156,10 @@ class ManageSchedule extends Component {
             }
         });
         if (this.props.roleId === 'R2') {
-            if (arrResult && arrResult.length > 0) {
-                this.props.saveScheduleDoctorRedux({
-                    arrSchedule: arrResult,
-                    date: initDate,
-                });
-            } else {
-                toast.warning('Missing information range date');
-            }
+            this.props.saveScheduleDoctorRedux({
+                arrSchedule: arrResult,
+                date: initDate,
+            });
         } else {
             if (!selectedDoctor && _.isEmpty(selectedDoctor)) {
                 toast.warning('Select doctor');
@@ -167,7 +178,7 @@ class ManageSchedule extends Component {
     };
 
     render() {
-        let { allDoctor, initDate, listSchedule } = this.state;
+        let { allDoctor, initDate, listSchedule, isSelectedAll } = this.state;
         let { languageRedux, roleId } = this.props;
 
         return (
@@ -199,6 +210,15 @@ class ManageSchedule extends Component {
                                 onChange={(date) => this.handleSetDate(date)}
                                 minDate={new Date()}
                             />
+                        </div>
+                    </div>
+                    <div className="inputSelectAll">
+                        <div
+                            className={isSelectedAll ? 'selectedAll active' : 'selectedAll'}
+                            onClick={() => this.handleChangeInput()}
+                        >
+                            <p>Chọn tất cả</p>
+                            {isSelectedAll && <IoCheckboxOutline />}
                         </div>
                     </div>
                     <div className="col-12 schedule-container">

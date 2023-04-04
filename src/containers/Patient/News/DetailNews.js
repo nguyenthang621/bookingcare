@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { LANGUAGES } from '../../../utils';
 import * as actions from '../../../store/actions';
-import { FormattedMessage } from 'react-intl';
-import HomeHeader from '../../HomePage/HomeHeader/HomeHeader';
 import { getNewsServices } from '../../../services/patientServices';
 import { BsLightbulbFill } from 'react-icons/bs';
-import Footer from '../../HomePage/Sections/Footer';
+import { convertKeyToValue } from '../../../utils';
+import { getAllCodeServices } from '../../../services/userServices';
+
 import moment from 'moment';
 
 import './DetailNews.scss';
@@ -16,16 +15,20 @@ class DetailNews extends Component {
         super(props);
         this.state = {
             newsData: {},
+            keyForm: [],
         };
     }
     async componentDidMount() {
         let { match } = this.props;
+
         if (match && match.params && match.params.id) {
             let newsId = match.params.id;
             let response = await getNewsServices(newsId);
+            let PositionRes = await getAllCodeServices('position');
             if (response && response.errorCode === 0) {
                 this.setState({
                     newsData: response.data,
+                    keyForm: PositionRes?.data,
                 });
             }
         }
@@ -36,22 +39,35 @@ class DetailNews extends Component {
     }
 
     render() {
-        let { languageRedux, modal } = this.props;
-        let { newsData } = this.state;
+        let { newsData, keyForm } = this.state;
+        let positionSender = '';
+        let nameSender = '';
+        let advisers = '';
+        if (newsData && newsData?.adviserData) {
+            positionSender = convertKeyToValue(newsData?.senderDataNews?.position, keyForm);
+            nameSender = `${newsData?.senderDataNews?.firstName} ${newsData?.senderDataNews?.lastName}`;
+            advisers = newsData?.adviserData
+                .map((item) => {
+                    let position = convertKeyToValue(item?.position, keyForm) || 'Bác sĩ';
+                    return `${position} ${item?.firstName} ${item?.lastName}`;
+                })
+                .join(';');
+        }
         return (
             <div className="detail-clinic-wrapper">
-                <HomeHeader />
+                {/* <HomeHeader /> */}
                 <div className="handbook-container coverArea">
                     <div className="handbook-wrapper">
                         <h1 className="handbook-title">{newsData?.title}</h1>
                         <div className="handbook-detail-info">
-                            <p>Nhóm tác giả:{newsData?.authors}</p>
-                            <p>Người kiểm duyệt:{newsData?.censor}</p>
-                            <p>Cố vấn y khoa:{newsData?.adviser}</p>
-                            <p>
-                                Xuất bản: {moment(newsData?.createdAt).format('LL')}, Cập nhật lần cuối:
+                            <li>Nhóm tác giả:&nbsp;{newsData?.authors}</li>
+                            <li>Người kiểm duyệt:&nbsp;{`${positionSender} ${nameSender}`}</li>
+                            <li>Cố vấn y khoa:&nbsp;{advisers}</li>
+                            <li>Xuất bản:&nbsp; {moment(newsData?.createdAt).format('LL')},</li>
+                            <li>
+                                Cập nhật lần cuối:&nbsp;
                                 {moment(newsData?.updatedAt).format('LL')}
-                            </p>
+                            </li>
                         </div>
                         <h2 className="news-topic">{newsData?.topic}</h2>
 
@@ -71,7 +87,6 @@ class DetailNews extends Component {
                         <div className="detail-clinic" dangerouslySetInnerHTML={{ __html: newsData.contentHtml }}></div>
                     </div>
                 </div>
-                <Footer />
             </div>
         );
     }

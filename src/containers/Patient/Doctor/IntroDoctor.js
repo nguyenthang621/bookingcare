@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { LANGUAGES } from '../../../utils';
-import * as actions from '../../../store/actions';
-import { FormattedMessage } from 'react-intl';
 import './IntroDoctor.scss';
 import { MdAddLocation } from 'react-icons/md';
 import LikeAndShare from '../SocialPlugin/LikeAndShare';

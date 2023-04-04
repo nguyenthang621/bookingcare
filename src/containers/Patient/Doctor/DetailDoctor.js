@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import HomeHeader from '../../HomePage/HomeHeader/HomeHeader';
 import { LANGUAGES } from '../../../utils';
-import * as actions from '../../../store/actions';
 import './DetailDoctor.scss';
 import DoctorSchedule from './DoctorSchedule';
 import BookingModal from './BookingModal';
 import IntroDoctor from './IntroDoctor';
 import { Link } from 'react-router-dom';
-import Footer from '../../HomePage/Sections/Footer';
 import Comment from '../SocialPlugin/Comment';
 
 import { getDetailDoctorService } from '../../../services/doctorServices';
@@ -55,8 +52,8 @@ class DetailDoctor extends Component {
     };
 
     render() {
-        let { languageRedux, typeStyle, isComponentChild, isComment } = this.props;
-        let { dataCurrentDoctor, isShowModalBooking, currentRangeTime, listGender, doctorId } = this.state;
+        let { languageRedux, typeStyle } = this.props;
+        let { dataCurrentDoctor, isShowModalBooking, currentRangeTime, doctorId } = this.state;
 
         let nameDoctor = '';
         if (dataCurrentDoctor && dataCurrentDoctor.positionData) {
@@ -79,7 +76,6 @@ class DetailDoctor extends Component {
                         dataCurrentDoctor={dataCurrentDoctor}
                     />
                 )}
-                <HomeHeader />
                 <div
                     className={
                         typeStyle === 'specialty' ? ' detail-doctor-container mr0 specialty' : 'detail-doctor-container'
@@ -93,7 +89,7 @@ class DetailDoctor extends Component {
                                 )}
                             </Link>
                         ) : (
-                            <div className="intro-doctor-container coverArea">
+                            <div className="intro-doctor-container">
                                 {dataCurrentDoctor && (
                                     <IntroDoctor
                                         dataHref={currentURL}
@@ -140,7 +136,6 @@ class DetailDoctor extends Component {
                     )}
                 </div>
                 {!typeStyle && <Comment dataHref={currentURL} />}
-                {!isComponentChild && <Footer />}
             </div>
         );
     }

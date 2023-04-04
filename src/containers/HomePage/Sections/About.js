@@ -12,25 +12,27 @@ class About extends Component {
     render() {
         return (
             <div className={`about-container ${this.props.background}`}>
-                <div className="about-content">
-                    <div className="about-header">
-                        <span className="about-title">{this.props.title}</span>
-                    </div>
-                    <div className="about-body">
-                        <div className="about-video">
-                            <iframe
-                                src="https://www.youtube.com/embed/uLcyVYZUmaY"
-                                title="CHỈ CÒN NHỮNG MÙA NHỚ - ÔN VĨNH QUANG (cover)"
-                                frameBorder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                            ></iframe>
+                <div className="w60">
+                    <div className="about-content">
+                        <div className="about-header">
+                            <span className="about-title">{this.props.title}</span>
                         </div>
-                        <div className="about-list">
-                            <img
-                                src="https://github.com/nguyenthang621/public_image_bookingcare/blob/main/Capture.PNG?raw=true"
-                                alt="img"
-                            ></img>
+                        <div className="about-body">
+                            <div className="about-video">
+                                <iframe
+                                    src="https://www.youtube.com/embed/uLcyVYZUmaY"
+                                    title="CHỈ CÒN NHỮNG MÙA NHỚ - ÔN VĨNH QUANG (cover)"
+                                    frameBorder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                ></iframe>
+                            </div>
+                            <div className="about-list">
+                                <img
+                                    src="https://github.com/nguyenthang621/public_image_bookingcare/blob/main/Capture.PNG?raw=true"
+                                    alt="img"
+                                ></img>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -40,9 +42,7 @@ class About extends Component {
 }
 
 const mapStateToProps = (state) => {
-    return {
-        isLoggedIn: state.user.isLoggedIn,
-    };
+    return {};
 };
 
 const mapDispatchToProps = (dispatch) => {

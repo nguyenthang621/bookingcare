@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { LANGUAGES } from '../../utils';
 import { FormattedMessage } from 'react-intl';
-import HomeHeader from '../HomePage/HomeHeader/HomeHeader';
 import './VerifyBooking.scss';
 import { verifyBookingAppointmentServices } from '../../services/patientServices';
 import { FaRegCheckCircle, FaExclamationCircle } from 'react-icons/fa';
@@ -37,11 +35,11 @@ class VerifyBooking extends Component {
     }
 
     render() {
-        let { languageRedux } = this.props;
+        let {} = this.props;
         let { statusVerify } = this.state;
         return (
             <div className="verify-wrapper">
-                <HomeHeader></HomeHeader>
+                {/* <HomeHeader></HomeHeader> */}
                 <div className="verify-container">
                     <div className="verify">
                         <div className="title">
@@ -71,7 +69,7 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = () => {
     return {};
 };
 

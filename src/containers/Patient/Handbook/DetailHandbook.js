@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { LANGUAGES } from '../../../utils';
 import * as actions from '../../../store/actions';
-import { FormattedMessage } from 'react-intl';
-import HomeHeader from '../../HomePage/HomeHeader/HomeHeader';
 import { getHandbookServices } from '../../../services/patientServices';
 import { BsLightbulbFill } from 'react-icons/bs';
-import Footer from '../../HomePage/Sections/Footer';
 import moment from 'moment';
+import { convertKeyToValue } from '../../../utils';
+import { getAllCodeServices } from '../../../services/userServices';
 
 import './DetailHandbook.scss';
 
@@ -16,6 +14,7 @@ class DetailHandbook extends Component {
         super(props);
         this.state = {
             handbookData: {},
+            keyForm: [],
         };
     }
     async componentDidMount() {
@@ -23,35 +22,47 @@ class DetailHandbook extends Component {
         if (match && match.params && match.params.id) {
             let handbookId = match.params.id;
             let response = await getHandbookServices(handbookId);
+            let PositionRes = await getAllCodeServices('position');
             if (response && response.errorCode === 0) {
                 this.setState({
                     handbookData: response.data,
+                    keyForm: PositionRes?.data,
                 });
             }
         }
     }
-    componentDidUpdate(prevProps) {
-        if (prevProps.languageRedux !== this.props.languageRedux) {
-        }
-    }
+    componentDidUpdate() {}
 
     render() {
-        let { languageRedux, modal } = this.props;
-        let { handbookData } = this.state;
+        let { handbookData, keyForm } = this.state;
+        let positionSender = '';
+        let nameSender = '';
+        let advisers = '';
+        if (handbookData && handbookData?.adviserData) {
+            positionSender = convertKeyToValue(handbookData?.senderData?.position, keyForm);
+            nameSender = `${handbookData?.senderData?.firstName} ${handbookData?.senderData?.lastName}`;
+            advisers = handbookData?.adviserData
+                .map((item) => {
+                    let position = convertKeyToValue(item?.position, keyForm) || 'Bác sĩ';
+                    return `${position} ${item?.firstName} ${item?.lastName}`;
+                })
+                .join(';');
+        }
         return (
             <div className="detail-clinic-wrapper">
-                <HomeHeader />
+                {/* <HomeHeader /> */}
                 <div className="handbook-container coverArea">
                     <div className="handbook-wrapper">
                         <h1 className="handbook-title">{handbookData?.title}</h1>
                         <div className="handbook-detail-info">
-                            <p>Nhóm tác giả:{handbookData?.authors}</p>
-                            <p>Người kiểm duyệt:{handbookData?.censor}</p>
-                            <p>Cố vấn y khoa:{handbookData?.adviser}</p>
-                            <p>
-                                Xuất bản: {moment(handbookData?.createdAt).format('LL')}, Cập nhật lần cuối:
+                            <li>Nhóm tác giả:&nbsp;{handbookData?.authors}</li>
+                            <li>Người kiểm duyệt:&nbsp;{`${positionSender} ${nameSender}`}</li>
+                            <li>Cố vấn y khoa:&nbsp;{advisers}</li>
+                            <li>Xuất bản:&nbsp; {moment(handbookData?.createdAt).format('LL')},</li>
+                            <li>
+                                Cập nhật lần cuối:&nbsp;
                                 {moment(handbookData?.updatedAt).format('LL')}
-                            </p>
+                            </li>
                         </div>
 
                         <div className="intro-bookingCare ">
@@ -73,7 +84,6 @@ class DetailHandbook extends Component {
                         ></div>
                     </div>
                 </div>
-                <Footer />
             </div>
         );
     }

@@ -7,6 +7,8 @@ import FooterPaging from '../../../components/FooterPaging';
 import { filterAndPagingSpecialty, deleteSpecialtyByIdServices } from '../../../services/userServices';
 import ModalConfirm from '../ModalConfirm';
 import { toast } from 'react-toastify';
+import Loading from '../../../components/Loading';
+import moment from 'moment';
 
 class Specialty extends Component {
     constructor(props) {
@@ -22,15 +24,19 @@ class Specialty extends Component {
             limit: 5,
             keyword: '',
             currentSpecialtyId: '',
+            isShowLoading: false,
         };
     }
     componentDidMount() {
         let { pageIndex, limit, keyword } = this.state;
         this.handleFilterAndPaging(pageIndex, limit, keyword);
     }
-    componentDidUpdate(prevProps) {}
+    componentDidUpdate() {}
 
     handleFilterAndPaging = async (pageIndex, limit, keyword) => {
+        this.setState({
+            isShowLoading: true,
+        });
         let response = await filterAndPagingSpecialty(pageIndex, limit, keyword);
         if (response && response.errorCode === 0) {
             this.setState({
@@ -38,6 +44,7 @@ class Specialty extends Component {
                 totalPage: response.data.totalPage,
                 count: response.data.count,
                 pageIndex: pageIndex,
+                isShowLoading: false,
             });
         }
     };
@@ -47,7 +54,6 @@ class Specialty extends Component {
     };
 
     handleChangePage = async (numberPage) => {
-        console.log(numberPage);
         let { limit, keyword, pageIndex, totalPage } = this.state;
         if (numberPage === 'next') {
             if (+pageIndex < +totalPage) {
@@ -64,6 +70,9 @@ class Specialty extends Component {
 
     handleSearch = async (currentKeyword) => {
         let { limit, pageIndex } = this.state;
+        this.setState({
+            isShowLoading: true,
+        });
         try {
             let response = await filterAndPagingSpecialty(pageIndex, limit, currentKeyword);
             if (response && response.errorCode === 0) {
@@ -73,6 +82,7 @@ class Specialty extends Component {
                     count: response.data.count,
                     pageIndex: pageIndex,
                     keyword: currentKeyword,
+                    isShowLoading: false,
                 });
             }
         } catch (error) {
@@ -117,15 +127,17 @@ class Specialty extends Component {
     };
 
     render() {
-        let { isOpenModel, listSpecialty, count, pageIndex, totalPage, limit, keyword, isShowModalConfirm } =
-            this.state;
+        let { isOpenModel, listSpecialty, count, pageIndex, totalPage, isShowModalConfirm, isShowLoading } = this.state;
+        let { languageRedux } = this.props;
+
         return (
-            <div className="specialty-container">
+            <div className="specialty-container position-loading">
+                {isShowLoading && <Loading />}
                 {isOpenModel && (
                     <ModalSpecialty
                         toggleModel={this.handleToggleModel}
                         isOpenModel={this.state.isOpenModel}
-                        reloadData={this.handleFilterAndPaging(pageIndex, limit, keyword)}
+                        reloadData={this.handleFilterAndPaging}
                     />
                 )}
                 {isShowModalConfirm ? (
@@ -142,13 +154,13 @@ class Specialty extends Component {
                     ''
                 )}
 
-                <div className="container-table">
+                <div className="container-table w60">
                     <div className="title">Quản lý chuyên khoa</div>
                     <div className="wrapper-table">
                         <div className="action-container">
                             <SearchInput placeholder="Tên cơ sở..." handleSearch={this.handleSearch} delay={800} />
                             <button className="btn btn-primary" onClick={() => this.handleToggleModel()}>
-                                Thêm mới phòng khám
+                                Thêm mới chuyên khoa
                             </button>
                         </div>
                         <div className="wrapper-scroll">
@@ -156,9 +168,9 @@ class Specialty extends Component {
                                 <thead>
                                     <tr className="fixedTop">
                                         <th scope="col">STT</th>
-                                        <th scope="col">Image Logo</th>
+                                        <th scope="col">Ảnh Logo</th>
                                         <th scope="col">Tên cơ sở</th>
-                                        <th scope="col">Địa chỉ</th>
+                                        <th scope="col">Thời gian tạo</th>
                                         <th scope="col">Hành động</th>
                                     </tr>
                                 </thead>
@@ -166,17 +178,21 @@ class Specialty extends Component {
                                     {listSpecialty &&
                                         listSpecialty.length > 0 &&
                                         listSpecialty.map((item, index) => {
+                                            const dateCreate = moment
+                                                .unix(new Date(item.createdAt) / 1000)
+                                                .local(languageRedux)
+                                                .format('dddd - DD/MM/YYYY');
                                             return (
                                                 <tr key={index}>
                                                     <th scope="row">{index + 1}</th>
                                                     <td>
-                                                        <div className="img-wrapper">
+                                                        <div className="img-wrapper-specialty">
                                                             <img src={item.image} atl="img"></img>
                                                         </div>
                                                     </td>
                                                     <td>{item.name}</td>
 
-                                                    <td>{item.createdAt}</td>
+                                                    <td>{dateCreate}</td>
                                                     <td>
                                                         <button
                                                             className="btn btn-warning"

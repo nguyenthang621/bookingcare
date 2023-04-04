@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import { LANGUAGES } from '../../../utils';
 import * as actions from '../../../store/actions';
 import { FormattedMessage } from 'react-intl';
-import HomeHeader from '../../HomePage/HomeHeader/HomeHeader';
+
 import { getSpecialtyByIdServices } from '../../../services/patientServices';
 import DetailDoctor from '../Doctor/DetailDoctor';
 import Select from 'react-select';
 import { getAllCodeServices } from '../../../services/userServices';
-import Footer from '../../HomePage/Sections/Footer';
 
 import './DetailSpecialty.scss';
+import FooterContent from '../../HomePage/FooterContent';
 
 class DetailSpecialty extends Component {
     constructor(props) {
@@ -50,7 +50,7 @@ class DetailSpecialty extends Component {
         }
     }
 
-    buildInputSelect = (data, type) => {
+    buildInputSelect = (data) => {
         let result = [];
         data.unshift({ keyMap: 'ALL', valueVi: 'Toàn quốc', valueEn: 'Nationwide' });
         if (data && data.length > 0) {
@@ -86,11 +86,11 @@ class DetailSpecialty extends Component {
     };
     render() {
         let {} = this.props;
-        let { introSpecialty, backgroundImage, nameSpecialty, doctors, listProvince, moreDetail } = this.state;
+        let { introSpecialty, backgroundImage, doctors, listProvince, moreDetail } = this.state;
 
         return (
             <div className="detail-specialty-wrapper">
-                <HomeHeader />
+                {/* <HomeHeader /> */}
                 <div className="detail-specialty-container">
                     <div className="header-intro">
                         <div className="header-image">
@@ -122,7 +122,8 @@ class DetailSpecialty extends Component {
                             </div>
                         </div>
                         <div className="doctors">
-                            {doctors && doctors.length > 0 ? (
+                            {doctors &&
+                                doctors.length > 0 &&
                                 doctors.map((item) => {
                                     return (
                                         <div className="sec-doctor" key={item.doctorId}>
@@ -136,16 +137,11 @@ class DetailSpecialty extends Component {
                                             </div>
                                         </div>
                                     );
-                                })
-                            ) : (
-                                <div className="text-not-found">
-                                    <p>Không tìm được bác sĩ</p>
-                                </div>
-                            )}
+                                })}
                         </div>
+                        <FooterContent />
                     </div>
                 </div>
-                <Footer />
             </div>
         );
     }

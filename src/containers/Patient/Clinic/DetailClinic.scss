@@ -18,8 +18,7 @@
                     padding: 20px 0;
                     & .image-logo {
                         background: center center no-repeat;
-                        background-size: cover;
-                        object-fit: cover;
+                        background-size: contain;
                         width: 120px;
                         height: 60px;
                         border: 1px solid rgba(225, 222, 222, 0.6);

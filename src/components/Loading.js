@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import './Loading.scss';
 
 class Loading extends Component {
@@ -9,15 +8,14 @@ class Loading extends Component {
         this.state = {};
     }
     componentDidMount() {}
-    componentDidUpdate(prevProps) {}
+    componentDidUpdate() {}
 
     render() {
         let {} = this.props;
         let {} = this.state;
         return (
-            <div className="loadingio-spinner-ellipsis-755um2gy6t">
-                <div className="ldio-78i6pelqj4x">
-                    <div></div>
+            <div className="bg-loading">
+                <div className="lds-ellipsis">
                     <div></div>
                     <div></div>
                     <div></div>

@@ -5,10 +5,11 @@
         padding: 0px 30px;
     }
     & .schedule-container {
-        margin-top: 20px;
         display: flex;
         flex-wrap: wrap;
         box-sizing: border-box;
+        margin: 0;
+        padding: 0px 10px;
 
         & .range-time {
             margin: 10px 20px;
@@ -21,6 +22,29 @@
     & .btn-saveSchedule {
         margin-top: 20px;
         margin-left: 30px;
+    }
+    & .inputSelectAll {
+        margin-top: 10px;
+        padding-left: 30px;
+        display: flex;
+
+        & .selectedAll {
+            padding: 8px 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            & p {
+                padding-right: 4px;
+            }
+        }
+        & .active {
+            background-color: var(--color-btn);
+            color: #fff;
+        }
     }
 }
 
