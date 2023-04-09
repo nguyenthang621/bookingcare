@@ -22,7 +22,7 @@ export const processLogout = () => {
     return async (dispatch) => {
         try {
             let res = await processLogoutServices();
-
+            console.log('res', res);
             if (res && res.errorCode === 0) {
                 dispatch({ type: actionTypes.PROCESS_LOGOUT_SUCCESS });
                 classStorage.removeItemStorage('refreshToken');

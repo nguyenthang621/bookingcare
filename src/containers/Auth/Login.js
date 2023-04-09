@@ -12,6 +12,7 @@ import { classStorage } from '../../storage';
 import { withRouter } from 'react-router';
 import { validateEmail, validatePhonenumber } from '../../utils/validate';
 import { KeyCodeUtils } from '../../utils';
+import Loading from '../../components/Loading';
 
 class Login extends Component {
     constructor(props) {
@@ -27,6 +28,7 @@ class Login extends Component {
             message: '',
             isRegister: false,
             isShowMessage: false,
+            isShowLoading: false,
         };
     }
     componentDidMount() {
@@ -45,7 +47,7 @@ class Login extends Component {
     };
 
     handleLogin = async () => {
-        this.setState({ message: '' });
+        this.setState({ message: '', isShowLoading: true });
         try {
             let dataResponse = await handleLoginApi(this.state.email, this.state.password);
 
@@ -68,16 +70,19 @@ class Login extends Component {
                 } else if (userInfor.roleId === 'R2') {
                     this.props.history.push(`/doctor/manage-patient-appointment`);
                 }
+                this.setState({
+                    isShowLoading: false,
+                });
             }
         } catch (error) {
-            if (error.response && error.response.data) {
-                this.setState({ message: error.response.message, isShowMessage: true });
+            if (error.response && error?.response?.data) {
+                this.setState({ message: error.response.message, isShowMessage: true, isShowLoading: false });
             }
         }
     };
 
     handleRegister = async () => {
-        this.setState({ message: '' });
+        this.setState({ message: '', isShowLoading: true });
         let { email, password, confirmPassword, firstName, lastName, phoneNumber } = this.state;
 
         if (!validateEmail(email)) {
@@ -100,7 +105,7 @@ class Login extends Component {
                     confirmPassword,
                 });
                 if (dataResponse && dataResponse.errorCode === 1 && dataResponse.message) {
-                    this.setState({ message: dataResponse.message, isShowMessage: true });
+                    this.setState({ message: dataResponse.message, isShowMessage: true, isShowLoading: false });
                 }
                 if (dataResponse && dataResponse.errorCode === 0) {
                     //login success
@@ -110,10 +115,13 @@ class Login extends Component {
 
                     this.handleLogin();
                     this.props.history.push(`/home`);
+                    this.setState({
+                        isShowLoading: false,
+                    });
                 }
             } catch (error) {
-                if (error.response && error.response.data) {
-                    this.setState({ message: error.response.message, isShowMessage: true });
+                if (error.response && error?.response?.data) {
+                    this.setState({ message: error.response.message, isShowMessage: true, isShowLoading: false });
                 }
             }
         }
@@ -137,10 +145,11 @@ class Login extends Component {
     };
 
     render() {
-        let { isRegister } = this.state;
+        let { isRegister, isShowLoading } = this.state;
         return (
-            <div className="login-background">
-                <div className="login-container">
+            <div className="login-background ">
+                <div className="login-container position-loading">
+                    {isShowLoading && <Loading />}
                     <div className="login-content">
                         <div className="col-12 text-center">{isRegister ? 'Đăng kí' : 'Đăng nhập'}</div>
                         <div className="login-form">

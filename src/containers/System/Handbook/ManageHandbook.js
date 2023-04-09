@@ -145,7 +145,7 @@ class ManageHandbook extends Component {
             <div className="handbook_container position-loading">
                 {isShowLoading && <Loading />}
 
-                <div className="handbook-title">
+                <div className="handbook-title title">
                     <h3>Quản lý cẩm nang</h3>
                 </div>
 

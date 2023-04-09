@@ -152,7 +152,7 @@ class ManageNews extends Component {
         return (
             <div className="handbook_container position-loading">
                 {isShowLoading && <Loading />}
-                <div className="handbook-title">
+                <div className="handbook-title title">
                     <h3>Quản lý tin tức</h3>
                 </div>
 

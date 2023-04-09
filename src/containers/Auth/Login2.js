@@ -67,7 +67,7 @@
 //                 }
 //             }
 //         } catch (error) {
-//             if (error.response && error.response.data) {
+//             if (error.response && error?.response?.data) {
 //                 this.setState({ message: error.response.message, isShowMessage: true });
 //             }
 //         }
@@ -89,7 +89,7 @@
 //                 this.props.history.push(`/home`);
 //             }
 //         } catch (error) {
-//             if (error.response && error.response.data) {
+//             if (error.response && error?.response?.data) {
 //                 this.setState({ message: error.response.message });
 //             }
 //         }

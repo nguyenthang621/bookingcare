@@ -261,7 +261,7 @@ class ManageDoctor extends Component {
             <div className="manage-doctor-container position-loading">
                 {isShowLoading && <Loading />}
                 <div className="wrapper-manager-doctor w60">
-                    <div className="manage-doctor-title">
+                    <div className="manage-doctor-title title">
                         <h3>
                             <FormattedMessage id="admin.manage-doctor.title" />
                         </h3>
