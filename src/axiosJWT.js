@@ -24,7 +24,7 @@ axiosjwt.interceptors.request.use(async (config) => {
 
     const decodedToken = jwt_decode(accessToken);
     if (parseInt(decodedToken?.exp) < parseInt(now)) {
-        // classCookies.removeToken('accessToken');
+        classCookies.removeToken('accessToken');
         const data = await refreshToken();
         classStorage.setItemStorage('refreshToken', classCookies.getRefreshToken('refreshToken'));
 
@@ -36,7 +36,7 @@ axiosjwt.interceptors.request.use(async (config) => {
         }
     }
     config.headers['accessToken'] = classCookies.getAccessToken();
-    // config.headers['accessToken'] = classCookies.getRefreshToken('refreshToken');
+
     return config;
 });
 

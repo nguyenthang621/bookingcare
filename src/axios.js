@@ -1,6 +1,4 @@
 import axios from 'axios';
-import Cookies from 'universal-cookie';
-
 // import _ from 'lodash';
 
 const instance = axios.create({

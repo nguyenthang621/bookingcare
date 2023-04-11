@@ -13,7 +13,7 @@ import { withRouter } from 'react-router';
 import { validateEmail, validatePhonenumber } from '../../utils/validate';
 import { KeyCodeUtils } from '../../utils';
 import Loading from '../../components/Loading';
-
+import jwt_decode from 'jwt-decode';
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -56,9 +56,10 @@ class Login extends Component {
             }
             if (dataResponse && dataResponse.errorCode === 0) {
                 //login success
-                const cookies = new Cookies();
-                cookies.set('accessToken', dataResponse.accessToken, { path: '/' });
-                let userInfor = classCookies.getDataAccessToken();
+                // const cookies = new Cookies();
+                // cookies.set('accessToken', dataResponse.accessToken, { path: '/' });
+                classCookies.setToken('accessToken', dataResponse.accessToken);
+                let userInfor = jwt_decode(dataResponse.accessToken);
                 classStorage.setItemStorage('refreshToken', classCookies.getRefreshToken('refreshToken'));
 
                 await this.props.userLoginSuccess(userInfor, userInfor.roleId);
@@ -80,7 +81,6 @@ class Login extends Component {
             }
         }
     };
-
     handleRegister = async () => {
         this.setState({ message: '', isShowLoading: true });
         let { email, password, confirmPassword, firstName, lastName, phoneNumber } = this.state;
