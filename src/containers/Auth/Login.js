@@ -56,11 +56,10 @@ class Login extends Component {
             }
             if (dataResponse && dataResponse.errorCode === 0) {
                 //login success
-                // const cookies = new Cookies();
-                // cookies.set('accessToken', dataResponse.accessToken, { path: '/' });
                 classCookies.setToken('accessToken', dataResponse.accessToken);
+                classCookies.setToken('refreshToken', dataResponse.refreshToken);
                 let userInfor = jwt_decode(dataResponse.accessToken);
-                classStorage.setItemStorage('refreshToken', classCookies.getRefreshToken('refreshToken'));
+                classStorage.setItemStorage('refreshToken', dataResponse.refreshToken);
 
                 await this.props.userLoginSuccess(userInfor, userInfor.roleId);
                 if (userInfor.roleId === 'R3') {

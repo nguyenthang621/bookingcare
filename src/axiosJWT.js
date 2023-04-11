@@ -26,10 +26,12 @@ axiosjwt.interceptors.request.use(async (config) => {
     if (parseInt(decodedToken?.exp) < parseInt(now)) {
         classCookies.removeToken('accessToken');
         const data = await refreshToken();
-        classStorage.setItemStorage('refreshToken', classCookies.getRefreshToken('refreshToken'));
+        classCookies.removeToken('refreshToken');
 
         if (data && data.accessToken) {
             classCookies.setToken('accessToken', data.accessToken);
+            classCookies.setToken('refreshToken', data.refreshToken);
+            classStorage.setItemStorage('refreshToken', data.refreshToken);
         } else {
             //chuyển sang trang login
             reduxStore.dispatch(processLogout());
