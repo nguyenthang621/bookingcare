@@ -53,7 +53,7 @@ class VerifyBooking extends Component {
                                 </h2>
                             )}
                         </div>
-                        <a href={'http://18.136.207.9:5000'}>
+                        <a href={'http://18.140.62.41:5000'}>
                             <FormattedMessage id="patient.verify.home" />
                         </a>
                     </div>
