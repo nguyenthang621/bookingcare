@@ -53,7 +53,7 @@ class VerifyBooking extends Component {
                                 </h2>
                             )}
                         </div>
-                        <a href={'http://54.251.190.105:5000'}>
+                        <a href={process.env.REACT_APP_URL}>
                             <FormattedMessage id="patient.verify.home" />
                         </a>
                     </div>
