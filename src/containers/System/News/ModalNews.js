@@ -10,7 +10,6 @@ import { getNewsServices } from '../../../services/patientServices';
 import { confirmNewsServices } from '../../../services/userServices';
 import moment from 'moment';
 import './ModalNews.scss';
-import _ from 'lodash';
 
 class ModalNews extends Component {
     constructor(props) {

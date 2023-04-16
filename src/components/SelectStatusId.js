@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 import './SelectStatusId.scss';
 
 class SelectStatusId extends Component {
@@ -9,13 +8,10 @@ class SelectStatusId extends Component {
         this.state = {};
     }
 
-    async componentDidMount() {
-        let {} = this.state;
-    }
+    async componentDidMount() {}
     componentDidUpdate(prevProps) {}
 
     render() {
-        let {} = this.state;
         let { listSelect, statusId, handleChangeInput } = this.props;
         return (
             <div className="select-container">

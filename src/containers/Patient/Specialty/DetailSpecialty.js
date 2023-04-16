@@ -85,7 +85,6 @@ class DetailSpecialty extends Component {
         });
     };
     render() {
-        let {} = this.props;
         let { introSpecialty, backgroundImage, doctors, listProvince, moreDetail } = this.state;
 
         return (

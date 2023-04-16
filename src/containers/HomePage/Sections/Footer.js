@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { LANGUAGES } from '../../../utils';
-import * as actions from '../../../store/actions';
-import { FormattedMessage } from 'react-intl';
+
 import {
     IoLocationSharp,
     IoCheckmarkSharp,
@@ -24,8 +22,6 @@ class Footer extends Component {
     }
 
     render() {
-        let {} = this.props;
-        let {} = this.state;
         return (
             <div className="footer-container">
                 <div className="w60">

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import { LANGUAGES, CommonUtils, PATH_FIREBASE } from '../../../utils';
+import { LANGUAGES, PATH_FIREBASE } from '../../../utils';
 import { FaFileUpload } from 'react-icons/fa';
 import { postDetailClinicServices } from '../../../services/userServices';
 import { toast } from 'react-toastify';
@@ -43,7 +43,6 @@ class ModalClinic extends Component {
         let data = e.target.files;
         let file = data[0];
         if (file) {
-            let base64 = await CommonUtils.getBase64(file);
             let objectUrl = URL.createObjectURL(file);
             this.setState({ [previewImageUrl]: objectUrl, [isShowBoxImage]: true, [image]: file });
         }

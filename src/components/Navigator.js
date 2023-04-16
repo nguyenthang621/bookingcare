@@ -5,11 +5,10 @@ import { connect } from 'react-redux';
 import Notify from '../components/Notify';
 
 import './Navigator.scss';
-import { FaRegHandScissors } from 'react-icons/fa';
 
 class MenuGroup extends Component {
     render() {
-        const { name, children, queueNews, queueHandbook } = this.props;
+        const { name, children } = this.props;
         return (
             <li className="menu-group">
                 <div className="menu-group-name">

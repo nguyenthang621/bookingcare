@@ -13,7 +13,6 @@ import Loading from '../../../components/Loading';
 import SelectStatusId from '../../../components/SelectStatusId';
 import ModalConfirm from '../ModalConfirm.js';
 
-import _ from 'lodash';
 import moment from 'moment';
 
 class ManageAppointment extends Component {
@@ -35,7 +34,7 @@ class ManageAppointment extends Component {
 
     async componentDidMount() {
         let { doctorId, initDate } = this.state;
-        let response = await this.props.getAppointmentDoctorRedux(doctorId, initDate, this.props.statusIdRedux);
+        await this.props.getAppointmentDoctorRedux(doctorId, initDate, this.props.statusIdRedux);
     }
     componentDidUpdate(prevProps) {
         let { listAppointmentRedux } = this.props;

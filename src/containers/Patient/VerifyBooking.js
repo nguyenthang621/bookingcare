@@ -35,7 +35,6 @@ class VerifyBooking extends Component {
     }
 
     render() {
-        let {} = this.props;
         let { statusVerify } = this.state;
         return (
             <div className="verify-wrapper">

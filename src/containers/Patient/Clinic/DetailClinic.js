@@ -5,7 +5,6 @@ import { getDetailClinicByIdServices } from '../../../services/patientServices';
 import { MdAddLocation } from 'react-icons/md';
 import DetailDoctor from '../../Patient/Doctor/DetailDoctor';
 import { BsLightbulbFill } from 'react-icons/bs';
-import Loading from '../../../components/Loading';
 
 import './DetailClinic.scss';
 import FooterContent from '../../HomePage/FooterContent';
@@ -37,7 +36,6 @@ class DetailSpecialty extends Component {
     }
 
     render() {
-        let {} = this.props;
         let { clinicData, doctors } = this.state;
         return (
             <div className="detail-clinic-wrapper position-loading">

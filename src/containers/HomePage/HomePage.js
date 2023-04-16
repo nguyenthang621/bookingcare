@@ -14,8 +14,6 @@ import ListHandbook from '../Patient/Handbook/ListHandbook';
 
 import { FormattedMessage } from 'react-intl';
 
-import _ from 'lodash';
-
 class HomePage extends Component {
     constructor(props) {
         super(props);

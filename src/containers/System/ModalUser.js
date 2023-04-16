@@ -78,7 +78,6 @@ class ModalUser extends Component {
             });
         }
 
-        console.log(response);
         if (response?.errorCode === 0) {
             this.props.refreshForm();
 

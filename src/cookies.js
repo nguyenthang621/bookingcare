@@ -1,7 +1,6 @@
 import Cookies from 'universal-cookie';
 
 import jwt_decode from 'jwt-decode';
-import _ from 'lodash';
 
 const cookies = new Cookies();
 

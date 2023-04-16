@@ -10,7 +10,6 @@ import { withRouter } from 'react-router';
 
 // import './TopDoctor.scss';
 import { PrevArrow, NextArrow } from '../../../components/CustomArrow';
-import ListDoctor from '../../Patient/Doctor/ListDoctor';
 
 class TopDoctor extends Component {
     constructor(props) {

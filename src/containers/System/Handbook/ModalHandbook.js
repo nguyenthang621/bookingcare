@@ -10,7 +10,6 @@ import { getHandbookServices } from '../../../services/patientServices';
 import { confirmHandbookServices } from '../../../services/userServices';
 import moment from 'moment';
 import './ModalHandbook.scss';
-import _ from 'lodash';
 
 class ModalHandbook extends Component {
     constructor(props) {

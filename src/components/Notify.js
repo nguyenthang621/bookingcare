@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import './Notify.scss';
 
 class Notify extends Component {
@@ -24,8 +23,8 @@ class Notify extends Component {
     }
 
     render() {
-        let { hideNumber, queueNum, queueNews, queueHandbook } = this.props;
-        let {} = this.state;
+        let { queueNum, queueNews, queueHandbook } = this.props;
+
         return (
             <div className="notify">
                 {queueNum === 'queueNews' && +queueNews > 0 && <span className="notify-content">{queueNews}</span>}

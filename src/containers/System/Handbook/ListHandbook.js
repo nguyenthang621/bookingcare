@@ -14,8 +14,6 @@ import SelectStatusId from '../../../components/SelectStatusId';
 import ConfirmModal from '../../../components/ConfirmModal';
 import Loading from '../../../components/Loading';
 
-import _ from 'lodash';
-
 class ListHandbook extends Component {
     constructor(props) {
         super(props);
@@ -131,7 +129,6 @@ class ListHandbook extends Component {
     };
     render() {
         let { listHandbook, isShowModalHandbook, id, statusId, isShowConfirmModal, isShowLoading } = this.state;
-        let {} = this.props;
 
         let listSelect = [
             { text: <FormattedMessage id="admin.status.new" />, id: 'S1' },

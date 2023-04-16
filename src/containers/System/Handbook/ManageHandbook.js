@@ -13,8 +13,6 @@ import { uploadFileToFirebase } from '../../../firebase/uploadFile';
 import CKeditor from '../../../components/CKeditor/CKeditor';
 import Loading from '../../../components/Loading';
 
-import _ from 'lodash';
-
 class ManageHandbook extends Component {
     constructor(props) {
         super(props);
@@ -36,7 +34,6 @@ class ManageHandbook extends Component {
         };
     }
     async componentDidMount() {
-        let {} = this.props;
         this.props.fetchAllDoctorRedux();
     }
     componentDidUpdate(prevProps) {

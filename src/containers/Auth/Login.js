@@ -31,9 +31,7 @@ class Login extends Component {
             isShowLoading: false,
         };
     }
-    componentDidMount() {
-        // document.addEventListener('keyup', this.handlerKeyDown);
-    }
+    componentDidMount() {}
 
     handlerKeyDown = (event) => {
         const keyCode = event.which || event.keyCode;
@@ -226,9 +224,6 @@ class Login extends Component {
                                 {isRegister ? 'Đăng kí' : 'Đăng nhập'}
                             </button>
                         </div>
-                        {/* <div className="col-12 title-forgot">
-                            <span>Forgot your password?</span>
-                        </div> */}
 
                         <div className="col-12 register">
                             <span>

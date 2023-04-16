@@ -20,7 +20,7 @@ class CKeditor extends Component {
     }
 
     render() {
-        const { handleEditorChange, value } = this.props;
+        const { handleEditorChange } = this.props;
 
         return (
             <div className="editor-container">

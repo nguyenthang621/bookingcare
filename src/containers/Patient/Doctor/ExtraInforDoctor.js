@@ -18,7 +18,7 @@ class ExtraInforDoctor extends Component {
         };
     }
     async componentDidMount() {
-        let { languageRedux, doctorId, dataCurrentDoctor } = this.props;
+        let { dataCurrentDoctor } = this.props;
         let doctorInfor = dataCurrentDoctor.Doctor_Infor;
 
         this.setState({
@@ -40,7 +40,7 @@ class ExtraInforDoctor extends Component {
 
     render() {
         let { languageRedux, isShowPrice } = this.props;
-        let { price, addressClinic, typePayment, note, province, nameClinic } = this.state;
+        let { price, addressClinic, typePayment, province, nameClinic } = this.state;
 
         if (languageRedux === LANGUAGES.VI) {
             price = price?.valueVi;

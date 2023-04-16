@@ -27,7 +27,6 @@ class Menu extends Component {
     }
 
     componentDidMount() {
-        let {} = this.state;
         this.setState({
             history: [{ data: this.props.items }],
         });

@@ -4,7 +4,6 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { getNewsServices } from '../../../services/patientServices';
-import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 
 import './News.scss';

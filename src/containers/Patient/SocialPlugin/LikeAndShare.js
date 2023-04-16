@@ -8,11 +8,9 @@ class IntroDoctor extends Component {
         this.state = {};
     }
     async componentDidMount() {
-        let {} = this.props;
         this.initFacebookSDK();
     }
     componentDidUpdate(prevProps) {
-        let {} = this.props;
         if (prevProps.languageRedux !== this.props.languageRedux) {
         }
     }
@@ -46,7 +44,6 @@ class IntroDoctor extends Component {
 
     render() {
         let { dataHref } = this.props;
-        let {} = this.state;
 
         return (
             <div className="box-like-share">

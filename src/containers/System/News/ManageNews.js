@@ -12,7 +12,6 @@ import { toast } from 'react-toastify';
 import { uploadFileToFirebase } from '../../../firebase/uploadFile';
 import CKeditor from '../../../components/CKeditor/CKeditor';
 
-import _ from 'lodash';
 import Loading from '../../../components/Loading';
 
 class ManageNews extends Component {
@@ -38,7 +37,6 @@ class ManageNews extends Component {
         };
     }
     async componentDidMount() {
-        let {} = this.props;
         this.props.fetchAllDoctorRedux();
     }
     componentDidUpdate(prevProps) {

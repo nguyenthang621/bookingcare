@@ -93,7 +93,6 @@ class ModalConfirm extends Component {
     render() {
         let { isShowModalConfirm, type, text, size } = this.props;
 
-        let {} = this.state;
         return (
             <>
                 <Modal

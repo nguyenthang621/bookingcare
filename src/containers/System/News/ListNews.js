@@ -14,7 +14,6 @@ import ConfirmModal from '../../../components/ConfirmModal';
 import ModalNews from './ModalNews';
 import SelectStatusId from '../../../components/SelectStatusId';
 
-import _ from 'lodash';
 import Loading from '../../../components/Loading';
 
 class ListNews extends Component {
