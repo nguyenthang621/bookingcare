@@ -210,7 +210,7 @@ class UserRedux extends Component {
             let { keywordSearchUser, roleIdSelected, PageIndex, limit } = this.state;
             let res = await deleteUserServices(userId);
             if (res && res.errorCode === 0) {
-                toast.success(res?.message, {
+                toast.success(res.message, {
                     position: 'top-right',
                     autoClose: 3000,
                     hideProgressBar: true,

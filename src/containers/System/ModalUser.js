@@ -78,12 +78,12 @@ class ModalUser extends Component {
             });
         }
 
-        if (response?.errorCode === 0) {
+        if (response.errorCode === 0) {
             this.props.refreshForm();
 
             this.props.handleRefreshTable();
             this.props.toggleModel();
-            toast.success(response?.message, {
+            toast.success(response.message, {
                 position: 'top-right',
                 autoClose: 3000,
                 hideProgressBar: true,
@@ -93,7 +93,7 @@ class ModalUser extends Component {
                 progress: undefined,
             });
         } else {
-            toast.error(response?.message || 'Đã có lỗi xảy ra! Vui lòng thử lại.', {
+            toast.error(response.message || 'Đã có lỗi xảy ra! Vui lòng thử lại.', {
                 position: 'top-right',
                 autoClose: 3000,
                 hideProgressBar: true,

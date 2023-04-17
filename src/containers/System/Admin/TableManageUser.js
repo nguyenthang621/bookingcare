@@ -29,7 +29,7 @@ class TableManageUser extends Component {
     };
 
     convertKeyToValue = (itemId, arrData) => {
-        if (!itemId || arrData?.length <= 0) return '';
+        if (!itemId || arrData.length <= 0) return '';
         for (let item of arrData) {
             if (item.keyMap === itemId) {
                 return item.valueVi;
@@ -59,13 +59,12 @@ class TableManageUser extends Component {
                                         <td>{user.email}</td>
                                         <td>{`${user.firstName} ${user.lastName}`}</td>
                                         <td>
-                                            {this.convertKeyToValue(user.gender, this.props?.keyForm?.genders || []) ||
+                                            {this.convertKeyToValue(user.gender, this.props.keyForm.genders || []) ||
                                                 ''}
                                         </td>
                                         <td>{user.address || ''}</td>
                                         <td>
-                                            {this.convertKeyToValue(user.roleId, this.props?.keyForm?.roles || []) ||
-                                                ''}
+                                            {this.convertKeyToValue(user.roleId, this.props.keyForm.roles || []) || ''}
                                         </td>
                                         <td className="dfc">
                                             <ScrollIntoView selector="#user-redux">

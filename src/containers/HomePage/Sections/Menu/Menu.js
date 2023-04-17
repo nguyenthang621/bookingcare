@@ -37,7 +37,7 @@ class Menu extends Component {
 
         let isParent = !_.isEmpty(item);
 
-        if (isParent && item?.children) {
+        if (isParent && item.children) {
             this.setState({
                 history: [...this.state.history, item.children],
             });

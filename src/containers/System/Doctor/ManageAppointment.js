@@ -166,7 +166,7 @@ class ManageAppointment extends Component {
                                     <span className="iconDoctor">
                                         <FaUserMd />
                                     </span>
-                                    {doctorInfo && <p>{`${doctorInfo?.firstName} ${doctorInfo?.lastName} `}</p>}
+                                    {doctorInfo && <p>{`${doctorInfo.firstName} ${doctorInfo.lastName} `}</p>}
                                 </div>
                             </div>
                         </div>

@@ -28,7 +28,7 @@ class DetailNews extends Component {
             if (response && response.errorCode === 0) {
                 this.setState({
                     newsData: response.data,
-                    keyForm: PositionRes?.data,
+                    keyForm: PositionRes.data,
                 });
             }
         }
@@ -43,13 +43,13 @@ class DetailNews extends Component {
         let positionSender = '';
         let nameSender = '';
         let advisers = '';
-        if (newsData && newsData?.adviserData) {
-            positionSender = convertKeyToValue(newsData?.senderDataNews?.position, keyForm);
-            nameSender = `${newsData?.senderDataNews?.firstName} ${newsData?.senderDataNews?.lastName}`;
-            advisers = newsData?.adviserData
+        if (newsData && newsData.adviserData) {
+            positionSender = convertKeyToValue(newsData.senderDataNews.position, keyForm);
+            nameSender = `${newsData.senderDataNews.firstName} ${newsData.senderDataNews.lastName}`;
+            advisers = newsData.adviserData
                 .map((item) => {
-                    let position = convertKeyToValue(item?.position, keyForm) || 'Bác sĩ';
-                    return `${position} ${item?.firstName} ${item?.lastName}`;
+                    let position = convertKeyToValue(item.position, keyForm) || 'Bác sĩ';
+                    return `${position} ${item.firstName} ${item.lastName}`;
                 })
                 .join(';');
         }
@@ -58,18 +58,18 @@ class DetailNews extends Component {
                 {/* <HomeHeader /> */}
                 <div className="handbook-container coverArea">
                     <div className="handbook-wrapper">
-                        <h1 className="handbook-title">{newsData?.title}</h1>
+                        <h1 className="handbook-title">{newsData.title}</h1>
                         <div className="handbook-detail-info">
-                            <li>Nhóm tác giả:&nbsp;{newsData?.authors}</li>
+                            <li>Nhóm tác giả:&nbsp;{newsData.authors}</li>
                             <li>Người kiểm duyệt:&nbsp;{`${positionSender} ${nameSender}`}</li>
                             <li>Cố vấn y khoa:&nbsp;{advisers}</li>
-                            <li>Xuất bản:&nbsp; {moment(newsData?.createdAt).format('LL')},</li>
+                            <li>Xuất bản:&nbsp; {moment(newsData.createdAt).format('LL')},</li>
                             <li>
                                 Cập nhật lần cuối:&nbsp;
-                                {moment(newsData?.updatedAt).format('LL')}
+                                {moment(newsData.updatedAt).format('LL')}
                             </li>
                         </div>
-                        <h2 className="news-topic">{newsData?.topic}</h2>
+                        <h2 className="news-topic">{newsData.topic}</h2>
 
                         <div className="intro-bookingCare ">
                             <div className="icon">
@@ -82,7 +82,7 @@ class DetailNews extends Component {
                             </h4>
                         </div>
                         <div className="image-handbook">
-                            <img src={newsData?.image} alt="img"></img>
+                            <img src={newsData.image} alt="img"></img>
                         </div>
                         <div className="detail-clinic" dangerouslySetInnerHTML={{ __html: newsData.contentHtml }}></div>
                     </div>

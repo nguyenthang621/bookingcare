@@ -23,7 +23,7 @@ axiosjwt.interceptors.request.use(async (config) => {
     const accessToken = classCookies.getAccessToken();
 
     const decodedToken = jwt_decode(accessToken);
-    if (parseInt(decodedToken?.exp) < parseInt(now)) {
+    if (parseInt(decodedToken.exp) < parseInt(now)) {
         classCookies.removeToken('accessToken');
         const data = await refreshToken();
         classCookies.removeToken('refreshToken');

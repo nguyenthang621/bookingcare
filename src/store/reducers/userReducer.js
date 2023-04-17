@@ -8,7 +8,7 @@ const initialState = {
     queueNews: '',
     queueHandbook: '',
     detailUser: {},
-    roleId: classCookies.getDataAccessToken()?.roleId,
+    roleId: classCookies.getDataAccessToken().roleId,
 };
 
 const userReducer = (state = initialState, action) => {

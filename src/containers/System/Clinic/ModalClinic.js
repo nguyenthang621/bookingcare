@@ -153,7 +153,7 @@ class ModalClinic extends Component {
             this.props.toggleModel();
             this.props.reloadData();
         } else {
-            toast.error(response?.message, {
+            toast.error(response.message, {
                 position: 'top-right',
                 autoClose: 3000,
                 hideProgressBar: true,

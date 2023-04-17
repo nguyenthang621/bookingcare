@@ -76,7 +76,7 @@ class DetailSpecialty extends Component {
                         className="detail-clinic coverArea"
                         dangerouslySetInnerHTML={{ __html: clinicData.descriptionHtml }}
                     ></div>
-                    {doctors?.length > 0 && (
+                    {doctors.length > 0 && (
                         <div className="doctors-container coverArea">
                             <h4 className="title-doctors">Bác sĩ</h4>
                             <div className="doctors">

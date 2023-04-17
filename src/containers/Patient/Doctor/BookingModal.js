@@ -38,7 +38,7 @@ class BookingModal extends Component {
         let rangeTime = this.props.rangeTimeData;
         let genderRes = await getAllCodeServices('gender');
         let timeSchedule =
-            languageRedux === LANGUAGES.VI ? rangeTime.timeTypeData?.valueVi : rangeTime.timeTypeData?.valueEn;
+            languageRedux === LANGUAGES.VI ? rangeTime.timeTypeData.valueVi : rangeTime.timeTypeData.valueEn;
         let date = '';
         if (rangeTime.date) {
             date = moment
@@ -62,7 +62,7 @@ class BookingModal extends Component {
 
         if (prevProps.languageRedux !== this.props.languageRedux) {
             let timeSchedule =
-                languageRedux === LANGUAGES.VI ? rangeTime.timeTypeData?.valueVi : rangeTime.timeTypeData?.valueEn;
+                languageRedux === LANGUAGES.VI ? rangeTime.timeTypeData.valueVi : rangeTime.timeTypeData.valueEn;
             let date = '';
             if (rangeTime.date) {
                 date = moment
@@ -130,7 +130,7 @@ class BookingModal extends Component {
             });
             this.toggle();
         } else {
-            toast.error(res?.message || 'Vui lòng điền đủ thông tin.', {
+            toast.error(res.message || 'Vui lòng điền đủ thông tin.', {
                 position: 'top-right',
                 autoClose: 3000,
                 hideProgressBar: true,

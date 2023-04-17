@@ -58,16 +58,16 @@ class News extends Component {
                                         >
                                             {/* <Link to={`/detail-news/${item.id}`}> */}
                                             <div className="item">
-                                                <div className="topic">{item?.type}</div>
+                                                <div className="topic">{item.type}</div>
                                                 <div
                                                     className="img-news"
-                                                    style={{ backgroundImage: `url(${item?.image})` }}
+                                                    style={{ backgroundImage: `url(${item.image})` }}
                                                 ></div>
                                                 <div className="news-brief">
-                                                    <h3 className="news-title">{item?.title}</h3>
+                                                    <h3 className="news-title">{item.title}</h3>
                                                     <div
                                                         className="highlight-content"
-                                                        dangerouslySetInnerHTML={{ __html: item?.focus }}
+                                                        dangerouslySetInnerHTML={{ __html: item.focus }}
                                                     ></div>
 
                                                     <div className="detail">

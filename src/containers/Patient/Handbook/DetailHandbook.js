@@ -26,7 +26,7 @@ class DetailHandbook extends Component {
             if (response && response.errorCode === 0) {
                 this.setState({
                     handbookData: response.data,
-                    keyForm: PositionRes?.data,
+                    keyForm: PositionRes.data,
                 });
             }
         }
@@ -38,13 +38,13 @@ class DetailHandbook extends Component {
         let positionSender = '';
         let nameSender = '';
         let advisers = '';
-        if (handbookData && handbookData?.adviserData) {
-            positionSender = convertKeyToValue(handbookData?.senderData?.position, keyForm);
-            nameSender = `${handbookData?.senderData?.firstName} ${handbookData?.senderData?.lastName}`;
-            advisers = handbookData?.adviserData
+        if (handbookData && handbookData.adviserData) {
+            positionSender = convertKeyToValue(handbookData.senderData.position, keyForm);
+            nameSender = `${handbookData.senderData.firstName} ${handbookData.senderData.lastName}`;
+            advisers = handbookData.adviserData
                 .map((item) => {
-                    let position = convertKeyToValue(item?.position, keyForm) || 'Bác sĩ';
-                    return `${position} ${item?.firstName} ${item?.lastName}`;
+                    let position = convertKeyToValue(item.position, keyForm) || 'Bác sĩ';
+                    return `${position} ${item.firstName} ${item.lastName}`;
                 })
                 .join(';');
         }
@@ -53,15 +53,15 @@ class DetailHandbook extends Component {
                 {/* <HomeHeader /> */}
                 <div className="handbook-container coverArea">
                     <div className="handbook-wrapper">
-                        <h1 className="handbook-title">{handbookData?.title}</h1>
+                        <h1 className="handbook-title">{handbookData.title}</h1>
                         <div className="handbook-detail-info">
-                            <li>Nhóm tác giả:&nbsp;{handbookData?.authors}</li>
+                            <li>Nhóm tác giả:&nbsp;{handbookData.authors}</li>
                             <li>Người kiểm duyệt:&nbsp;{`${positionSender} ${nameSender}`}</li>
                             <li>Cố vấn y khoa:&nbsp;{advisers}</li>
-                            <li>Xuất bản:&nbsp; {moment(handbookData?.createdAt).format('LL')},</li>
+                            <li>Xuất bản:&nbsp; {moment(handbookData.createdAt).format('LL')},</li>
                             <li>
                                 Cập nhật lần cuối:&nbsp;
-                                {moment(handbookData?.updatedAt).format('LL')}
+                                {moment(handbookData.updatedAt).format('LL')}
                             </li>
                         </div>
 
@@ -76,7 +76,7 @@ class DetailHandbook extends Component {
                             </h4>
                         </div>
                         <div className="image-handbook">
-                            <img src={handbookData?.image} alt="img"></img>
+                            <img src={handbookData.image} alt="img"></img>
                         </div>
                         <div
                             className="detail-clinic"

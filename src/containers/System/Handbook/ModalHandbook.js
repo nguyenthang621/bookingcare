@@ -78,14 +78,14 @@ class ModalHandbook extends Component {
                         {' '}
                         <div className="handbook-container coverArea">
                             <div className="handbook-wrapper">
-                                <h1 className="handbook-title">{handbookData?.title}</h1>
+                                <h1 className="handbook-title">{handbookData.title}</h1>
                                 <div className="handbook-detail-info">
-                                    <p>Nhóm tác giả:{handbookData?.authors}</p>
-                                    <p>Người kiểm duyệt:{handbookData?.censor}</p>
-                                    <p>Cố vấn y khoa:{handbookData?.adviser}</p>
+                                    <p>Nhóm tác giả:{handbookData.authors}</p>
+                                    <p>Người kiểm duyệt:{handbookData.censor}</p>
+                                    <p>Cố vấn y khoa:{handbookData.adviser}</p>
                                     <p>
-                                        Xuất bản: {moment(handbookData?.createdAt).format('LL')}, Cập nhật lần cuối:
-                                        {moment(handbookData?.updatedAt).format('LL')}
+                                        Xuất bản: {moment(handbookData.createdAt).format('LL')}, Cập nhật lần cuối:
+                                        {moment(handbookData.updatedAt).format('LL')}
                                     </p>
                                 </div>
 
@@ -100,7 +100,7 @@ class ModalHandbook extends Component {
                                     </h4>
                                 </div>
                                 <div className="image-handbook">
-                                    <img src={handbookData?.image} alt="img"></img>
+                                    <img src={handbookData.image} alt="img"></img>
                                 </div>
                                 <div
                                     className="detail-clinic"

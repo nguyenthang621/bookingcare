@@ -33,25 +33,25 @@ class DetailUser extends Component {
                 <div className="wrapper-detail-user coverArea">
                     <div className="content-detail-user">
                         <div className="avatar">
-                            {dataUser?.image ? (
-                                <img className="image-avatar" src={dataUser?.image} alt="img"></img>
+                            {dataUser.image ? (
+                                <img className="image-avatar" src={dataUser.image} alt="img"></img>
                             ) : (
                                 <BiUserCircle className="icon" />
                             )}
                         </div>
                         <div className="main-content coverArea">
                             <div className="name-user">
-                                <p>{`${dataUser?.firstName} ${dataUser?.lastName}`}</p>
+                                <p>{`${dataUser.firstName} ${dataUser.lastName}`}</p>
                             </div>
                             <p className="role-user">
-                                <p>{dataUser?.roleData?.valueVi}</p>
+                                <p>{dataUser.roleData.valueVi}</p>
                             </p>
                             <div className="more-infor coverArea">
-                                <p>{`Họ tên: ${dataUser?.firstName} ${dataUser?.lastName}`}</p>
-                                <p>{`Email: ${dataUser?.email} `}</p>
-                                <p>{`Giới tính: ${dataUser?.genderData?.valueVi}` || 'Chưa xác định'}</p>
-                                <p>{`Số điện thoại: ${dataUser?.phoneNumber}` || 'Chưa xác định'}</p>
-                                <p>{`Địa chỉ: ${dataUser?.address}` || 'Chưa xác định'}</p>
+                                <p>{`Họ tên: ${dataUser.firstName} ${dataUser.lastName}`}</p>
+                                <p>{`Email: ${dataUser.email} `}</p>
+                                <p>{`Giới tính: ${dataUser.genderData.valueVi}` || 'Chưa xác định'}</p>
+                                <p>{`Số điện thoại: ${dataUser.phoneNumber}` || 'Chưa xác định'}</p>
+                                <p>{`Địa chỉ: ${dataUser.address}` || 'Chưa xác định'}</p>
                             </div>
                         </div>
                     </div>

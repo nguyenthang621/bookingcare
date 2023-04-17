@@ -66,10 +66,10 @@ class BoxBackground extends Component {
             if (response && response.errorCode === 0) {
                 this.setState({
                     listResultSearch: [
-                        { arr: [...response?.results?.clinics], title: 'Cơ sở y tế', to: '/detail-clinic' },
-                        { arr: [...response?.results?.doctors], title: 'Bác sĩ', to: '/detail-doctor' },
+                        { arr: [...response.results.clinics], title: 'Cơ sở y tế', to: '/detail-clinic' },
+                        { arr: [...response.results.doctors], title: 'Bác sĩ', to: '/detail-doctor' },
                         {
-                            arr: [...response?.results?.specialtys],
+                            arr: [...response.results.specialtys],
                             title: 'Chuyên khoa',
                             to: `/detail-specialty`,
                         },

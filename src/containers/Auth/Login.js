@@ -73,7 +73,7 @@ class Login extends Component {
                 });
             }
         } catch (error) {
-            if (error.response && error?.response?.data) {
+            if (error.response && error.response.data) {
                 this.setState({ message: error.response.message, isShowMessage: true, isShowLoading: false });
             }
         }
@@ -117,7 +117,7 @@ class Login extends Component {
                     });
                 }
             } catch (error) {
-                if (error.response && error?.response?.data) {
+                if (error.response && error.response.data) {
                     this.setState({ message: error.response.message, isShowMessage: true, isShowLoading: false });
                 }
             }

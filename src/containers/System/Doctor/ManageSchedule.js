@@ -31,11 +31,11 @@ class ManageSchedule extends Component {
         this.props.fetchAllcodeScheduleRedux();
 
         this.setState({
-            selectedDoctor: this.props.userInfo?.id,
+            selectedDoctor: this.props.userInfo.id,
         });
 
         if (this.props.roleId === 'R2') {
-            await this.props.getScheduleDoctorByDateRedux(this.props.userInfo?.id, this.state.initDate);
+            await this.props.getScheduleDoctorByDateRedux(this.props.userInfo.id, this.state.initDate);
         }
     }
     componentDidUpdate(prevProps) {
