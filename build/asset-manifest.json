@@ -1,0 +1,32 @@
+{
+  "files": {
+    "main.css": "/static/css/main.6c2e25bc.chunk.css",
+    "main.js": "/static/js/main.3754d5e6.chunk.js",
+    "main.js.map": "/static/js/main.3754d5e6.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.ae613af7.js",
+    "runtime-main.js.map": "/static/js/runtime-main.ae613af7.js.map",
+    "static/css/2.1862394d.chunk.css": "/static/css/2.1862394d.chunk.css",
+    "static/js/2.4da98552.chunk.js": "/static/js/2.4da98552.chunk.js",
+    "static/js/2.4da98552.chunk.js.map": "/static/js/2.4da98552.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.1862394d.chunk.css.map": "/static/css/2.1862394d.chunk.css.map",
+    "static/css/main.6c2e25bc.chunk.css.map": "/static/css/main.6c2e25bc.chunk.css.map",
+    "static/js/2.4da98552.chunk.js.LICENSE.txt": "/static/js/2.4da98552.chunk.js.LICENSE.txt",
+    "static/media/BoxBackground.scss": "/static/media/bookingcare-cove.827fd54e.jpg",
+    "static/media/clinic.6050d82e.png": "/static/media/clinic.6050d82e.png",
+    "static/media/doctor.c1e030b5.jpg": "/static/media/doctor.c1e030b5.jpg",
+    "static/media/styles.scss": "/static/media/fa-solid-900.d279d01b.svg",
+    "static/media/handbook.060c70fc.png": "/static/media/handbook.060c70fc.png",
+    "static/media/HomeHeader.scss": "/static/media/logo.2e2d78c9.svg",
+    "static/media/slick-theme.css": "/static/media/slick.c94f7671.ttf",
+    "static/media/tao-hinh-ham-mat.a297cbb0.jpg": "/static/media/tao-hinh-ham-mat.a297cbb0.jpg",
+    "static/media/user.43ebe323.jpg": "/static/media/user.43ebe323.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.ae613af7.js",
+    "static/css/2.1862394d.chunk.css",
+    "static/js/2.4da98552.chunk.js",
+    "static/css/main.6c2e25bc.chunk.css",
+    "static/js/main.3754d5e6.chunk.js"
+  ]
+}
