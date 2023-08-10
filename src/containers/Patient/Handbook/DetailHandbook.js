@@ -43,8 +43,8 @@ class DetailHandbook extends Component {
             nameSender = `${handbookData.senderData.firstName} ${handbookData.senderData.lastName}`;
             advisers = handbookData.adviserData
                 .map((item) => {
-                    let position = convertKeyToValue(item.position, keyForm) || 'Bác sĩ';
-                    return `${position} ${item.firstName} ${item.lastName}`;
+                    let position = convertKeyToValue(item?.position, keyForm) || 'Bác sĩ';
+                    return `${position} ${item?.firstName} ${item?.lastName}`;
                 })
                 .join(';');
         }

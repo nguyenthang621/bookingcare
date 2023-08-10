@@ -45,12 +45,17 @@ class Login extends Component {
     };
 
     handleLogin = async () => {
-        this.setState({ message: '', isShowLoading: true });
+        if ((this.state.email, this.state.password)) {
+            this.setState({ message: '', isShowLoading: true });
+        } else {
+            this.setState({ message: 'Missing form', isShowLoading: false });
+            return;
+        }
         try {
             let dataResponse = await handleLoginApi(this.state.email, this.state.password);
-
+            console.log(dataResponse);
             if (dataResponse && dataResponse.errorCode === 1 && dataResponse.message) {
-                this.setState({ message: dataResponse.message, isShowMessage: true });
+                this.setState({ message: dataResponse.message, isShowMessage: true, isShowLoading: false });
             }
             if (dataResponse && dataResponse.errorCode === 0) {
                 //login success
@@ -73,6 +78,8 @@ class Login extends Component {
                 });
             }
         } catch (error) {
+            console.log(12123);
+            console.log('errorfdefe', error.errorCode);
             if (error.response && error.response.data) {
                 this.setState({ message: error.response.message, isShowMessage: true, isShowLoading: false });
             }
@@ -83,13 +90,17 @@ class Login extends Component {
         let { email, password, confirmPassword, firstName, lastName, phoneNumber } = this.state;
 
         if (!validateEmail(email)) {
-            this.setState({ message: 'Email không hợp lệ.', isShowMessage: true });
+            this.setState({ message: 'Email không hợp lệ.', isShowMessage: true, isShowLoading: false });
             return;
         } else {
             try {
                 if (phoneNumber) {
                     if (!validatePhonenumber(phoneNumber)) {
-                        this.setState({ message: 'Số điện thoại không hợp lệ.', isShowMessage: true });
+                        this.setState({
+                            message: 'Số điện thoại không hợp lệ.',
+                            isShowMessage: true,
+                            isShowLoading: false,
+                        });
                         return;
                     }
                 }
@@ -101,6 +112,7 @@ class Login extends Component {
                     password,
                     confirmPassword,
                 });
+                console.log(dataResponse);
                 if (dataResponse && dataResponse.errorCode === 1 && dataResponse.message) {
                     this.setState({ message: dataResponse.message, isShowMessage: true, isShowLoading: false });
                 }
@@ -218,7 +230,9 @@ class Login extends Component {
                                 />
                             </div>
                         )}
-                        <div className="col-12 text-response">{this.state.message}</div>
+                        <div className="col-12 text-response">
+                            <p>{this.state.message}</p>
+                        </div>
                         <div className="col-12 btn-container">
                             <button className="btn btn-primary" onClick={() => this.handleClickSubmit()}>
                                 {isRegister ? 'Đăng kí' : 'Đăng nhập'}

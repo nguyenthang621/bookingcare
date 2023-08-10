@@ -42,8 +42,13 @@ axiosjwt.interceptors.request.use(async (config) => {
     return config;
 });
 
-axiosjwt.interceptors.response.use((response) => {
-    return response.data;
-});
+axiosjwt.interceptors.response.use(
+    (response) => {
+        return response.data;
+    },
+    function (error) {
+        return Promise.reject(error);
+    },
+);
 
 export default axiosjwt;

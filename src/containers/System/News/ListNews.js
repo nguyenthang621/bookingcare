@@ -127,7 +127,6 @@ class ListNews extends Component {
 
     render() {
         let { listNews, isShowModalNews, id, statusId, isShowConfirmModal, isShowLoading } = this.state;
-        let {} = this.props;
 
         let listSelect = [
             { text: <FormattedMessage id="admin.status.new" />, id: 'S1' },

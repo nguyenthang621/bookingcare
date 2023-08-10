@@ -42,7 +42,7 @@ export const getDetailUser = () => {
     return async (dispatch) => {
         try {
             let dataUser = await getDetailUserServices();
-
+            console.log(dataUser);
             if (dataUser && dataUser.errorCode === 0) {
                 dispatch({ type: actionTypes.GET_DETAIL_USER_SUCCESS, data: dataUser.data });
             } else {

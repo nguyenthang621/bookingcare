@@ -44,14 +44,14 @@ class DetailUser extends Component {
                                 <p>{`${dataUser.firstName} ${dataUser.lastName}`}</p>
                             </div>
                             <p className="role-user">
-                                <p>{dataUser.roleData.valueVi}</p>
+                                <p>{dataUser?.roleData?.valueVi}</p>
                             </p>
                             <div className="more-infor coverArea">
-                                <p>{`Họ tên: ${dataUser.firstName} ${dataUser.lastName}`}</p>
+                                <p>{`Họ tên: ${dataUser?.firstName} ${dataUser?.lastName}`}</p>
                                 <p>{`Email: ${dataUser.email} `}</p>
-                                <p>{`Giới tính: ${dataUser.genderData.valueVi}` || 'Chưa xác định'}</p>
-                                <p>{`Số điện thoại: ${dataUser.phoneNumber}` || 'Chưa xác định'}</p>
-                                <p>{`Địa chỉ: ${dataUser.address}` || 'Chưa xác định'}</p>
+                                <p>{`Giới tính: ${dataUser?.genderData?.valueVi}` || 'Chưa xác định'}</p>
+                                <p>{`Số điện thoại: ${dataUser?.phoneNumber}` || 'Chưa xác định'}</p>
+                                <p>{`Địa chỉ: ${dataUser?.address}` || 'Chưa xác định'}</p>
                             </div>
                         </div>
                     </div>

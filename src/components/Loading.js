@@ -11,8 +11,6 @@ class Loading extends Component {
     componentDidUpdate() {}
 
     render() {
-        let {} = this.props;
-        let {} = this.state;
         return (
             <div className="bg-loading">
                 <div className="lds-ellipsis">

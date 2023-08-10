@@ -5,8 +5,7 @@ const handleLoginApi = async (userName, password) => {
     try {
         return await axios.post('/api/login', { email: userName, password: password });
     } catch (error) {
-        console.log(error);
-        // return error.response.data;
+        return error?.response?.data;
     }
 };
 const registerServices = async (data) => {
@@ -14,7 +13,7 @@ const registerServices = async (data) => {
         return await axios.post('/api/register', data);
     } catch (error) {
         console.log(error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 
@@ -23,7 +22,7 @@ const getUsersById = async (inputId) => {
         return await axios.get(`/api/get-users?id=${inputId}`);
     } catch (error) {
         console.log(error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 const filterAndPagingUser = async (paramsSearch = {}) => {
@@ -32,7 +31,7 @@ const filterAndPagingUser = async (paramsSearch = {}) => {
         return await axiosJWT.get(`/api/filter-user?page=${page}&limit=${limit}&keyword=${keyword}&roleId=${roleId}`);
     } catch (error) {
         console.log(error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 
@@ -41,7 +40,7 @@ const createUserServices = async (dataUser) => {
         return await axiosJWT.post('/api/create-user', dataUser);
     } catch (error) {
         console.log(error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 
@@ -50,7 +49,7 @@ const deleteUserServices = async (id) => {
         return await axiosJWT.delete('/api/delete-user', { data: { id: id } });
     } catch (error) {
         console.log(error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 
@@ -59,7 +58,7 @@ const editUserServices = async (user) => {
         return await axiosJWT.put('/api/update-user', user);
     } catch (error) {
         console.log(error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 
@@ -77,7 +76,7 @@ const postSpecialtyServices = async (data) => {
         return await axiosJWT.post('/api/post-specialty', data);
     } catch (error) {
         console.log(error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 // post detail clinic
@@ -86,7 +85,7 @@ const postDetailClinicServices = async (data) => {
         return await axiosJWT.post('/api/post-detail-clinic', data);
     } catch (error) {
         console.log(error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 
@@ -96,7 +95,7 @@ const refreshToken = async () => {
         return await axiosJWT.post('/api/refresh-token');
     } catch (error) {
         console.log(error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 
@@ -106,7 +105,7 @@ const processLogoutServices = async () => {
         return await axiosJWT.post(`/api/logout`);
     } catch (error) {
         console.log('error:::', error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 
@@ -116,7 +115,7 @@ const postHandbookServices = async (data) => {
         return await axiosJWT.post('/api/post-handbook', data);
     } catch (error) {
         console.log(error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 const confirmHandbookServices = async (id) => {
@@ -124,7 +123,7 @@ const confirmHandbookServices = async (id) => {
         return await axiosJWT.post(`/api/confirm-handbook?id=${id}`);
     } catch (error) {
         console.log(error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 const deleteHandbookServices = async (id) => {
@@ -133,7 +132,7 @@ const deleteHandbookServices = async (id) => {
         return await axiosJWT.post(`/api/delete-handbook?id=${id}`);
     } catch (error) {
         console.log(error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 const checkQueueHandbookServices = async () => {
@@ -141,7 +140,7 @@ const checkQueueHandbookServices = async () => {
         return await axiosJWT.get(`/api/check-queue-handbook`);
     } catch (error) {
         console.log(error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 
@@ -151,7 +150,7 @@ const postNewsServices = async (data) => {
         return await axiosJWT.post('/api/post-news', data);
     } catch (error) {
         console.log(error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 const confirmNewsServices = async (id) => {
@@ -159,7 +158,7 @@ const confirmNewsServices = async (id) => {
         return await axiosJWT.post(`/api/confirm-news?id=${id}`);
     } catch (error) {
         console.log(error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 const deleteNewsServices = async (id) => {
@@ -168,7 +167,7 @@ const deleteNewsServices = async (id) => {
         return await axiosJWT.post(`/api/delete-news?id=${id}`);
     } catch (error) {
         console.log(error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 const checkQueueNewsServices = async () => {
@@ -176,7 +175,7 @@ const checkQueueNewsServices = async () => {
         return await axiosJWT.get(`/api/check-queue-news`);
     } catch (error) {
         console.log(error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 
@@ -185,7 +184,7 @@ const filterAndPagingClinic = async (page = 0, limit = 5, keyword = '') => {
         return await axios.get(`/api/filter-paging-clinic?page=${page}&limit=${limit}&keyword=${keyword}`);
     } catch (error) {
         console.log(error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 const filterAndPagingSpecialty = async (page = 0, limit = 5, keyword = '') => {
@@ -193,7 +192,7 @@ const filterAndPagingSpecialty = async (page = 0, limit = 5, keyword = '') => {
         return await axios.get(`/api/filter-paging-specialty?page=${page}&limit=${limit}&keyword=${keyword}`);
     } catch (error) {
         console.log(error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 
@@ -202,7 +201,7 @@ const deleteClinicByIdServices = async (id) => {
         return await axiosJWT.delete(`/api/clinic/${id}`);
     } catch (error) {
         console.log(error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 const deleteSpecialtyByIdServices = async (id) => {
@@ -210,7 +209,7 @@ const deleteSpecialtyByIdServices = async (id) => {
         return await axiosJWT.delete(`/api/specialty/${id}`);
     } catch (error) {
         console.log(error);
-        return error.response.data;
+        return error?.response?.data;
     }
 };
 

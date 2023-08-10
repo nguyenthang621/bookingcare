@@ -48,8 +48,8 @@ class DetailNews extends Component {
             nameSender = `${newsData.senderDataNews.firstName} ${newsData.senderDataNews.lastName}`;
             advisers = newsData.adviserData
                 .map((item) => {
-                    let position = convertKeyToValue(item.position, keyForm) || 'Bác sĩ';
-                    return `${position} ${item.firstName} ${item.lastName}`;
+                    let position = convertKeyToValue(item?.position, keyForm) || 'Bác sĩ';
+                    return `${position} ${item?.firstName} ${item?.lastName}`;
                 })
                 .join(';');
         }

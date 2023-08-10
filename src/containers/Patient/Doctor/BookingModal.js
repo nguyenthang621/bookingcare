@@ -312,7 +312,7 @@ class BookingModal extends Component {
                                     <input
                                         type="text"
                                         className="form-control"
-                                        placeholder="Năm sinh(bắt buộc) VD: 27/01/2001"
+                                        placeholder="Năm sinh(bắt buộc) VD: 2001"
                                         onChange={(e) => this.handleChangeInput(e, 'birthPatient')}
                                         value={this.state.birthPatient}
                                     />

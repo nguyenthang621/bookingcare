@@ -76,7 +76,7 @@ class TopDoctor extends Component {
                                         nameSpecialty = listDataSpecialtyRedux.filter(
                                             (item) => item.id === idSpecialty,
                                         );
-                                        nameSpecialty = nameSpecialty[0].name;
+                                        nameSpecialty = nameSpecialty[0]?.name;
                                     }
                                     return (
                                         <div
